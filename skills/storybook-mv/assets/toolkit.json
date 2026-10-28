@@ -1,0 +1,11 @@
+{
+  "name": "storybook-mv",
+  "display_name": "MV创作导演",
+  "version": "2.0.0",
+  "brief_schema": 2,
+  "production_contract_schema": 1,
+  "optional_cpu_canvas_version": "0.1.100",
+  "bundled_engines": ["canvas2d", "painted-p5"],
+  "guide_only_engines": ["remotion", "threejs", "blender", "custom"],
+  "sample_scope": "Controlled optional implementation studies, not finished MV presets or guarantees for other styles. See assets/studies/verification.json for actual evidence."
+}

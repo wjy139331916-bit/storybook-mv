@@ -1,0 +1,28 @@
+{
+  "painted-p5": {
+    "template": "painted-template",
+    "status": "bundled",
+    "use": "painted/ink when selected"
+  },
+  "canvas2d": {
+    "template": "canvas-template",
+    "status": "bundled",
+    "use": "custom flat/vector/pixel/type/collage"
+  },
+  "remotion": {
+    "template": null,
+    "status": "guide-only"
+  },
+  "threejs": {
+    "template": null,
+    "status": "guide-only"
+  },
+  "blender": {
+    "template": null,
+    "status": "guide-only"
+  },
+  "custom": {
+    "template": null,
+    "status": "guide-only"
+  }
+}

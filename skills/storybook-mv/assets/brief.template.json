@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "project": null,
+  "request_mode": "plan-first",
+  "phase": "discover",
+  "goal": null,
+  "music": {
+    "title": null,
+    "source": null,
+    "audio": null,
+    "scope": null,
+    "duration": null
+  },
+  "style": {
+    "direction": null,
+    "medium": null,
+    "palette": null,
+    "proportions": null,
+    "motion": null
+  },
+  "emotion": null,
+  "structure": {
+    "mode": null,
+    "outline": null,
+    "ending": null
+  },
+  "characters": {
+    "required": null,
+    "roles": []
+  },
+  "asset_policy": null,
+  "output": {
+    "aspect_ratio": null,
+    "resolution": null,
+    "fps": null
+  },
+  "lyrics": {
+    "mode": null,
+    "language": null
+  },
+  "constraints": {
+    "budget": null,
+    "deadline": null,
+    "available_tools": []
+  },
+  "execution": {
+    "engine": null,
+    "runtime": null,
+    "template_status": null,
+    "production_authorized": false
+  },
+  "confirmed_fields": [],
+  "assumptions": [],
+  "open_questions": []
+}
