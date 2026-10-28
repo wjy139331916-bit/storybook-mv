@@ -1,0 +1,19 @@
+{
+  "source": "tuzhechen2005/opus-video-skills",
+  "commit": "59744a69c7b916cfbe4c4ec84006b0c2f5e2fde1",
+  "license": "MIT; preserve included upstream notices",
+  "adapted": [
+    "studio.html",
+    "src/core.js",
+    "render.mjs",
+    "package.json",
+    "package-lock.json",
+    "ENGINE_GUIDE.md"
+  ],
+  "original_integration_modules": [
+    "src/rig.js",
+    "src/lyrics-overlay.js",
+    "src/data/lyrics.js",
+    "src/scenes/story.js"
+  ]
+}

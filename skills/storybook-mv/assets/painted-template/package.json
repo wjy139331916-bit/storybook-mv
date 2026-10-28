@@ -1,0 +1,16 @@
+{
+  "name": "storybook-mv-project",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "description": "All-code storybook animation project with original cast, full-line lyrics and inspected poses",
+  "scripts": {
+    "sheet": "node render.mjs --sheet=0,1,2,3,4,5 --out=out/sheet.jpg",
+    "video": "node render.mjs --clip --out=out/video.mp4 --fps=30"
+  },
+  "dependencies": {
+    "p5": "^2.3.3",
+    "p5.brush": "^2.2.3",
+    "puppeteer-core": "^25.11.0"
+  }
+}
