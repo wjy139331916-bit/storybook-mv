@@ -6,6 +6,8 @@ Identify whether the user is exploring, choosing a direction, requesting a propo
 
 In an early exchange, clarify the few factors that change the route most: what the viewer should feel/understand, what the user wants to retain from the reference, what failed previously, and major asset/time constraints. Ask the song or source directly when it is unknown.
 
+Song/length/aspect/style answers alone never finish discovery. Continue with what the film actually shows, its subject/core idea, concrete development and ending/loop. For lyrical songs read the actual lyrics, distinguish supported readings from artist facts, and let the user choose material interpretive forks. Do not silently invent a romance or map vague emotion words into a full film.
+
 ## Ask useful small rounds
 
 Use 1–3 questions, normally 2. Choose the next round from missing information, not a fixed questionnaire. Offer 2–4 concrete choices and free text. Keep each question to one interpretable dimension.
@@ -38,4 +40,4 @@ A proposal is ready when the desired experience, visual language, content progre
 
 Do not continue questioning about every color/font/prop. Choose routine details as proposed implementation decisions. Do not produce the final execution prescription while major style/content constraints are unknown.
 
-Deliver the proposal before production for a discovery/plan-only request. If execution is already authorized, use the clarified decisions and proceed; don't turn a taste workflow into repeated permission requests.
+Recap the concrete content and selected song reading, then wait for user acceptance when it is missing. Do not start asset creation, a pilot or full rendering while asking that question. Reuse genuine earlier accepted content and scope; generic production intent is not content acceptance. An approved short study cannot expand to a full song. Follow the hard content/song gates linked directly from SKILL.md.

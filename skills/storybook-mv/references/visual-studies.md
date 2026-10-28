@@ -4,10 +4,12 @@ Use a study when a material taste decision is unresolved and a preview would hel
 
 The optional original studies cover `flat`, `paper` and `pixel`, using the same geometry and timing. They are modest implementation references, not finished film styles or proof of detailed acting. Select `figures`, `type` or `abstract` explicitly. Do not show humanoids for a no-character concept.
 
+For an isolated toolkit implementation check only (not a substitute for a user-confirmed MV brief):
+
 ```bash
-python3 <skill-dir>/scripts/build_study.py <new-flat-study> --kind style --subject figures --style flat
-python3 <skill-dir>/scripts/build_study.py <new-paper-study> --kind style --subject figures --style paper
-python3 <skill-dir>/scripts/build_study.py <new-pixel-study> --kind style --subject figures --style pixel
+python3 <skill-dir>/scripts/build_study.py <new-flat-study> --kind style --subject figures --style flat --tool-self-test
+python3 <skill-dir>/scripts/build_study.py <new-paper-study> --kind style --subject figures --style paper --tool-self-test
+python3 <skill-dir>/scripts/build_study.py <new-pixel-study> --kind style --subject figures --style pixel --tool-self-test
 node <skill-dir>/scripts/render_canvas.mjs --project=<new-flat-study> --out=out/comparison --times=0.5,3.6,4.8
 ```
 
