@@ -71,6 +71,14 @@
     {
       "path": "tests/test_content_gate.py",
       "sha256": "c2b087940ed6961472a2aa515136bc11ea8b6bdb2e250778dbbddd0f191e5ac4"
+    },
+    {
+      "path": "scripts/export_skill.py",
+      "sha256": "63340ac0bfb85c68661378730f787d3b65bc9d050a24a0f56c7d0b7135b10c48"
+    },
+    {
+      "path": "tests/test_contracts.py",
+      "sha256": "0f2e686be5abbfb18b63626d6f8bd9a445d18f6ea20cf34ba0ac19fd03b4f5b5"
     }
   ],
   "style_studies": [
@@ -581,10 +589,11 @@
     ]
   },
   "regression_tests": {
-    "passed": 48,
+    "passed": 49,
     "skipped": 0,
     "command": "MV_CANVAS_MODULE=<selected-module> python3 -m unittest discover -s tests -v",
-    "native_probe": "Four style still probes, encoded flat/pixel probes, exact PNG palette/grid, and contiguous declared-pose/text-overflow finding tests passed."
+    "native_probe": "Four style still probes, encoded flat/pixel probes, exact PNG palette/grid, and contiguous declared-pose/text-overflow finding tests passed.",
+    "portable_reexport": "Exported copy re-exported without stale self-manifest; full integrity verification passed."
   },
   "independent_use": [
     {
