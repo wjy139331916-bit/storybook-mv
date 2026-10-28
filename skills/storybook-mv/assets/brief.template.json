@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project": null,
   "request_mode": "plan-first",
   "phase": "discover",
@@ -9,7 +9,10 @@
     "source": null,
     "audio": null,
     "scope": null,
-    "duration": null
+    "duration": null,
+    "artist": null,
+    "version": null,
+    "kind": null
   },
   "style": {
     "direction": null,
@@ -47,9 +50,41 @@
     "engine": null,
     "runtime": null,
     "template_status": null,
-    "production_authorized": false
+    "production_authorized": false,
+    "context": "user-project",
+    "authorized_scope": null,
+    "authorized_duration": null,
+    "authorization_evidence": null
   },
   "confirmed_fields": [],
   "assumptions": [],
-  "open_questions": []
+  "open_questions": [],
+  "content": {
+    "subject": null,
+    "core_idea": null,
+    "key_moments": [],
+    "exclusions": []
+  },
+  "content_confirmation": {
+    "status": "pending",
+    "summary": null,
+    "user_evidence": null,
+    "content_sha256": null
+  },
+  "song_reading": {
+    "status": "pending",
+    "reason": null,
+    "recording_basis": null,
+    "lyrics_status": "missing",
+    "lyrics_source": null,
+    "central_meaning": null,
+    "intent_basis": null,
+    "evidence": [],
+    "sources": [],
+    "uncertainties": [],
+    "options": [],
+    "needs_user_selection": false,
+    "selected_direction": null,
+    "user_selection_evidence": null
+  }
 }
