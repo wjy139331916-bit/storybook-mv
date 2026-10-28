@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-28",
+  "scope": "Original controlled code studies; not finished MV presets or broad aesthetic acceptance.",
+  "samples": [
+    {
+      "sample": "flat",
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "renderer_sha256": "2a4c64bd7ebbbae8fa709b5c163deab60739d548397aac9eff2d3640766c3226",
+      "frames": 180,
+      "duration": 6,
+      "dimensions": [
+        960,
+        540
+      ],
+      "reverse_seek_equality": true,
+      "encoded_full_decode": true,
+      "input_digest": "8344fc15ceddccbc0231e42e24f603edaceeb575493c91152af95fcf22851d5b"
+    },
+    {
+      "sample": "paper",
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "renderer_sha256": "2a4c64bd7ebbbae8fa709b5c163deab60739d548397aac9eff2d3640766c3226",
+      "frames": 180,
+      "duration": 6,
+      "dimensions": [
+        960,
+        540
+      ],
+      "reverse_seek_equality": true,
+      "encoded_full_decode": true,
+      "input_digest": "0f29a33ef1542d19114834e4f5e786c7ecbecd51e4d2f43714a765647391cfbd"
+    },
+    {
+      "sample": "pixel",
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "renderer_sha256": "2a4c64bd7ebbbae8fa709b5c163deab60739d548397aac9eff2d3640766c3226",
+      "frames": 180,
+      "duration": 6,
+      "dimensions": [
+        960,
+        540
+      ],
+      "reverse_seek_equality": true,
+      "encoded_full_decode": true,
+      "input_digest": "85d7f07f546b69c6114ab006a3dc277e781f680f5b31a2f31a9895850f58b290"
+    },
+    {
+      "sample": "type",
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "renderer_sha256": "2a4c64bd7ebbbae8fa709b5c163deab60739d548397aac9eff2d3640766c3226",
+      "frames": 180,
+      "duration": 6,
+      "dimensions": [
+        960,
+        540
+      ],
+      "reverse_seek_equality": true,
+      "encoded_full_decode": true,
+      "input_digest": "fb29b233fe36fd05da6174a1bd61d1f9f4c0c2d83930aaeaafda7c4341d76b63"
+    },
+    {
+      "sample": "abstract",
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "renderer_sha256": "2a4c64bd7ebbbae8fa709b5c163deab60739d548397aac9eff2d3640766c3226",
+      "frames": 180,
+      "duration": 6,
+      "dimensions": [
+        960,
+        540
+      ],
+      "reverse_seek_equality": true,
+      "encoded_full_decode": true,
+      "input_digest": "d162eb09a79736dab6ffdd21cef9bc29f62f0e725526b86c91dbaefc0fc2aef8"
+    },
+    {
+      "sample": "motion",
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "renderer_sha256": "2a4c64bd7ebbbae8fa709b5c163deab60739d548397aac9eff2d3640766c3226",
+      "frames": 180,
+      "duration": 6,
+      "dimensions": [
+        960,
+        540
+      ],
+      "reverse_seek_equality": true,
+      "encoded_full_decode": true,
+      "input_digest": "79fed2269ad15d11f3747b561323c96dc08053021be7707c60281c90ab9b8fe0"
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "assets/modules/motion.js",
+      "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+    },
+    {
+      "path": "assets/modules/canvas-actors.js",
+      "sha256": "4e7fac4d6a5735fee6dbeb329c0976ac1a6493ab7bdb3fd8058c5db2b2a3d5f2"
+    },
+    {
+      "path": "assets/modules/transitions.js",
+      "sha256": "f9736160fdd69e3b9e6eec6f47f0f492b8a746eb33da9208dc92ff356944245e"
+    },
+    {
+      "path": "assets/studies/scene.js",
+      "sha256": "821f60279f048a7f6fbd7c602102e707adbf85a02fc04d732a60061e7114bc2b"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "evidence/abstract.mp4",
+      "sha256": "e2e0cdde7e1b666d480eb854ad12d660a5f8ef61ebe1a55110dc85f39ca3e8e0",
+      "bytes": 670624
+    },
+    {
+      "path": "evidence/flat.mp4",
+      "sha256": "3df0c32002a2d0f4b28c90488e287a57745d9c348036cc554bb510cb6c2c903c",
+      "bytes": 49843
+    },
+    {
+      "path": "evidence/handoff-detail.png",
+      "sha256": "51473ea0a7bf5552fc593d9aa5f722cab9e329388c66e7cf2d94eedd459afd88",
+      "bytes": 116061
+    },
+    {
+      "path": "evidence/handoff-strip.png",
+      "sha256": "4942255510b5d01405b56a17a8158c9fb964ec4a062e5065df4e2441421ce172",
+      "bytes": 37529
+    },
+    {
+      "path": "evidence/motion.mp4",
+      "sha256": "03fd26f60c3b8122db8382146dd88df20ce0941b9e3ca51ac0408affc23a7721",
+      "bytes": 61047
+    },
+    {
+      "path": "evidence/paper.mp4",
+      "sha256": "ab594cbe1fd21ba6f254d27997b66c0d711b330493d96967e5f69b6ba29422ce",
+      "bytes": 59767
+    },
+    {
+      "path": "evidence/pixel.mp4",
+      "sha256": "826e201a42dd1426487ce989644f2624953fdfe16f049e1c4bc888a5cd2921d1",
+      "bytes": 58173
+    },
+    {
+      "path": "evidence/release-detail.png",
+      "sha256": "3f869838407e3522af9e20591536acb46545528ae813241b7f4dbd918abe5243",
+      "bytes": 162286
+    },
+    {
+      "path": "evidence/runtime.mp4",
+      "sha256": "87e0a91c65ccee3cb8df1ea56cfc0f80cb6302c0a7648aed6b9f79a5d0ae065a",
+      "bytes": 15525
+    },
+    {
+      "path": "evidence/style-board.png",
+      "sha256": "d42b89249ec011a51ec4c89e6475c79a419628c34d7df8094a7e2911257831f9",
+      "bytes": 78449
+    },
+    {
+      "path": "evidence/type.mp4",
+      "sha256": "917d12a557896553bf9d6bcb79ef58083824485be3982b66ba71c2f52d2987e4",
+      "bytes": 36614
+    },
+    {
+      "path": "evidence/walk-strip.png",
+      "sha256": "3ae273f2e0d1442ffe72e3a616ffa733fe5d86ec478ea91ea8d31d0f799f1b20",
+      "bytes": 55143
+    }
+  ],
+  "character_invariants": {
+    "scope": "Actual drawn endpoints from 181 timestamps, 0..6s at 30fps, selected 4.8-head study only",
+    "unreachable_targets": 0,
+    "max_limb_length_error_px": 7.82e-14,
+    "max_hand_distance_during_contact_px": 0,
+    "max_support_foot_world_drift_units": 0
+  },
+  "visual_inspection": {
+    "evidence": [
+      "evidence/style-board.png",
+      "evidence/walk-strip.png",
+      "evidence/handoff-strip.png",
+      "evidence/handoff-detail.png",
+      "evidence/release-detail.png"
+    ],
+    "status": "implementation study inspected",
+    "limits": [
+      "Simple reusable geometry, restrained faces and one small setting; not a finished character design.",
+      "Paper treatment is subtle; other treatments need their own studies.",
+      "Full-body turn view art, CJK fonts, realistic acting, accurate karaoke and whole-song sync were not certified.",
+      "CPU native Canvas output does not certify browser, p5.brush or WebGL behavior."
+    ]
+  },
+  "whole_mv_verified": false,
+  "runtime_self_test": {
+    "scope": "synthetic pulses only",
+    "expected": [
+      0.5,
+      1.5
+    ],
+    "observed": [
+      0.5,
+      1.5
+    ],
+    "tolerance_seconds": 0.06
+  },
+  "transform_invariants": {
+    "rotated_uniform_parent_segments_checked": 36,
+    "max_limb_length_error_px": 1.99e-13,
+    "nonuniform_parent_rejected": true
+  },
+  "tool_regressions": {
+    "passed": 17,
+    "scope": "neutral initialization, preserved files, source/artifact freshness, unresolved issues, invalid exemptions, replacement evidence, locked choices, shared-asset repair ranges, repeated sections, portable integrity/tamper/path checks, measured audio metadata, explicit study selection, CPU prerequisites and full encoded delivery inspection"
+  },
+  "independent_usage": [
+    {
+      "task": "Discover a code-only electronic MV with no characters or captions; planning only",
+      "result": "Asked two relevant questions and preserved discovery scope; no character/style defaults or production."
+    },
+    {
+      "task": "Produce a six-second original English word/graphic flat-pixel comparison",
+      "result": "Actual 180-frame renders, synthetic runtime test, visual/review evidence, repaired small pixel text and current prototype contract passed.",
+      "contract_errors": 0,
+      "contract_warnings": 0,
+      "limits": "No final song, browser/p5/WebGL or user taste acceptance was certified."
+    }
+  ]
+}
