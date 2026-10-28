@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "revision": null,
+  "status": "draft",
+  "brief_sha256": null,
+  "design": {
+    "medium": null,
+    "palette": [],
+    "shape_language": null,
+    "line": null,
+    "texture": null,
+    "composition": null,
+    "motion": null,
+    "typography": {"mode": null, "font_assets": []}
+  },
+  "characters_required": null,
+  "cast": [],
+  "locked_choices": [],
+  "required_checks": ["composition", "style", "motion", "continuity", "music"],
+  "evidence": []
+}

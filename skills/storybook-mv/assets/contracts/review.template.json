@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "scope": "prototype",
+  "target": {"path": null, "sha256": null, "input_digest": null},
+  "reviewer": null,
+  "checks": [],
+  "issues": []
+}
