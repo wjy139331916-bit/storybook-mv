@@ -1,0 +1,13 @@
+{
+  "name": "mv-canvas-project",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Blank deterministic Canvas2D host; no predefined art style",
+  "scripts": {
+    "video": "node render.mjs --clip --out=out/video.mp4 --fps=30"
+  },
+  "dependencies": {
+    "puppeteer-core": "25.11.0"
+  }
+}
