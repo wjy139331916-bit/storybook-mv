@@ -7,6 +7,7 @@ import math
 import shutil
 import subprocess
 from pathlib import Path
+from check_brief import production_gate
 
 
 def main():
@@ -19,6 +20,7 @@ def main():
     p.add_argument('--width', type=int)
     p.add_argument('--height', type=int)
     p.add_argument('--install', action='store_true')
+    p.add_argument('--tool-self-test', action='store_true', help='isolated toolkit verification only; never a bypass for a requested user MV')
     a = p.parse_args()
     root = Path(__file__).resolve().parents[1]
     try:
@@ -27,6 +29,17 @@ def main():
         p.error(str(exc))
     if not isinstance(brief, dict):
         p.error('brief must be an object')
+    if a.tool_self_test:
+        if a.brief:
+            p.error('do not relabel a user brief as a tool self-test')
+        if a.duration>60:
+            p.error('isolated tool self-tests are limited to 60 seconds')
+    else:
+        if not a.brief:
+            p.error('confirmed user content and scoped authorization are required: provide --brief; three basic answers are not production approval')
+        blocked = production_gate(brief, 'prototype', a.duration)
+        if blocked:
+            p.error('Production blocked: '+'; '.join(blocked))
     for section in ('execution', 'output', 'style', 'lyrics'):
         if brief.get(section) is not None and not isinstance(brief[section], dict):
             p.error(section + ' must be an object or null')
@@ -70,11 +83,16 @@ def main():
     brief['execution'] = dict(brief.get('execution') or {})
     brief['output'] = dict(brief.get('output') or {})
     brief.setdefault('execution', {}).update(engine=engine, template_status='bundled')
+    if a.tool_self_test:
+        brief['execution'].update(context='tool-self-test',production_authorized=False,authorized_scope=None,authorized_duration=None,authorization_evidence=None)
+        brief['tool_self_test']={'source':'storybook-mv','purpose':'isolated-tool-verification','not_a_user_mv':True}
+        brief['music']['source']='none'
     brief.setdefault('output', {}).update(resolution=[width, height], fps=a.fps)
     brief['prototype'] = {'duration': a.duration, 'song_duration_verified': False}
     (target / 'brief.json').write_text(json.dumps(brief, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     config = {'duration': a.duration, 'width': width, 'height': height, 'fps': a.fps, 'bpm': 120, 'offset': 0, 'boil': 0, 'prototype': True, 'bpmMeasured': False}
     (target / 'src/config.js').write_text('// Prototype dimensions/timing are not a verified song plan.\nconst PROJECT = ' + json.dumps(config) + ';\nglobalThis.STORY_LYRICS_MODE = ' + json.dumps((brief.get('lyrics') or {}).get('mode') or 'unset') + ';\n', encoding='utf-8')
+    shutil.copy2(root/'scripts/production_gate.mjs',target/'production_gate.mjs')
     renderer = target / 'render.mjs'
     renderer.write_text(renderer.read_text(encoding='utf-8').replace('args.fps || 30', 'args.fps || ' + str(a.fps)), encoding='utf-8')
     html = target / 'studio.html'

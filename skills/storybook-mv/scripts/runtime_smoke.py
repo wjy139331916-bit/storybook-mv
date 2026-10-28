@@ -52,7 +52,7 @@ def main():
                 raise ValueError('receipt destination must explicitly select the tested canvas2d runtime')
             if (prod/'runtime-report.json').exists() or (prod/'out/runtime-check').exists():
                 raise ValueError('existing receipt preserved; choose/review a new revision explicitly')
-        subprocess.run([sys.executable, str(root/'scripts/build_study.py'), str(target), '--kind', 'runtime', '--subject', 'abstract', '--style', 'flat', '--width', '640', '--height', '360'], capture_output=True, text=True, check=True)
+        subprocess.run([sys.executable, str(root/'scripts/build_study.py'), str(target), '--kind', 'runtime', '--subject', 'abstract', '--style', 'flat', '--width', '640', '--height', '360', '--tool-self-test'], capture_output=True, text=True, check=True)
         audio = target/'assets/runtime-pulses.wav'
         pulses(audio)
         # Original synthetic cue text, unrelated to any song's lyrics.
