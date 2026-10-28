@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**2.0.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.1.0**。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -21,12 +21,24 @@
 
 具体平台的安装机制与远程会话共享能力可能不同；本地安装不会自动同步到其他产品。平台说明与来源见 [交接参考](skills/storybook-mv/references/agent-interop.md)。
 
+## 硬约束：先理解歌曲并确认具体内容
+
+**一轮基础题答完，不代表可以开始制作。** 歌名、时长、画幅和画风只是基础信息。AI 必须继续确认具体表现什么、如何发展、有哪些关键画面，并复述内容让使用者确认。确认前只做澄清、参考分析、查证和方案讨论。
+
+有歌词的歌曲须先阅读实际提供或核实的歌词，区分作者公开说明、文本解读和用户改编。不能凭歌名或印象编歌词、编本意。关键含义存在分歧时，给出有依据的不同方向，让使用者选定；事实查不到就保留未知。
+
+制作还须有明确范围：同意短样片不能自动扩大成全曲。脚本会检查内容确认记录、所选歌曲理解和时长上限；旧项目缺少确认记录时不会自动放行。记录必须来自真实用户回复，不能为了通过检查自行填成“已确认”。
+
 ## 能做什么
 
 - 自适应提问、参考分析、可行性取舍和具体方案。
-- 同内容、同时间和同配色的代码风格对照；有无人物均可按需选择。
+- 同内容的风格对照，以及可复用的扁平、纸艺、像素和线描代码画法；可继续扩展新风格。
+- 参考片测量、原生画法拆解、参考画面与实际渲染并排对照。
 - 项目视觉规范，统一角色、图形、文字和运动语言。
-- 可选的动作与转场组件、音乐段落和分镜映射。
+- 可选的表情、视线、动作与转场组件；歌词物件的意义、呼应和衔接设计。
+- 音乐段落与分镜映射、带复核状态的节拍候选、LRC / SRT 导入。
+- 解码画面的静止/黑帧/切点候选检查、声明布局与姿势检查、音轨偏移和响度测量。
+- 本地看片播放器，支持对照播放、片段循环和按视频校验值绑定的时间点反馈。
 - 时间点问题记录、样片检查、共享素材修复范围和定点返工。
 - 完整目录导出、文件校验和可播放的 Canvas2D 运行自检。
 
@@ -52,13 +64,34 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 ## 示例与验证范围
 
-![同场景代码处理对照](skills/storybook-mv/assets/studies/evidence/style-board.png)
+![同场景代码处理对照](skills/storybook-mv/assets/style-packs/evidence/style-board.png)
 
 上图是受控实现对照，用来比较处理方式；实际作品需要自己的角色、构图、场景和动作设计。示例不限定可选风格。
 
-版本 2.0.0 已实际渲染六段 6 秒代码示例，检查关键连续帧、文件解码和确定性，并完成 2 秒带合成测试音的运行自检。开发时通过 17 项工具检查，以及独立 agent 的提问和无人物样片任务。
+版本 3.0.0 增加四种可执行画法、原创完整 30 秒示例、成片与音轨检查工具，以及随仓库分发的回归测试。所有示例都使用原创代码、测试文字和程序合成音乐，不包含个人照片或原歌曲音频。
 
-实际验证使用 CPU Canvas2D；这不等于已验证浏览器、p5/WebGL、完整歌曲同步、中文字体或所有画风的成片质量。详细记录及样片见 [验证记录](skills/storybook-mv/assets/studies/verification.json)。
+现有验证主要使用 CPU Canvas2D。浏览器、p5/WebGL、中文字体、任意完整歌曲及艺术效果需要按实际项目分别验证；不能把测试通过当作审美保证。新版示例和实测范围见 [3.0 验证记录](skills/storybook-mv/assets/style-packs/verification.json)，旧版受控研究见 [2.0 记录](skills/storybook-mv/assets/studies/verification.json)。
+
+## 测试和示例
+
+```bash
+python3 -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
+python3 -m unittest discover -s skills/storybook-mv/tests -v
+```
+
+媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 49 项回归测试（包含原生渲染条件下的确认与拦截检查）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。仓库自动检查会运行测试和选定的原生渲染探针。
+
+`tests/player_browser.mjs` 提供可选的真实浏览器交互检查，需要 Playwright 与匹配的 Chromium；当前环境未完成该项验证，不能用脚本语法通过替代。
+
+创建独立的工具验证示例（不会改动现有非空目录，不能当作跳过内容确认的用户 MV）：
+
+```bash
+python3 skills/storybook-mv/scripts/build_demo.py ./original-mv --kind film --style cut-paper --subject figures --tool-self-test
+```
+
+也可以用 `--kind style` 创建 8 秒对照，明确选择 `flat`、`cut-paper`、`pixel` 或 `ink`，以及 `figures`、`type` 或 `abstract`。这些是实现样例，不是技能限定的风格菜单。
+
+打开技能中的 `assets/review-player.html`，选择本地视频即可记录反馈。播放器不上传文件；导出意见后由 agent 核对视频版本，再合并到新的评审记录。
 
 ## 项目交接
 
