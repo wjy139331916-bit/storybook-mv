@@ -1,0 +1,103 @@
+{
+  "video_findings": [
+    {
+      "category": "low_change",
+      "range": [
+        6.0833,
+        9.6667
+      ],
+      "observation": "Small grayscale frame differences; camera/texture motion can hide unchanged acting.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "low_change",
+      "range": [
+        11.4167,
+        14.6667
+      ],
+      "observation": "Small grayscale frame differences; camera/texture motion can hide unchanged acting.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "low_change",
+      "range": [
+        15.5,
+        19.6667
+      ],
+      "observation": "Small grayscale frame differences; camera/texture motion can hide unchanged acting.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "low_change",
+      "range": [
+        20.5,
+        24.6667
+      ],
+      "observation": "Small grayscale frame differences; camera/texture motion can hide unchanged acting.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "low_change",
+      "range": [
+        25.5,
+        29.6667
+      ],
+      "observation": "Small grayscale frame differences; camera/texture motion can hide unchanged acting.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "unplanned_cut_candidate",
+      "range": [
+        15.25,
+        15.333333333333334
+      ],
+      "observation": "Large isolated frame difference away from a planned boundary; effects can also cause this.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "unplanned_cut_candidate",
+      "range": [
+        15.3333,
+        15.416633333333333
+      ],
+      "observation": "Large isolated frame difference away from a planned boundary; effects can also cause this.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "unplanned_cut_candidate",
+      "range": [
+        19.75,
+        19.833333333333332
+      ],
+      "observation": "Large isolated frame difference away from a planned boundary; effects can also cause this.",
+      "disposition": "needs_review"
+    }
+  ],
+  "declared_frame_findings": [
+    {
+      "category": "unchanged_local_pose",
+      "id": "courier-a",
+      "range": [
+        9.458333333333334,
+        10
+      ],
+      "observation": "Local articulated pose is unchanged for at least three seconds; root/camera motion is excluded. Purposeful holds can be valid.",
+      "disposition": "needs_review"
+    },
+    {
+      "category": "unchanged_local_pose",
+      "id": "courier-a",
+      "range": [
+        24.5,
+        25
+      ],
+      "observation": "Local articulated pose is unchanged for at least three seconds; root/camera motion is excluded. Purposeful holds can be valid.",
+      "disposition": "needs_review"
+    }
+  ],
+  "observations": [
+    "Three isolated large frame changes occur inside planned foreground star wipes, inspected in the join strips.",
+    "Low-change ranges include held reactions and small articulated actions. They are retained as review candidates, not automatic artistic passes.",
+    "The complete piece is an implementation example; richness, expressive acting and user taste remain project-specific."
+  ]
+}

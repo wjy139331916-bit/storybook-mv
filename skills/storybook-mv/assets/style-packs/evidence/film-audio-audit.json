@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "reference_sha256": "2a1caddda9d4cdcc43148c071697e4c75400be497ab309ee0838d234ba39298d",
+  "encoded_sha256": "4cc2c3f5054897c2d71ee4f24f735b34bdf22bb88f952b981e3408a72a14547a",
+  "reference_start": 0,
+  "duration": 30.0,
+  "anchors": [
+    {
+      "at": 3.0,
+      "encoded_delay_seconds": 0.0,
+      "correlation": 1.0,
+      "peak_margin": 0.7416,
+      "status": "measured_candidate"
+    },
+    {
+      "at": 15.0,
+      "encoded_delay_seconds": 0.0,
+      "correlation": 1.0,
+      "peak_margin": 0.6525,
+      "status": "measured_candidate"
+    },
+    {
+      "at": 27.0,
+      "encoded_delay_seconds": 0.0,
+      "correlation": 1.0,
+      "peak_margin": 0.7346,
+      "status": "measured_candidate"
+    }
+  ],
+  "reference_loudness": {
+    "integrated_lufs": -28.0,
+    "true_peak_dbfs": -9.8
+  },
+  "encoded_loudness": {
+    "integrated_lufs": -28.1,
+    "true_peak_dbfs": -9.9
+  },
+  "lufs_difference": -0.1,
+  "scope": "Decoded mono RMS-envelope correlation at 10ms steps, search +/-0.5s; ambiguous periodic/silent audio is not certified. Checks mux alignment, not sung-word/caption timing. Loudness is measured, never normalized automatically."
+}

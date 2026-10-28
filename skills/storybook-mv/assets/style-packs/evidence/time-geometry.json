@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "checks": [
+    {
+      "treatment": "flat",
+      "status": "passed",
+      "component_count": {
+        "expected": 14,
+        "all_180_frames": true
+      },
+      "bounds": {
+        "minX": 203,
+        "maxX": 1077,
+        "minY": 153.31515592029808,
+        "maxY": 555.5,
+        "all_inside_frame": true
+      },
+      "first_last_source_frames_identical": true,
+      "reverse_seek_equality": true
+    },
+    {
+      "treatment": "pixel",
+      "status": "passed",
+      "component_count": {
+        "expected": 14,
+        "all_180_frames": true
+      },
+      "bounds": {
+        "minX": 203,
+        "maxX": 1077,
+        "minY": 153.31515592029808,
+        "maxY": 555.5,
+        "all_inside_frame": true
+      },
+      "first_last_source_frames_identical": true,
+      "reverse_seek_equality": true,
+      "integer_grid": {
+        "block": 4,
+        "sampled_frames": 12,
+        "all_blocks_identical": true,
+        "unique_rgba_colors": [
+          "242,238,228,255",
+          "23,45,56,255",
+          "239,106,59,255",
+          "217,214,204,255"
+        ],
+        "color_count": 4
+      }
+    }
+  ],
+  "scope": "Actual source-rendered geometry and lossless PNG pixel grid; encoded H.264 is checked separately and may introduce compression colors."
+}
