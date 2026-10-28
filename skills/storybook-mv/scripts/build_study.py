@@ -17,12 +17,15 @@ def main():
     p.add_argument('--width', type=int, default=960)
     p.add_argument('--height', type=int, default=540)
     p.add_argument('--fps', type=int, default=30)
+    p.add_argument('--tool-self-test', action='store_true', help='isolated implementation evidence, never user-MV production')
     a = p.parse_args()
+    if not a.tool_self_test:
+        p.error('this builder is for isolated tool verification; use --tool-self-test only for that purpose. A requested MV needs confirmed content and a scoped brief.')
     root = Path(__file__).resolve().parents[1]
     target = a.project.expanduser().resolve()
     duration = 2 if a.kind == 'runtime' else 6
     try:
-        subprocess.run([sys.executable, str(root/'scripts/scaffold.py'), str(target), '--engine', 'canvas2d', '--duration', str(duration), '--width', str(a.width), '--height', str(a.height), '--fps', str(a.fps)], check=True, capture_output=True, text=True)
+        subprocess.run([sys.executable, str(root/'scripts/scaffold.py'), str(target), '--engine', 'canvas2d', '--duration', str(duration), '--width', str(a.width), '--height', str(a.height), '--fps', str(a.fps), '--tool-self-test'], check=True, capture_output=True, text=True)
     except subprocess.CalledProcessError as exc:
         p.error((exc.stderr or str(exc)).strip())
     for name in ('motion.js', 'canvas-actors.js', 'transitions.js'):

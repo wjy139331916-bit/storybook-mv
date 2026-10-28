@@ -16,6 +16,7 @@
 //   Music: --audio=assets/song.mp3 (or PROJECT.audio) is muxed into --clip and --encode. Other flags: --fps=24,
 //   --chrome=<path to Chrome/Chromium>.
 import puppeteer from 'puppeteer-core';
+import {assertProduction} from './production_gate.mjs';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync, existsSync, statSync, renameSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -23,6 +24,7 @@ import { pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
+assertProduction(process.cwd());
 const CHROMES = [args.chrome, process.env.CHROME_PATH, 'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser',
   ...playwrightChromes()];
@@ -44,6 +46,7 @@ const fields = s => { const out = []; let d = 0, cur = ''; for (const ch of Stri
 
 if (args.encode) {
   const out = args.out || 'out/video.mp4', n = readdirSync(FRAMES_DIR).filter(f => f.endsWith('.jpg')).length, audio = args.audio;
+  assertProduction(process.cwd(),{duration:n/fps});
   console.log(`encoding ${n} frames → ${out}${audio ? ' with ' + audio : ''}`);
   await run('ffmpeg', ['-y', '-loglevel', 'error', '-stats', '-framerate', String(fps), '-i', `${FRAMES_DIR}/f%05d.jpg`,
     ...(audio ? ['-i', audio, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),
@@ -106,6 +109,7 @@ if (args.sheet || args.strip) {
   // PNG sequence (for GIFs): a loop's full cycle (frame n equals frame 0, so it isn't rendered), or --range=a:b.
   const probe = await openPage(), len = await lengthOf(probe); await probe.close();
   const [a, b] = args.range ? span(args.range) : [0, len], n = Math.round((b - a) * fps);
+  assertProduction(process.cwd(),{duration:b-a});
   const out = args.out || `out/${args.loop ? 'loop_' + args.loop : 'png'}`, workers = +(args.workers || 3); mkdirSync(out, { recursive: true });
   let next = 0; const start = Date.now();
   await Promise.all(Array.from({ length: workers }, async (_, w) => {
@@ -117,6 +121,7 @@ if (args.sheet || args.strip) {
   // Parallel and resumable: each worker pulls the next missing frame; files are written atomically.
   const probe = await openPage(), len = await lengthOf(probe); await probe.close();
   const [a, b] = args.range ? span(args.range) : [0, len], workers = +(args.workers || 4);
+  assertProduction(process.cwd(),{duration:b-a});
   mkdirSync(FRAMES_DIR, { recursive: true });
   const first = Math.round(a * fps), last = Math.min(Math.ceil(len * fps) - 1, Math.round(b * fps) - 1);
   const todo = []; for (let i = first; i <= last; i++) { const f = `${FRAMES_DIR}/f${String(i).padStart(5, '0')}.jpg`; if (!existsSync(f) || statSync(f).size < 1000) todo.push(i); }
@@ -137,6 +142,7 @@ if (args.sheet || args.strip) {
 } else if (args.clip) {
   const page = await openPage(), len = await lengthOf(page);
   const [a, b] = args.range ? span(args.range) : typeof args.clip === 'string' ? span(args.clip) : [0, len];
+  assertProduction(process.cwd(),{duration:b-a});
   const audio = args.audio || await page.evaluate(() => PROJECT.audio || '');
   const out = args.out || 'out/clip.mp4'; mkdirSync(dirname(out), { recursive: true });
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',

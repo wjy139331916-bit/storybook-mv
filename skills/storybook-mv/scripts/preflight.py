@@ -2,6 +2,7 @@
 """Check prerequisites for the selected engine; never silently assume p5."""
 import argparse
 import glob
+import importlib.util
 import json
 import os
 import shutil
@@ -19,6 +20,7 @@ def main():
     p.add_argument('--json', action='store_true')
     p.add_argument('--strict', action='store_true')
     p.add_argument('--require-cjk', action='store_true')
+    p.add_argument('--media-tools', action='store_true', help='also check optional Python media-analysis dependencies')
     a = p.parse_args()
     engine = a.engine
     brief = {}
@@ -41,6 +43,8 @@ def main():
         required += ['blender']
     tools = {k: shutil.which(k) for k in required}
     missing = [k for k, v in tools.items() if not v]
+    python_media = {name: importlib.util.find_spec(name) is not None for name in ('numpy', 'PIL')} if a.media_tools else {}
+    missing += [name+' for the selected media tools (see scripts/requirements-media.txt)' for name, present in python_media.items() if not present]
     if not engine:
         missing.append('rendering engine has not been selected')
     browser_engine = engine in ('painted-p5', 'canvas2d', 'remotion', 'threejs') and runtime != 'node-canvas'
@@ -87,7 +91,7 @@ def main():
     guide_only = engine in ('remotion', 'threejs', 'blender', 'custom')
     if guide_only:
         missing.append('backend-specific executable probe is not bundled; verify the chosen adapter separately')
-    result = {'ready': not missing, 'engine': engine, 'runtime': runtime, 'template_support': 'guide-only' if guide_only else ('bundled' if engine else 'unselected'), 'tools': tools, 'chrome': chrome, 'project_dependencies': dependencies, 'chinese_font': font, 'missing': missing, 'scope': 'prerequisites and optional 2x2 CPU-canvas probe only; run runtime_smoke.py for an encoded sample. No project aesthetics or real-song sync was verified'}
+    result = {'ready': not missing, 'engine': engine, 'runtime': runtime, 'template_support': 'guide-only' if guide_only else ('bundled' if engine else 'unselected'), 'tools': tools, 'chrome': chrome, 'project_dependencies': dependencies, 'python_media': python_media, 'chinese_font': font, 'missing': missing, 'scope': 'prerequisites and optional 2x2 CPU-canvas probe only; run runtime_smoke.py for an encoded sample. No project aesthetics or real-song sync was verified'}
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 2 if a.strict and missing else 0
 

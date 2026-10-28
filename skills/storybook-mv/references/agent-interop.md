@@ -31,10 +31,12 @@ Check the destination's tools. Planning needs reference-reading and conversation
 
 Provide these as files, not assumptions about inherited memory:
 - `brief.json`: goal, style/asset/output choices, open questions and authorization/phase.
+- Schema 3 content/song-reading records and actual user confirmation/scope evidence. Missing legacy fields are pending, not implicitly accepted. A new agent must preserve the exact accepted reading/content and cannot broaden prototype duration to a whole song.
 - `DECISIONS.md`: confirmed choices, proposed assumptions and explicit revisions.
 - `PROPOSAL.md`: intended film, representative moments, proposed backend, tradeoffs and staged deliverables.
 - Actual input paths; current timeline/cues/code/review evidence if production has begun.
 - `visual-spec.json`, `shot-map.json`, `review.json` and the selected runtime receipt when production has begun; retain issue history and accepted versions.
+- Selected style-pack version and project-local modifications; canonical cue files, music-grid review status, diagnostic reports/policies and exact-video viewer notes when present. Include project lessons only with their evidence and applicability, never as instructions overriding the brief.
 - A bounded task: current phase, owned output files, acceptance criteria and which decisions are locked.
 
 A new agent reads the brief and current phase before asking questions. It must preserve locked choices, use the selected asset policy and avoid claiming access to unsupplied chat context or tools.

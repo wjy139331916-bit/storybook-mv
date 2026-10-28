@@ -24,6 +24,19 @@ Version 2 adds original optional controlled studies, limited motion/transition c
 
 No affiliation or endorsement is implied. Preserve licenses when importing more files; pin and review updates.
 
+## Version 3 source review (2026-10-28)
+
+| Source | Inspected commit | Adopted method |
+|---|---|---|
+| https://github.com/Win-Hao/music-mv | `0088b1422f7f82cdf51b456436a6313127a26d6b` | Native style construction, reference measurement, contact sheets, reduced-frame motion/cut candidates and original/output loudness review |
+| https://github.com/cth9191/animate | `7e5eb56feb2dd573f890e1b7b34748af43d58263` | Separate drawing kit/rules/demo/checklist, measurable reference-to-render comparisons, local reference handling and actual-output layout checks |
+| https://github.com/sagearbor/claude-music-video-skill | `c764e18b8927dca5ea219fa42b78194fde28214f` | Tempo phase/drift review, design assets reused in animation, representative pilot, clear shared-asset handoff and scoped production lessons |
+| https://github.com/remotion-dev/skills | `30d4553ecd46fbc5212fd0ff006ae43af522158b` | Load composition, captions, Studio preview and rendering guidance only when the project selects Remotion |
+
+Version 3 implementations of style packs, acting, media/reference/audio diagnostics, transient-grid proposals, SRT import, local review player, viewer-note import, tests and the original demonstration are newly authored here. No new upstream source files or examples are vendored. Preserve the existing bundled-engine licenses. If importing code later, review the exact file/license and retain its attribution; a method citation does not grant a blanket license.
+
+Do not import conflicting upstream defaults: mandatory literal illustration for every line, all-black/white frames always forbidden, forced motion every second, automatic 4/4 downbeats, fixed warm/paper/cartoon styles, every gate requiring another user stop, compulsory parallel agents, a lesson file overriding policy, or one hardcoded host path. Adapt to the brief and actual evidence. Metrics and upstream author reports are not independently verified aesthetic guarantees.
+
 ## Conflict decisions
 
 | Source default | Unified policy |

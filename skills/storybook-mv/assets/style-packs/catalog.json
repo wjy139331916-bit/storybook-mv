@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "default": null,
+  "runtime": "Canvas2D; CPU and browser adapters must be checked independently",
+  "packs": [
+    {"id":"flat","file":"flat.json","drawing":"clean geometric fills, limited gradients and stable edges"},
+    {"id":"cut-paper","file":"cut-paper.json","drawing":"seeded torn polygons, separated shadows, material grain and layered scenery"},
+    {"id":"pixel","file":"pixel.json","drawing":"true 240x135 drawing surface, integer coordinates, limited colors and stepped poses"},
+    {"id":"ink","file":"ink.json","drawing":"outline geometry, clipped hatching, sparse accent and stepped line variation"}
+  ],
+  "extension": "Add a project-local pack manifest and renderer hooks; preserve the selected design. These four examples are not the complete style menu."
+}

@@ -1,0 +1,39 @@
+name: Skill checks
+on:
+  push:
+    paths: ['skills/storybook-mv/**', '.github/workflows/skill-checks.yml']
+  pull_request:
+    paths: ['skills/storybook-mv/**', '.github/workflows/skill-checks.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integrity-and-media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+      - run: python -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
+      - run: python skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
+      - run: python -m unittest discover -s skills/storybook-mv/tests -v
+  native-render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+      - run: python -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
+      - name: Select exact optional CPU adapter
+        run: npm install --prefix "$RUNNER_TEMP/mv-runtime" --save-exact @napi-rs/canvas@0.1.100
+      - name: Render and inspect selected probes
+        run: python skills/storybook-mv/tests/render_smoke.py --canvas-module "$RUNNER_TEMP/mv-runtime/node_modules/@napi-rs/canvas/index.js" --encode

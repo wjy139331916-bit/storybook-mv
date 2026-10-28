@@ -21,7 +21,7 @@ def digest(path):
 
 def fingerprint(project):
     files = []
-    for name in ('src', 'data', 'assets', 'visual-spec.json', 'package.json', 'package-lock.json', 'render_canvas.mjs', 'render.mjs', 'studio.html'):
+    for name in ('src', 'data', 'assets', 'visual-spec.json', 'package.json', 'package-lock.json', 'render_canvas.mjs', 'render.mjs', 'studio.html', 'production_gate.mjs'):
         p = project/name
         if p.is_symlink():
             raise ValueError('resolve input symlinks explicitly')
@@ -147,8 +147,8 @@ def inspect(project, stage):
     errors, warnings = [], []
     brief = load(project/'brief.json')
     spec = load(project/'visual-spec.json')
-    base = check_brief(brief)
-    errors += base['missing_for_full_production' if stage == 'full' else 'missing_for_proposal']
+    base = check_brief(brief,project)
+    errors += base['missing_for_full_production' if stage == 'full' else 'missing_for_prototype']
     for key in ('revision', 'design.medium', 'design.shape_language', 'design.composition', 'design.motion'):
         if field(spec, key) in (None, '', []):
             errors.append('visual-spec missing '+key)
@@ -221,6 +221,21 @@ def inspect(project, stage):
             errors.append('review target is not an inspectable encoded video')
     if target.get('input_digest') != fingerprint(project):
         errors.append('source/design changed after render review; render affected ranges and renew evidence')
+    for diagnostic in review.get('diagnostics', []):
+        if not isinstance(diagnostic, dict):
+            errors.append('invalid diagnostic record')
+            continue
+        report_path = contained(project, diagnostic.get('path'))
+        if not report_path.is_file() or diagnostic.get('sha256') != digest(report_path):
+            errors.append('diagnostic report missing or changed')
+            continue
+        report = load(report_path)
+        measured_target = (report.get('target') or {}).get('sha256') or report.get('encoded_sha256')
+        if measured_target != target.get('sha256'):
+            errors.append('diagnostic report describes another encoded target')
+        input_digest = (report.get('target') or {}).get('input_digest')
+        if input_digest is not None and input_digest != target.get('input_digest'):
+            errors.append('diagnostic report describes stale source/design')
     checks = review.get('checks')
     by_id = {}
     for item in checks if isinstance(checks, list) else []:

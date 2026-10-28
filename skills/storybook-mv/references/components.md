@@ -7,6 +7,7 @@ Copy only selected files from `assets/modules/` into the project's source direct
 | `motion.js` | `phase`, `point`, `twoBone`, `walk`, `handoff`, `turn` | Time-based interpolation and limited humanoid constraints |
 | `canvas-actors.js` | `MVActors.actor(ctx, options)` | Optional simple stylized-person renderer and actual limb metadata |
 | `transitions.js` | `wipe`, `shapeMatch`, `wordToObject` | Foreground cover, matched ellipses, text/shape opacity transition |
+| `acting.js` | `MVPerformance.performance`, `MVPerformance.actor` | Optional face/gaze/gesture controls, limited frontal/profile views and actual pose/contact metadata; see the performance reference linked from SKILL.md |
 
 `MVMotion.walk(t,{start,duration,distance,heads})` returns root distance, feet, support flags, hip height and limb lengths. Foot phase is based on travelled distance; support feet stay fixed in world space. The helper's supported head-count range is specific to that scaffold, not a constraint on other styles. Check start, support transfers and the final settle with the selected proportion and speed. The sample character is deliberately simplified and not a realistic human rig.
 
@@ -16,4 +17,4 @@ Copy only selected files from `assets/modules/` into the project's source direct
 
 `wipe` covers/uncover frames with a foreground shape; the project decides when to switch the underlying shot. `shapeMatch` interpolates ellipse geometry. `wordToObject` is a simple overlap/opacity primitive; it does not implement glyph-outline morphing or infer which physical object a lyric means. Build those creative transformations from the approved shot objective.
 
-Generate a small motion study with `build_study.py --kind motion --subject figures --style <selected-style>` and inspect the corresponding evidence. For non-character work choose a type/abstract study or implement another relevant difficult effect. Reuse a component only after its behavior fits the chosen film; modularity is not evidence of acting quality.
+Generate a small motion study with `build_study.py --tool-self-test --kind motion --subject figures --style <selected-style>` and inspect the corresponding evidence. For non-character work choose a type/abstract study or implement another relevant difficult effect. Reuse a component only after its behavior fits the chosen film; modularity is not evidence of acting quality.

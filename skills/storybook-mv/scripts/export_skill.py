@@ -31,6 +31,10 @@ def main():
         if source not in resolved.parents:
             p.error('an external symlink resource cannot be exported automatically')
         rel = file.relative_to(source)
+        # Re-exporting a portable copy must create a fresh manifest, not hash
+        # the previous manifest and then overwrite the file it describes.
+        if rel.as_posix() == 'PORTABLE_MANIFEST.json':
+            continue
         if any(x in rel.parts for x in ('.git', '__pycache__', 'node_modules', 'out')) or file.suffix == '.pyc':
             continue
         if not a.include_host_metadata and rel.parts[0] == 'agents':

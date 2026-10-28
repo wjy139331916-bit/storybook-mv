@@ -1,0 +1,732 @@
+{
+  "schema_version": 1,
+  "toolkit_version": "3.1.0",
+  "checked_on": "2026-10-28",
+  "scope": "Original executable implementation studies and media/tool validation; not blanket aesthetic, browser, p5/WebGL, CJK or arbitrary-song certification.",
+  "source_hashes": [
+    {
+      "path": "assets/modules/acting.js",
+      "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+    },
+    {
+      "path": "assets/modules/motion.js",
+      "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+    },
+    {
+      "path": "assets/style-packs/kit.js",
+      "sha256": "1b9db3d150f9f4efe48c7d4b49ab02f7f5201f4838f7a8f4b585246bc77ae793"
+    },
+    {
+      "path": "assets/style-packs/demo-scene.js",
+      "sha256": "c7c856ce688b66a03cf3fc872a1980c485ba130757e742959cfb19ee70e59cfc"
+    },
+    {
+      "path": "assets/style-packs/time-clock.js",
+      "sha256": "80fdc4d5fca7c80fe004e7326fa010e8c9693f1679678495c0b20da129f5d811"
+    },
+    {
+      "path": "scripts/render_canvas.mjs",
+      "sha256": "6be31cf3029e5c038ea949ba375ae46c141e9d023574913a0b4f705edcd19020"
+    },
+    {
+      "path": "scripts/build_demo.py",
+      "sha256": "b0fe56666c937ba1cad481e709f355adc27dbcf2b618f3ba428b5532ec0c2c38"
+    },
+    {
+      "path": "scripts/media_audit.py",
+      "sha256": "76c7bb5a03fa536992d53d4160cd056f74238ffa527fa78f8b43cdebd2732006"
+    },
+    {
+      "path": "scripts/music_grid.py",
+      "sha256": "fcc3eacda6421e129e1b9239761c5a8579ed6f1ca529f848461310869104504f"
+    },
+    {
+      "path": "scripts/import_srt.py",
+      "sha256": "fac34390edeb647d5b9e2c2fb38c978a45f9b80a260e546af954c0f991bcc452"
+    },
+    {
+      "path": "scripts/review_notes.py",
+      "sha256": "28d41cdd863bd83c361f880e6a15a65717668eec9ca6d1b7ee49d68a1faedffc"
+    },
+    {
+      "path": "scripts/check_brief.py",
+      "sha256": "d887866fc8891045cbd5eace43a4829adf33225f2414100ce90b3d1dc00cde9d"
+    },
+    {
+      "path": "scripts/scaffold.py",
+      "sha256": "e4846d7084fe1cb9eba691309186157ef7f3a4507f76801f411cb7f164a3df40"
+    },
+    {
+      "path": "scripts/production_gate.mjs",
+      "sha256": "d21cd6198f8f1856bb0bae39b4cd69ade0332ec25f98e7dc2ce39d0b49f15177"
+    },
+    {
+      "path": "scripts/project_contracts.py",
+      "sha256": "3640b7f9221205d84327987c0c27c77dcc395eeca1295b86a9617113d1969850"
+    },
+    {
+      "path": "scripts/runtime_smoke.py",
+      "sha256": "674c934220e95ce2846128f3b70284bc1aa4b8f8f3ed7e5bd5a01149c7fa64be"
+    },
+    {
+      "path": "tests/test_content_gate.py",
+      "sha256": "c2b087940ed6961472a2aa515136bc11ea8b6bdb2e250778dbbddd0f191e5ac4"
+    },
+    {
+      "path": "scripts/export_skill.py",
+      "sha256": "63340ac0bfb85c68661378730f787d3b65bc9d050a24a0f56c7d0b7135b10c48"
+    },
+    {
+      "path": "tests/test_contracts.py",
+      "sha256": "0f2e686be5abbfb18b63626d6f8bd9a445d18f6ea20cf34ba0ac19fd03b4f5b5"
+    }
+  ],
+  "style_studies": [
+    {
+      "style": "flat",
+      "file": "evidence/flat.mp4",
+      "sha256": "22f70e23abcf00ba0fd854590015865a8ccf94561b3224a3aa56e491fbf60b39",
+      "frames": 192,
+      "duration": 8,
+      "dimensions": [
+        960,
+        540
+      ],
+      "fps": 24,
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "render_seconds": 6.181204697999999,
+      "renderer_sha256": "6e126cf6af34ab6d93bc0ee64fb8f1c762554481ac4a55c169ded6075b0a8aa2",
+      "source_manifest": [
+        {
+          "path": "assets/original-score.wav",
+          "sha256": "7c4aaa41affb0489949b6acb59ec72395d585d53c761a6d461c8b27e047437fe"
+        },
+        {
+          "path": "data/score.json",
+          "sha256": "9461fc1dc700b463a10c8194a90f56c9bb6ef789500d919d7ba28f6e037cb18c"
+        },
+        {
+          "path": "package.json",
+          "sha256": "60e98b87d9d8ae0cf4e55b877b8ddc6230a8d911f3133d58c01441c3f375617a"
+        },
+        {
+          "path": "render.mjs",
+          "sha256": "1151ad59ad0c7bbe59e4e273465689d81d41f896d6bafc8981b527d110b77fe6"
+        },
+        {
+          "path": "render_canvas.mjs",
+          "sha256": "10426a9e093dad1cef038567ecdd74a23ee8f552ff88671881f1f2f2892613d9"
+        },
+        {
+          "path": "src/acting.js",
+          "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+        },
+        {
+          "path": "src/config.js",
+          "sha256": "df7984ad1702d4af87a0c98fdaf42836365155f302a503fe6f1791ebc93d0a35"
+        },
+        {
+          "path": "src/data/lyrics.js",
+          "sha256": "29e70ffa263ff86b970a5fedb8f755021a6fdf31ff74527ba0e468bf7fb129ec"
+        },
+        {
+          "path": "src/demo.js",
+          "sha256": "10ee6749a2296f4bd92850dd01fc06871cff6f229a63630cb79427469baffb3b"
+        },
+        {
+          "path": "src/lyrics-overlay.js",
+          "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+        },
+        {
+          "path": "src/motion.js",
+          "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+        },
+        {
+          "path": "src/render-entry.json",
+          "sha256": "270b6eff81bdcc436c79d7ad835870449f67cd8fd502cff4c607b3ec034813e2"
+        },
+        {
+          "path": "src/runtime.js",
+          "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+        },
+        {
+          "path": "src/scene.js",
+          "sha256": "c7c856ce688b66a03cf3fc872a1980c485ba130757e742959cfb19ee70e59cfc"
+        },
+        {
+          "path": "src/style-kit.js",
+          "sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+        },
+        {
+          "path": "studio.html",
+          "sha256": "cc2b78a76092c5c3cfd0d81f8a32761981d348d9166cba26ff48792ec7a5c025"
+        }
+      ],
+      "reverse_seek_equality": true,
+      "full_decode": true,
+      "declared_frame_findings": [],
+      "material_source": "evidence/material-kit-v3-demo.js",
+      "material_sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+    },
+    {
+      "style": "cut-paper",
+      "file": "evidence/cut-paper.mp4",
+      "sha256": "a3b291aaad8fb39d9e9ed6379ba84db7fe66083826af3ac87b7d43e25c6bb6f2",
+      "frames": 192,
+      "duration": 8,
+      "dimensions": [
+        960,
+        540
+      ],
+      "fps": 24,
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "render_seconds": 45.843738286,
+      "renderer_sha256": "6e126cf6af34ab6d93bc0ee64fb8f1c762554481ac4a55c169ded6075b0a8aa2",
+      "source_manifest": [
+        {
+          "path": "assets/original-score.wav",
+          "sha256": "7c4aaa41affb0489949b6acb59ec72395d585d53c761a6d461c8b27e047437fe"
+        },
+        {
+          "path": "data/score.json",
+          "sha256": "9461fc1dc700b463a10c8194a90f56c9bb6ef789500d919d7ba28f6e037cb18c"
+        },
+        {
+          "path": "package.json",
+          "sha256": "60e98b87d9d8ae0cf4e55b877b8ddc6230a8d911f3133d58c01441c3f375617a"
+        },
+        {
+          "path": "render.mjs",
+          "sha256": "1151ad59ad0c7bbe59e4e273465689d81d41f896d6bafc8981b527d110b77fe6"
+        },
+        {
+          "path": "render_canvas.mjs",
+          "sha256": "10426a9e093dad1cef038567ecdd74a23ee8f552ff88671881f1f2f2892613d9"
+        },
+        {
+          "path": "src/acting.js",
+          "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+        },
+        {
+          "path": "src/config.js",
+          "sha256": "df7984ad1702d4af87a0c98fdaf42836365155f302a503fe6f1791ebc93d0a35"
+        },
+        {
+          "path": "src/data/lyrics.js",
+          "sha256": "29e70ffa263ff86b970a5fedb8f755021a6fdf31ff74527ba0e468bf7fb129ec"
+        },
+        {
+          "path": "src/demo.js",
+          "sha256": "c2e67fe13717615ebd1b39de80784fed0a038801e6ee77caca64544369773793"
+        },
+        {
+          "path": "src/lyrics-overlay.js",
+          "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+        },
+        {
+          "path": "src/motion.js",
+          "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+        },
+        {
+          "path": "src/render-entry.json",
+          "sha256": "270b6eff81bdcc436c79d7ad835870449f67cd8fd502cff4c607b3ec034813e2"
+        },
+        {
+          "path": "src/runtime.js",
+          "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+        },
+        {
+          "path": "src/scene.js",
+          "sha256": "c7c856ce688b66a03cf3fc872a1980c485ba130757e742959cfb19ee70e59cfc"
+        },
+        {
+          "path": "src/style-kit.js",
+          "sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+        },
+        {
+          "path": "studio.html",
+          "sha256": "cc2b78a76092c5c3cfd0d81f8a32761981d348d9166cba26ff48792ec7a5c025"
+        }
+      ],
+      "reverse_seek_equality": true,
+      "full_decode": true,
+      "declared_frame_findings": [],
+      "material_source": "evidence/material-kit-v3-demo.js",
+      "material_sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+    },
+    {
+      "style": "pixel",
+      "file": "evidence/pixel.mp4",
+      "sha256": "935771110da03011c5078a2d754cbaa5decb78a95b42c20c83bef84e191ae018",
+      "frames": 192,
+      "duration": 8,
+      "dimensions": [
+        960,
+        540
+      ],
+      "fps": 24,
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "render_seconds": 8.679607188,
+      "renderer_sha256": "6e126cf6af34ab6d93bc0ee64fb8f1c762554481ac4a55c169ded6075b0a8aa2",
+      "source_manifest": [
+        {
+          "path": "assets/original-score.wav",
+          "sha256": "7c4aaa41affb0489949b6acb59ec72395d585d53c761a6d461c8b27e047437fe"
+        },
+        {
+          "path": "data/score.json",
+          "sha256": "9461fc1dc700b463a10c8194a90f56c9bb6ef789500d919d7ba28f6e037cb18c"
+        },
+        {
+          "path": "package.json",
+          "sha256": "60e98b87d9d8ae0cf4e55b877b8ddc6230a8d911f3133d58c01441c3f375617a"
+        },
+        {
+          "path": "render.mjs",
+          "sha256": "1151ad59ad0c7bbe59e4e273465689d81d41f896d6bafc8981b527d110b77fe6"
+        },
+        {
+          "path": "render_canvas.mjs",
+          "sha256": "10426a9e093dad1cef038567ecdd74a23ee8f552ff88671881f1f2f2892613d9"
+        },
+        {
+          "path": "src/acting.js",
+          "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+        },
+        {
+          "path": "src/config.js",
+          "sha256": "df7984ad1702d4af87a0c98fdaf42836365155f302a503fe6f1791ebc93d0a35"
+        },
+        {
+          "path": "src/data/lyrics.js",
+          "sha256": "29e70ffa263ff86b970a5fedb8f755021a6fdf31ff74527ba0e468bf7fb129ec"
+        },
+        {
+          "path": "src/demo.js",
+          "sha256": "6bebbb4f3420adf39f98f0feca0c1a1801eb38937908ccfd09a767e0a3730a50"
+        },
+        {
+          "path": "src/lyrics-overlay.js",
+          "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+        },
+        {
+          "path": "src/motion.js",
+          "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+        },
+        {
+          "path": "src/render-entry.json",
+          "sha256": "270b6eff81bdcc436c79d7ad835870449f67cd8fd502cff4c607b3ec034813e2"
+        },
+        {
+          "path": "src/runtime.js",
+          "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+        },
+        {
+          "path": "src/scene.js",
+          "sha256": "c7c856ce688b66a03cf3fc872a1980c485ba130757e742959cfb19ee70e59cfc"
+        },
+        {
+          "path": "src/style-kit.js",
+          "sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+        },
+        {
+          "path": "studio.html",
+          "sha256": "cc2b78a76092c5c3cfd0d81f8a32761981d348d9166cba26ff48792ec7a5c025"
+        }
+      ],
+      "reverse_seek_equality": true,
+      "full_decode": true,
+      "declared_frame_findings": [],
+      "material_source": "evidence/material-kit-v3-demo.js",
+      "material_sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+    },
+    {
+      "style": "ink",
+      "file": "evidence/ink.mp4",
+      "sha256": "4bbb2f1d8ee8a9a7883d722bbb089de23c02fbe4a411fc6abb02e3410b8e1bbd",
+      "frames": 192,
+      "duration": 8,
+      "dimensions": [
+        960,
+        540
+      ],
+      "fps": 24,
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "render_seconds": 5.820712937,
+      "renderer_sha256": "6e126cf6af34ab6d93bc0ee64fb8f1c762554481ac4a55c169ded6075b0a8aa2",
+      "source_manifest": [
+        {
+          "path": "assets/original-score.wav",
+          "sha256": "7c4aaa41affb0489949b6acb59ec72395d585d53c761a6d461c8b27e047437fe"
+        },
+        {
+          "path": "data/score.json",
+          "sha256": "9461fc1dc700b463a10c8194a90f56c9bb6ef789500d919d7ba28f6e037cb18c"
+        },
+        {
+          "path": "package.json",
+          "sha256": "60e98b87d9d8ae0cf4e55b877b8ddc6230a8d911f3133d58c01441c3f375617a"
+        },
+        {
+          "path": "render.mjs",
+          "sha256": "1151ad59ad0c7bbe59e4e273465689d81d41f896d6bafc8981b527d110b77fe6"
+        },
+        {
+          "path": "render_canvas.mjs",
+          "sha256": "10426a9e093dad1cef038567ecdd74a23ee8f552ff88671881f1f2f2892613d9"
+        },
+        {
+          "path": "src/acting.js",
+          "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+        },
+        {
+          "path": "src/config.js",
+          "sha256": "df7984ad1702d4af87a0c98fdaf42836365155f302a503fe6f1791ebc93d0a35"
+        },
+        {
+          "path": "src/data/lyrics.js",
+          "sha256": "29e70ffa263ff86b970a5fedb8f755021a6fdf31ff74527ba0e468bf7fb129ec"
+        },
+        {
+          "path": "src/demo.js",
+          "sha256": "2ef51ce8e15c5c37279d088f43151c3cb5d44f8e8a1a5f6c46bde298e64b432e"
+        },
+        {
+          "path": "src/lyrics-overlay.js",
+          "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+        },
+        {
+          "path": "src/motion.js",
+          "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+        },
+        {
+          "path": "src/render-entry.json",
+          "sha256": "270b6eff81bdcc436c79d7ad835870449f67cd8fd502cff4c607b3ec034813e2"
+        },
+        {
+          "path": "src/runtime.js",
+          "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+        },
+        {
+          "path": "src/scene.js",
+          "sha256": "c7c856ce688b66a03cf3fc872a1980c485ba130757e742959cfb19ee70e59cfc"
+        },
+        {
+          "path": "src/style-kit.js",
+          "sha256": "1b9db3d150f9f4efe48c7d4b49ab02f7f5201f4838f7a8f4b585246bc77ae793"
+        },
+        {
+          "path": "studio.html",
+          "sha256": "cc2b78a76092c5c3cfd0d81f8a32761981d348d9166cba26ff48792ec7a5c025"
+        }
+      ],
+      "reverse_seek_equality": true,
+      "full_decode": true,
+      "declared_frame_findings": [],
+      "material_source": "kit.js",
+      "material_sha256": "1b9db3d150f9f4efe48c7d4b49ab02f7f5201f4838f7a8f4b585246bc77ae793"
+    }
+  ],
+  "pixel_master_checks": {
+    "integer_grid": 4,
+    "palette_max_colors": 7,
+    "format": "PNG master frames; lossy H.264 color count is not claimed"
+  },
+  "complete_original_film": {
+    "file": "evidence/original-film.mp4",
+    "sha256": "4cc2c3f5054897c2d71ee4f24f735b34bdf22bb88f952b981e3408a72a14547a",
+    "duration": 30,
+    "frames": 720,
+    "dimensions": [
+      960,
+      540
+    ],
+    "fps": 24,
+    "runtime": {
+      "node": "v24.22.1",
+      "canvas": "0.1.100",
+      "platform": "linux",
+      "arch": "x64",
+      "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+    },
+    "render_seconds": 168.294713723,
+    "renderer_sha256": "6e126cf6af34ab6d93bc0ee64fb8f1c762554481ac4a55c169ded6075b0a8aa2",
+    "source_manifest": [
+      {
+        "path": "assets/original-score.wav",
+        "sha256": "2a1caddda9d4cdcc43148c071697e4c75400be497ab309ee0838d234ba39298d"
+      },
+      {
+        "path": "data/score.json",
+        "sha256": "4dae49f118f422b1b95593f0aea5761b68106faa8e8e8ea73b364198169fb84e"
+      },
+      {
+        "path": "package.json",
+        "sha256": "60e98b87d9d8ae0cf4e55b877b8ddc6230a8d911f3133d58c01441c3f375617a"
+      },
+      {
+        "path": "render.mjs",
+        "sha256": "1151ad59ad0c7bbe59e4e273465689d81d41f896d6bafc8981b527d110b77fe6"
+      },
+      {
+        "path": "render_canvas.mjs",
+        "sha256": "6e126cf6af34ab6d93bc0ee64fb8f1c762554481ac4a55c169ded6075b0a8aa2"
+      },
+      {
+        "path": "src/acting.js",
+        "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+      },
+      {
+        "path": "src/config.js",
+        "sha256": "a1445f93efca3333458b64c3defa39ca913b1f1d0672b53b03e43093aa8582be"
+      },
+      {
+        "path": "src/data/lyrics.js",
+        "sha256": "29e70ffa263ff86b970a5fedb8f755021a6fdf31ff74527ba0e468bf7fb129ec"
+      },
+      {
+        "path": "src/demo.js",
+        "sha256": "0ca6224554202c27a81ff05c38bacb698ded4e4c2b026afbca42474dcc56abbc"
+      },
+      {
+        "path": "src/lyrics-overlay.js",
+        "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+      },
+      {
+        "path": "src/motion.js",
+        "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+      },
+      {
+        "path": "src/render-entry.json",
+        "sha256": "270b6eff81bdcc436c79d7ad835870449f67cd8fd502cff4c607b3ec034813e2"
+      },
+      {
+        "path": "src/runtime.js",
+        "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+      },
+      {
+        "path": "src/scene.js",
+        "sha256": "c7c856ce688b66a03cf3fc872a1980c485ba130757e742959cfb19ee70e59cfc"
+      },
+      {
+        "path": "src/style-kit.js",
+        "sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+      },
+      {
+        "path": "studio.html",
+        "sha256": "cc2b78a76092c5c3cfd0d81f8a32761981d348d9166cba26ff48792ec7a5c025"
+      }
+    ],
+    "material_source": "evidence/material-kit-v3-demo.js",
+    "full_decode": true,
+    "original_instrumental": true,
+    "sung_lyrics": false,
+    "audio_offsets": [
+      {
+        "at": 3.0,
+        "encoded_delay_seconds": 0.0,
+        "correlation": 1.0,
+        "peak_margin": 0.7416,
+        "status": "measured_candidate"
+      },
+      {
+        "at": 15.0,
+        "encoded_delay_seconds": 0.0,
+        "correlation": 1.0,
+        "peak_margin": 0.6525,
+        "status": "measured_candidate"
+      },
+      {
+        "at": 27.0,
+        "encoded_delay_seconds": 0.0,
+        "correlation": 1.0,
+        "peak_margin": 0.7346,
+        "status": "measured_candidate"
+      }
+    ],
+    "lufs_difference": -0.1,
+    "findings": "evidence/film-review-findings.json",
+    "user_taste_accepted": false
+  },
+  "visual_inspection": {
+    "reviewer": "Codex root",
+    "method": "Inspected rendered scene boards, selected consecutive pickup/turn/contact/release frames and each foreground-object join; independent typography reviewer inspected encoded strips.",
+    "evidence": [
+      "evidence/style-board.png",
+      "evidence/film-board.png",
+      "evidence/actions-and-joins.png",
+      "evidence/pickup-repair.png",
+      "evidence/time-comparison.png"
+    ],
+    "limits": [
+      "Limited stylized figures and scenic compositions; not realistic acting or full-view character rigs.",
+      "CJK glyphs, destination browser/p5/WebGL and full real songs were not tested.",
+      "Quiet holds and small actions remain visible in the diagnostics; no global artistic pass is claimed."
+    ]
+  },
+  "regression_tests": {
+    "passed": 49,
+    "skipped": 0,
+    "command": "MV_CANVAS_MODULE=<selected-module> python3 -m unittest discover -s tests -v",
+    "native_probe": "Four style still probes, encoded flat/pixel probes, exact PNG palette/grid, and contiguous declared-pose/text-overflow finding tests passed.",
+    "portable_reexport": "Exported copy re-exported without stale self-manifest; full integrity verification passed."
+  },
+  "independent_use": [
+    {
+      "task": "Plan a cold geometric electronic instrumental MV, no cast/captions, planning only",
+      "observed": "Recovered constraints and asked two useful questions; did not start production or impose cast/style defaults."
+    },
+    {
+      "task": "Produce TIME -> clock -> TIME in two code treatments",
+      "receipt": "time-verification.json",
+      "observed": "Two six-second 180-frame clips decoded, project checks passed, source parts and pixel grid inspected; no real-song or taste claim."
+    },
+    {
+      "task": "Song, full length, 16:9, warm youth illustration, generic start instruction",
+      "observed": "Asked for concrete content direction and recording version; did not scaffold or render a full video. Proposed readings were presented as adaptations, not invented author intent."
+    },
+    {
+      "task": "Unrecorded original lyric fragment with unresolved waiting/goodbye meaning",
+      "observed": "Used actual supplied images as evidence, distinguished inference and proposed context, offered three directions and asked the user to select before making content."
+    }
+  ],
+  "browser_player": {
+    "status": "unverified",
+    "reason": "Browser security policy rejected the local file protocol; no workaround attempted. Browser binary downloads also did not succeed. JS syntax was checked.",
+    "optional_destination_test": "tests/player_browser.mjs"
+  },
+  "prior_60_second_development_run": {
+    "frames": 1440,
+    "duration": 60,
+    "full_decode": true,
+    "result": "Detected six long low-change ranges. Retained as a negative pacing lesson, then shortened/revised the original example to 30 seconds."
+  },
+  "artifacts": [
+    {
+      "path": "evidence/actions-and-joins.png",
+      "bytes": 231887,
+      "sha256": "87a0dcc1a8966213e1f2f9b2f8b58db59152f4459906ede34cf78621129a5645"
+    },
+    {
+      "path": "evidence/cut-paper.mp4",
+      "bytes": 147693,
+      "sha256": "a3b291aaad8fb39d9e9ed6379ba84db7fe66083826af3ac87b7d43e25c6bb6f2"
+    },
+    {
+      "path": "evidence/film-audio-audit.json",
+      "bytes": 1183,
+      "sha256": "5b727d3ac5de3ddd3e515acdadaa5b999423df85e4a3fad0b79f83259decf1af"
+    },
+    {
+      "path": "evidence/film-board.png",
+      "bytes": 381637,
+      "sha256": "13e9b6111ac692e4a7bea05099e0602e2ae693883ed34b091e18135f9ef32cfb"
+    },
+    {
+      "path": "evidence/film-review-findings.json",
+      "bytes": 3189,
+      "sha256": "9d369c1b08715cbc80cf6c5090cf559962d8d2c9f76438b48bda769fd09beb33"
+    },
+    {
+      "path": "evidence/flat.mp4",
+      "bytes": 130328,
+      "sha256": "22f70e23abcf00ba0fd854590015865a8ccf94561b3224a3aa56e491fbf60b39"
+    },
+    {
+      "path": "evidence/ink.mp4",
+      "bytes": 233899,
+      "sha256": "4bbb2f1d8ee8a9a7883d722bbb089de23c02fbe4a411fc6abb02e3410b8e1bbd"
+    },
+    {
+      "path": "evidence/material-kit-v3-demo.js",
+      "bytes": 14165,
+      "sha256": "03a4f2abf569be0b0949eb2144309a954f50667485c5cf67a1fa0adbcbd33d57"
+    },
+    {
+      "path": "evidence/original-film.mp4",
+      "bytes": 858653,
+      "sha256": "4cc2c3f5054897c2d71ee4f24f735b34bdf22bb88f952b981e3408a72a14547a"
+    },
+    {
+      "path": "evidence/pickup-repair.png",
+      "bytes": 98699,
+      "sha256": "2e9e27d5b71e9a3a39ef8f95f0782333d80d475b73137672fd376c55ca8bea24"
+    },
+    {
+      "path": "evidence/pixel.mp4",
+      "bytes": 91616,
+      "sha256": "935771110da03011c5078a2d754cbaa5decb78a95b42c20c83bef84e191ae018"
+    },
+    {
+      "path": "evidence/style-board.png",
+      "bytes": 135497,
+      "sha256": "6a779663d8856e0560b40b30f6918a69427b876b76e512593dc710c5607567bd"
+    },
+    {
+      "path": "evidence/time-comparison.mp4",
+      "bytes": 193645,
+      "sha256": "fe5ac05afbc6c3c14eaedccf6210bb60541eea0c3b70417e2ebf61574d45be66"
+    },
+    {
+      "path": "evidence/time-comparison.png",
+      "bytes": 73823,
+      "sha256": "d351f44b9bb0467f2ab0262653d4915bde055b9e18e574e5d09635233b06e893"
+    },
+    {
+      "path": "evidence/time-flat.mp4",
+      "bytes": 238129,
+      "sha256": "144954981a59a56863d5c283cddaae08b78cb59290e83d159ba86ccb6508b1b2"
+    },
+    {
+      "path": "evidence/time-geometry.json",
+      "bytes": 1304,
+      "sha256": "f9b0d45ff506bfdeca1cb93bdc5ed38a53fcba2fe0cc4a1171a9714d53d8f644"
+    },
+    {
+      "path": "evidence/time-pixel.mp4",
+      "bytes": 58964,
+      "sha256": "d046b5a79d27689c71186cc7821ccddb8629eaf5d8998ed361e737117ad91ae4"
+    }
+  ],
+  "media_build_version": "3.0.0",
+  "hard_gate_verification": {
+    "schema": 3,
+    "scope": "Recorded user content, song-reading evidence/selection, scoped authorization and duration checks; not authentication of alleged user replies or sources.",
+    "native_self_test": "Isolated original flat/pixel probes encoded after gates; runtime pulse offsets 0.5 and 1.5 seconds passed.",
+    "negative_cases": [
+      "three basic answers",
+      "legacy boolean without confirmation",
+      "changed content or selected song meaning",
+      "missing lyrics",
+      "multiple readings without user selection",
+      "unsupported artist-intent claim",
+      "prototype expanded to whole song",
+      "user recording relabelled as self-test"
+    ],
+    "positive_case": "Confirmed, bounded synthetic user-prototype fixture reaches a real 24-frame encode."
+  }
+}

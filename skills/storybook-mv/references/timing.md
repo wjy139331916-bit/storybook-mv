@@ -4,6 +4,10 @@ Use the actual final recording as master timebase. Measure it with FFprobe. Mark
 
 Use `scripts/analyze_music.py` for optional metadata/RMS/change guides, and map reviewed sections to visual development in `shot-map.json`. Energy rises are candidates, not measured musical beats. Follow the main skill's music-direction reference for repetition, motifs and instrumental progression.
 
+When useful, run `scripts/music_grid.py <audio> --out <new-grid.json> [--bpm 96 --first-beat 0.2]`. This proposes a constant-tempo grid from transients, retains alternatives and checks residual candidates at three regions. Half/double tempo and variable-tempo recordings need listening and possibly a piecewise grid; do not infer meter/downbeats from this tool. Supplied hints remain labelled. Do not make every cut land on every beat.
+
+For supplied SRT use `scripts/import_srt.py <lyrics.srt> --out <new-cues.json> [--audio <chosen-recording>]`. It preserves line text/timestamps, rejects overlaps for review and marks text/timing unverified. It never invents word timing. Keep recognition/forced alignment optional and compare with canonical text and the actual recording before claiming accuracy.
+
 When aligning against a vocal stem, verify its offset from the mix. Automated recognition is a draft; compare with canonical lyrics and the recording.
 
 ```bash
