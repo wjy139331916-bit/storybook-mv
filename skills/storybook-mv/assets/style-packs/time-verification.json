@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "project": "TIME / controlled two-treatment study",
+  "visual_review": {
+    "reviewer": "Codex mv_v3_type_use",
+    "method": "Viewed full-size rendered keyframes, encoded 12-state storyboards, and exact consecutive encoded frame strips at 1.000–1.167s and 4.800–4.967s",
+    "user_taste_accepted": false
+  },
+  "clips": [
+    {
+      "treatment": "flat",
+      "file": "evidence/time-flat.mp4",
+      "sha256": "144954981a59a56863d5c283cddaae08b78cb59290e83d159ba86ccb6508b1b2",
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "frames": 180,
+      "duration": 6.0,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio_streams": 0,
+      "full_decode": true,
+      "determinism": true,
+      "frame_audit_findings": 0,
+      "media_audit_findings": 0,
+      "encoded_first_last_mean_absolute_rgb_difference": 0.14066514756944445,
+      "render_seconds": 8.143857675,
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "contract_check": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "shots": 1,
+        "scope": "Structural checks and freshness of recorded reviews/runtime evidence. Visual judgments are the named reviewer's, not computed aesthetic scores."
+      }
+    },
+    {
+      "treatment": "pixel",
+      "file": "evidence/time-pixel.mp4",
+      "sha256": "d046b5a79d27689c71186cc7821ccddb8629eaf5d8998ed361e737117ad91ae4",
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "frames": 180,
+      "duration": 6.0,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio_streams": 0,
+      "full_decode": true,
+      "determinism": true,
+      "frame_audit_findings": 0,
+      "media_audit_findings": 0,
+      "encoded_first_last_mean_absolute_rgb_difference": 0.06967013888888889,
+      "render_seconds": 8.626147817,
+      "runtime": {
+        "node": "v24.22.1",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "contract_check": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "shots": 1,
+        "scope": "Structural checks and freshness of recorded reviews/runtime evidence. Visual judgments are the named reviewer's, not computed aesthetic scores."
+      }
+    }
+  ],
+  "comparison": {
+    "file": "evidence/time-comparison.mp4",
+    "sha256": "fe5ac05afbc6c3c14eaedccf6210bb60541eea0c3b70417e2ebf61574d45be66",
+    "width": 1280,
+    "height": 408,
+    "frames": 180,
+    "duration": 6.0,
+    "full_decode": true,
+    "audio_streams": 0
+  },
+  "geometry_and_pixel_checks": "evidence/time-geometry.json",
+  "source": {
+    "path": "assets/style-packs/time-clock.js",
+    "sha256": "80fdc4d5fca7c80fe004e7326fa010e8c9693f1679678495c0b20da129f5d811",
+    "usage": {
+      "width": 1280,
+      "height": 720,
+      "duration": 6,
+      "fps": 30,
+      "treatments": [
+        "flat",
+        "pixel"
+      ],
+      "lyric_overlay": "none"
+    }
+  },
+  "scope": "Independent bounded use of the skill on an original six-second typography task; not a whole-song or general browser test."
+}
