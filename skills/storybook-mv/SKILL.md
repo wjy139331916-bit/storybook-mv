@@ -19,6 +19,10 @@ Read [song and lyric understanding](references/song-understanding.md) before tra
 
 Reuse a genuinely explicit, already accepted brief and its user evidence without repeating the interview. A direct, fully specified request can establish content when the user clearly instructs that exact concept; do not infer this exception from a generic “go ahead.” Local runtime/skill-maintenance self-tests are isolated verification, never a way to relabel and bypass a requested MV. Missing legacy confirmation must be recovered from actual prior decisions or requested; it is never auto-approved.
 
+Read [execution evidence and stage gates](references/execution-gates.md) before scaffolding/rendering. Schema 4 binds actual lyric/audio/source files, the real user reply and recap revision. The CLI and JavaScript hosts use one local Python contract. Agent-generated records are not authenticated user consent; never fabricate them. Fill hashes and routine fields yourself from inspected inputs, not by asking technical questions of the user. Preserve genuine earlier acceptance through the documented migration path.
+
+For full expansion require an observed representative prototype, then the versioned `project_contracts.py promote` receipt. Inspect project-specific acting/story/meaning/text/glyph criteria and retain unresolved artistic defects. Full-line captions require complete canonical line coverage and reviewed timing; Chinese full captions require the selected font's actual glyph check. These records support review rather than certify taste. Check [capability status](assets/capability-matrix.json) before claiming an engine or real-song result has been verified.
+
 ## Choose the mode and recover decisions
 
 Read the current request, provided references, accepted decisions and project files. Reuse `brief.json`, `DECISIONS.md`, `PROPOSAL.md` and the latest render when available. Do not re-interview an already specified project or import another project's preferences.
@@ -114,6 +118,8 @@ Read [optional components](references/components.md) before reusing the original
 For relevant character or semantic work, read [performance and lyric meaning](references/performance-and-meaning.md). Prove gaze, reaction, preparation, action and settle in the chosen design. Track a lyric object's visible role and transition geometry instead of decorating every line with an unrelated symbol. Narrative and literal lyric illustration are optional, not global requirements.
 
 Read [review and bounded repair](references/review-and-repair.md). Record actual observations, target/source hashes, relevant checks and timestamped issues in `review.json`. Satisfy the representative prototype's relevant checks before expanding affected work. Preserve accepted shots, propagate repairs only through declared shared assets, render affected intervals with adjacent joins and compare before/after. Do not silently weaken a locked requirement. These are work-quality checkpoints, not repeated permission questions.
+
+Read [native range, resume and cost controls](references/native-incremental.md) for bounded CPU rerenders, source-bound frame reuse and actual frame/disk estimates. Exported repair clips still need validated integration into the master.
 
 Read [actual-output diagnostics and viewer feedback](references/output-diagnostics.md) for contact sheets, low-change/black/cut candidates, declared layout/local-pose checks, source/output audio comparison and the local timestamped review player. Missing metadata or ambiguous audio remains unverified. Treat metrics as repair evidence, retain intentional holds and never substitute continuous camera motion for acting.
 
