@@ -142,6 +142,17 @@ class ToolkitTests(unittest.TestCase):
         b=C.load(p/'brief.json');bind_confirmation(b,p);(p/'brief.json').write_text(json.dumps(b))
         self.edit(p,'shot-map.json',lambda x:x.update(duration_status='recording_measured',audio_sha256=C.digest(p/'assets.wav')))
         self.edit(p,'review.json',lambda x:(x.update(scope='full'),next(c for c in x['checks'] if c['id']=='music').update(status='pass',evidence=['out/prototype.mp4'])))
+        # Synthetic fixture now explicitly includes artifact-specific user stage
+        # records. Internal runtime review alone must not satisfy the new gates.
+        from workflow_fixtures import record, video_stage
+        b=C.load(p/'brief.json')
+        for stage in ('prototype','animatic'):
+            clip='out/'+stage+'-stage.mp4'
+            subprocess.run(['ffmpeg','-y','-v','error','-i',str(p/'out/prototype.mp4'),'-r','12','-vf','scale=320:180','-t','2',str(p/clip)],check=True)
+            report='out/'+stage+'-report.json'
+            record(p,report,{'production_stage':stage,'encoded':{'full_decode':True},'artifacts':[{'path':clip,'sha256':C.digest(p/clip)}]})
+            video_stage(b,p,stage,clip,report)
+        (p/'brief.json').write_text(json.dumps(b))
         result=C.inspect(p,'full');self.assertTrue(result['ok'],result)
         self.edit(p,'shot-map.json',lambda x:x.update(audio_sha256='wrong'))
         self.assertFalse(C.inspect(p,'full')['ok'])

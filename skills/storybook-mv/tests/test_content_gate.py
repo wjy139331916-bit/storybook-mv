@@ -27,6 +27,8 @@ def agreed_fixture():
     b['output'].update(aspect_ratio='16:9',resolution=[1280,720],fps=30)
     b['execution'].update(context='user-project',engine='canvas2d',runtime='node-canvas',production_authorized=True,authorized_scope='prototype',authorized_duration=6,authorization_evidence='Synthetic test user explicitly requests only this six-second prototype')
     b['content_confirmation']={'status':'confirmed','summary':'TIME becomes a clock and returns, no characters','user_evidence':'Synthetic test user explicitly requested this exact concept; fixture only','content_sha256':content_digest(b)}
+    b['prototype']={'duration':6}
+    b['workflow']={'schema_version':1,'policy':'user-stage-review','packages':{'design':{'path':'plan/design-package.json','sha256':'0'*64}},'approvals':{'design':{'path':'plan/design-user.json','sha256':'0'*64}}}
     return b
 
 
@@ -40,6 +42,8 @@ def lyrical_fixture():
 
 def bind_confirmation(brief,folder):
     """Synthetic test messages only; never asserts real user acceptance."""
+    from workflow_fixtures import design
+    design(brief, Path(folder))
     record=Path(folder)/'synthetic-confirmation.json'
     record.write_text(json.dumps({'origin':'user-message','message_id':'synthetic-fixture-message','user_reply':'Synthetic unit fixture accepts this exact concept','recap_id':'fixture-recap','accepted_content_sha256':content_digest(brief)}))
     brief['content_confirmation']['record']={'path':str(record),'sha256':hashlib.sha256(record.read_bytes()).hexdigest()}
@@ -134,7 +138,8 @@ class ContentGateTests(unittest.TestCase):
             self.assertEqual(original,(ROOT/'assets'/name/'production_gate.mjs').read_bytes())
             code=(ROOT/'assets'/name/'render.mjs').read_text()
             self.assertIn('assertProduction(process.cwd(),',code)
-            self.assertGreaterEqual(code.count('assertProduction('),5)
+            self.assertIn('const stageAssert=options=>assertProduction(',code)
+            self.assertGreaterEqual(code.count('stageAssert('),5)
 
     @unittest.skipUnless(os.environ.get('MV_CANVAS_MODULE'),'optional native Canvas dependency not selected')
     def test_confirmed_bounded_user_prototype_reaches_a_real_encode(self):
