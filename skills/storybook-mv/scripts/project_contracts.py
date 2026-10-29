@@ -149,6 +149,41 @@ def timeline(mapping, errors, full):
     return shots
 
 
+def review_evidence(project, check, review, target_sha, errors, duration=None):
+    """Require temporal evidence for temporal claims; never judge its artistry."""
+    key = check.get('id')
+    if check.get('status') != 'pass' or key not in ('motion', 'acting', 'contact', 'continuity', 'transition', 'transitions'):
+        return
+    temporal = False
+    for rel in check.get('evidence') or []:
+        path = contained(project, rel)
+        if not path.is_file():
+            continue
+        try:
+            result = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'stream=codec_type,nb_frames,duration', '-of', 'json', str(path)], stderr=subprocess.PIPE))
+            if any(s.get('codec_type') == 'video' and (float(s.get('duration') or 0) > 0 or str(s.get('nb_frames', '0')).isdigit() and int(s.get('nb_frames','0')) > 1) for s in result.get('streams', [])):
+                temporal = True
+        except (OSError, ValueError, subprocess.SubprocessError):
+            pass
+        for sequence in review.get('sequences') or []:
+            times = sequence.get('times') or []
+            if sequence.get('path') != rel or sequence.get('source_sha256') != target_sha or sequence.get('sha256') != digest(path):
+                continue
+            if len(times) >= 3 and all(finite(t) and t >= 0 and (duration is None or t<=duration+.125) for t in times) and all(a < b for a,b in zip(times, times[1:])):
+                from PIL import Image
+                try:
+                    with Image.open(path) as image:
+                        image.verify()
+                    temporal = True
+                except OSError:
+                    pass
+    if not temporal:
+        errors.append('temporal review needs playable video or a source-bound consecutive strip: '+str(key))
+    bounds = check.get('range')
+    if not isinstance(bounds, list) or len(bounds) != 2 or not all(finite(t) for t in bounds) or not 0 <= bounds[0] < bounds[1] or (duration is not None and bounds[1]>duration+.125):
+        errors.append('temporal review needs the inspected output-time range: '+str(key))
+
+
 def inspect(project, stage):
     errors, warnings = [], []
     brief = load(project/'brief.json')
@@ -209,6 +244,7 @@ def inspect(project, stage):
     if review.get('scope') != ('full' if stage == 'full' else 'prototype'):
         errors.append('review scope does not match the requested stage')
     target = review.get('target') or {}
+    encoded_duration = None
     clip = contained(project, target.get('path'))
     if not clip.is_file() or target.get('sha256') != digest(clip):
         errors.append('review target missing or changed since review')
@@ -217,6 +253,7 @@ def inspect(project, stage):
         try:
             media = json.loads(subprocess.check_output(['ffprobe','-v','error','-show_format','-show_streams','-of','json',str(clip)],stderr=subprocess.PIPE))
             video = next((s for s in media.get('streams',[]) if s.get('codec_type')=='video'),None)
+            encoded_duration = float((video or {}).get('duration') or media['format']['duration'])
             if not video:
                 errors.append('review target has no encoded video stream')
             if stage == 'full':
@@ -263,17 +300,21 @@ def inspect(project, stage):
     if field(brief,'structure.mode')=='narrative':required.add('story')
     if field(brief,'music.kind')=='lyrical':required.add('meaning')
     if field(brief,'characters.required'):required.add('acting')
+    inapplicable = set()
+    if field(brief,'music.source') == 'none':inapplicable.add('music')
+    if field(brief,'lyrics.mode') in (None,'none'):inapplicable |= {'text','glyphs'}
     for key in sorted(required):
         item = by_id.get(key, {})
         if item.get('status') not in ('pass', 'not_applicable') or not isinstance(item.get('notes'),str) or not item['notes'].strip():
             errors.append('review not satisfied: '+key)
-        if item.get('status') == 'not_applicable' and (key in ('composition','style','continuity') or (key == 'text' and field(brief,'lyrics.mode') not in (None,'none')) or (key == 'music' and field(brief,'music.source') != 'none')):
+        if item.get('status') == 'not_applicable' and key not in inapplicable:
             errors.append('required criterion cannot be marked not_applicable: '+key)
         if item.get('status') == 'pass' and not item.get('evidence'):
             errors.append('review pass lacks observed evidence: '+key)
         for rel in item.get('evidence', []):
             if not contained(project, rel).is_file():
                 errors.append('review evidence missing: '+str(rel))
+        review_evidence(project, item, review, target.get('sha256'), errors, encoded_duration)
     if not review.get('reviewer'):
         errors.append('record who/what inspected the rendered artifact')
     issue_ids = set()

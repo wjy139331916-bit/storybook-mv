@@ -39,3 +39,60 @@ jobs:
         run: MV_CANVAS_MODULE="$RUNNER_TEMP/mv-runtime/node_modules/@napi-rs/canvas/index.js" python -m unittest discover -s skills/storybook-mv/tests -v
       - name: Render and inspect selected probes
         run: python skills/storybook-mv/tests/render_smoke.py --canvas-module "$RUNNER_TEMP/mv-runtime/node_modules/@napi-rs/canvas/index.js" --encode
+  chromium-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-cjk
+      - run: python -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
+      - name: Select the actual browser probe runtime
+        run: npm install --prefix "$RUNNER_TEMP/mv-browser" --save-exact playwright@1.51.1
+      - run: node "$RUNNER_TEMP/mv-browser/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Render Canvas frames, decode a preview, seek, play and export feedback
+        run: MV_PLAYWRIGHT_MODULE="$RUNNER_TEMP/mv-browser/node_modules/playwright" node skills/storybook-mv/tests/browser_smoke.mjs "$RUNNER_TEMP/browser-proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chromium-review-proof
+          path: ${{ runner.temp }}/browser-proof
+  windows-native:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Ensure FFmpeg is available
+        shell: pwsh
+        run: |
+          if (-not (Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
+            choco install ffmpeg --no-progress -y
+            $env:Path += ';C:/ProgramData/chocolatey/bin'
+          }
+          ffmpeg -version
+      - run: python -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
+      - name: Select exact native Canvas adapter
+        shell: pwsh
+        run: |
+          npm install --prefix "$env:RUNNER_TEMP/mv-runtime" --save-exact @napi-rs/canvas@0.1.100
+          "MV_CANVAS_MODULE=$env:RUNNER_TEMP/mv-runtime/node_modules/@napi-rs/canvas/index.js" >> $env:GITHUB_ENV
+      - run: python -m unittest discover -s skills/storybook-mv/tests -v
+      - name: Render an original native mechanism on Windows
+        shell: pwsh
+        run: python skills/storybook-mv/scripts/creative_probe.py "$env:RUNNER_TEMP/windows-native-proof" --case abstract --canvas-module "$env:MV_CANVAS_MODULE" --tool-self-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-native-proof
+          path: ${{ runner.temp }}/windows-native-proof

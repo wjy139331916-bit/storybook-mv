@@ -155,6 +155,22 @@ def inspect_package(brief, project, stage, record, errors):
             stream = next((s for s in media.get('streams', []) if s.get('codec_type') == 'video'), None)
             if not stream:
                 raise ValueError('presented sample has no encoded video')
+            measured = float(stream.get('duration') or media['format']['duration'])
+            if not math.isfinite(measured) or measured <= 0:
+                raise ValueError('presented sample has an invalid duration')
+            from check_brief import aspect_parts
+            ra, rb = aspect_parts((brief.get('output') or {}).get('aspect_ratio'))
+            if stream['width'] * rb != stream['height'] * ra:
+                errors.append(stage + ': presented video changes the selected aspect ratio')
+            expected_range = None
+            if stage == 'prototype':
+                plan = pilot_plan(brief, project)
+                if plan:
+                    expected_range = [plan['start'], plan['end']]
+                    if abs(measured - (plan['end'] - plan['start'])) > .125:
+                        errors.append('prototype: presented video must cover the complete accepted pilot interval')
+            else:
+                expected_range = [0, target_duration(brief, project)]
             if (brief.get('music') or {}).get('audio') and not any(s.get('codec_type') == 'audio' for s in media['streams']):
                 errors.append(stage + ': presented video lacks the selected soundtrack')
             for f in roles.get('render_report', []):
@@ -164,6 +180,15 @@ def inspect_package(brief, project, stage, record, errors):
                     errors.append(stage + ': render report does not verify this encoded artifact')
                 if report.get('production_stage') != stage:
                     errors.append(stage + ': render report belongs to another production stage')
+                bounds = report.get('range')
+                valid_range = isinstance(bounds, list) and len(bounds) == 2 and all(isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) for x in bounds)
+                if not valid_range or not expected_range or any(not isinstance(x, (int, float)) for x in expected_range) or any(abs(a-b) > .001 for a,b in zip(bounds, expected_range)):
+                    errors.append(stage + ': render report must identify the accepted source timeline interval')
+                elif abs((bounds[1]-bounds[0]) - measured) > .125:
+                    errors.append(stage + ': reported source interval differs from the actual encoded duration')
+                music = brief.get('music') or {}
+                if music.get('audio') and (report.get('audio') or {}).get('sha256') != music.get('audio_sha256'):
+                    errors.append(stage + ': render report must identify the selected soundtrack by SHA-256')
             for f in roles.get('review', []):
                 review = read_json(f)
                 if review.get('scope') != stage or not text(review.get('reviewer')) or review.get('target_sha256') != sha(video) or review.get('status') != 'observed_pass' or not text(review.get('observations')):

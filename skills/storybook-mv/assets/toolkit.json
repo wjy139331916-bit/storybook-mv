@@ -1,7 +1,7 @@
 {
   "name": "storybook-mv",
   "display_name": "MV创作导演",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "brief_schema": 5,
   "production_contract_schema": 1,
   "optional_cpu_canvas_version": "0.1.100",
@@ -22,5 +22,7 @@
   "song_reading_gate": "verified/provided lyrics, evidence-based interpretation, user-selected material ambiguities before content confirmation",
   "content_digest_version": 2,
   "shared_contract_runtime": "Python 3; JavaScript adapters invoke the same local implementation",
-  "workflow_gate_schema": 1
+  "workflow_gate_schema": 1,
+  "review_workspace_schema": 1,
+  "creative_probe_schema": 1
 }

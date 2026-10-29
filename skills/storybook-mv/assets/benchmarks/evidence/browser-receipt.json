@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "runtime": "Chromium 134.0.6998.35",
+  "platform": "linux",
+  "encoded_video_sha256": "45b4df61c21e119a043d8e952badc77661c9f0ceb4ba861516f0289c78b8516b",
+  "frames": 144,
+  "duration": 12,
+  "reverse_seek": true,
+  "feedback_bound": true,
+  "feedback_merge_preserves_pending": true,
+  "browser_playback": "decoded, sought and advanced same-timeline WebM preview; original MP4 kept",
+  "review_cjk_font": "selected local font",
+  "external_requests": 0,
+  "scope": "Actual Chromium Canvas2D interface and offline review playback/feedback; not p5, WebGL, Windows, sung words or artistic acceptance."
+}

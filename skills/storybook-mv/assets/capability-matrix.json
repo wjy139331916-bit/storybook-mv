@@ -1,8 +1,32 @@
 {
   "schema_version": 1,
-  "toolkit_version": "3.3.0",
+  "toolkit_version": "3.4.0",
   "meaning": "Status describes named evidence and its limits, not universal compatibility or aesthetic acceptance.",
   "capabilities": [
+    {
+      "id": "review-workspace-and-derived-handoff",
+      "status": "implemented",
+      "evidence": "scripts/review_workspace.py; tests/test_review_v34.py; verification-v34.json",
+      "limits": "Packages and pending state derive from artifacts; only actual user replies can accept them. Offline feedback merges as observations, never approval."
+    },
+    {
+      "id": "complete-pilot-and-temporal-review-evidence",
+      "status": "implemented",
+      "evidence": "scripts/workflow_gate.py; scripts/project_contracts.py; tests/test_review_v34.py",
+      "limits": "Actual duration/aspect/source range and required-record types are checked; source range provenance and genuine observation still depend on truthful execution records."
+    },
+    {
+      "id": "chromium-canvas2d-and-review-playback",
+      "status": "verified_scoped",
+      "evidence": "tests/browser_smoke.mjs; assets/benchmarks/evidence/browser-receipt.json; verification-v34.json",
+      "limits": "Linux Chromium 134 via Playwright 1.51.1; actual Canvas2D frames, WebM preview decode/seek/playback and feedback import. Not p5/WebGL, all browsers or arbitrary codecs."
+    },
+    {
+      "id": "original-interaction-type-abstract-probes",
+      "status": "verified_scoped",
+      "evidence": "scripts/creative_probe.py; assets/benchmarks/scene.js; verification-v34.json",
+      "limits": "Three original 12s stylized mechanisms and original instrumental audio, not a finished real sung MV or universal acting system."
+    },
     {
       "id": "artifact-bound-user-stage-reviews",
       "status": "implemented",
@@ -73,7 +97,7 @@
       "id": "browser-player-p5-WebGL",
       "status": "not_verified_in_this_environment",
       "evidence": "tests/player_browser.mjs; references/runtime-portability.md",
-      "limits": "Templates/optional tests exist; CPU results are not browser/p5 compatibility evidence. Respect preview policy."
+      "limits": "The new Canvas2D review page is separately verified. Existing optional player/p5/WebGL routes still need their own actual selected-runtime checks."
     },
     {
       "id": "Windows-and-other-agent-hosts",
@@ -82,5 +106,5 @@
       "limits": "Complete-directory portability is tested; actual destination Python, renderer, fonts and tools must be exercised."
     }
   ],
-  "current_receipt": "verification-v33.json"
+  "current_receipt": "verification-v34.json"
 }

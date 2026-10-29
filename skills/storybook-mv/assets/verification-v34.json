@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "toolkit_version": "3.4.0",
+  "date": "2026-10-29",
+  "scope": "Artifact interval/applicability/temporal-evidence contracts, offline review and original mechanism probes. No authentication, semantic/taste certification or full real sung MV claim.",
+  "regression": {
+    "tests": 135,
+    "passed": 135,
+    "skipped": 0,
+    "command": "python3 -m unittest discover -s tests -q",
+    "runtime": "Linux; selected @napi-rs/canvas 0.1.100 and external Noto Sans SC Regular"
+  },
+  "fixed_regressions": [
+    "A 2-second actual video cannot satisfy the accepted 6-second pilot; the same-duration wrong source range is also rejected.",
+    "A selected mandatory contact check cannot pass as not_applicable. Temporal passes require video or a bound consecutive strip and an actual inspected output-time range.",
+    "Presented videos are checked against the actual aspect and source soundtrack identity; individual frame previews do not prove motion."
+  ],
+  "original_native_probes": [
+    {
+      "case": "interaction",
+      "duration": 12,
+      "frames": 144,
+      "size": [
+        960,
+        540
+      ],
+      "fps": 12,
+      "complete_decode": true,
+      "reverse_seek_passed": true,
+      "input_digest": "0fcb1df7253f9e8576d2b7dcea0bd9ba334e2352a599cb86f3bc64de0b20360d",
+      "report_sha256": "0fcc133f2664a51ab5e2ff0e077a87517c2b10f5b851b5df77246a2d6f311345",
+      "original_clip_matches_final": true,
+      "video": {
+        "path": "assets/benchmarks/evidence/interaction.mp4",
+        "sha256": "4306bf8d42213b9d519dfa72cef0507298c7d48362e8a8177df11e1f48d998d8"
+      },
+      "board": "assets/benchmarks/evidence/interaction-board.png",
+      "font_cmap_checked": true
+    },
+    {
+      "case": "type",
+      "duration": 12,
+      "frames": 144,
+      "size": [
+        960,
+        540
+      ],
+      "fps": 12,
+      "complete_decode": true,
+      "reverse_seek_passed": true,
+      "input_digest": "6897b55579520ffb277f3aa1ea9344c276aae408c58e361cba65a84827eb23ef",
+      "report_sha256": "ca27351804044cbb6bfc2e995e63c22ef48c2385009e5e4ab7a9d0e3b6bb9499",
+      "original_clip_matches_final": true,
+      "video": {
+        "path": "assets/benchmarks/evidence/type.mp4",
+        "sha256": "bf5af24d86f12eafa39eb034321b74b3ff284addb490829d44dfc7d6bc86d9f2"
+      },
+      "board": "assets/benchmarks/evidence/type-board.png",
+      "font_cmap_checked": true
+    },
+    {
+      "case": "abstract",
+      "duration": 12,
+      "frames": 144,
+      "size": [
+        960,
+        540
+      ],
+      "fps": 12,
+      "complete_decode": true,
+      "reverse_seek_passed": true,
+      "input_digest": "069006943c4980c61f301fa03802ffb8015565c6cd8c01658629bbc2687cfdb8",
+      "report_sha256": "94b423f6b0c3af44e8f545e4297a8085eb6647e80c0e5a2a0816ef2d90238cbb",
+      "original_clip_matches_final": true,
+      "video": {
+        "path": "assets/benchmarks/evidence/abstract.mp4",
+        "sha256": "989fe457865374742be21046fc81b3f5435a990a658d17357ed9fd66add2eba8"
+      },
+      "board": "assets/benchmarks/evidence/abstract-board.png",
+      "font_cmap_checked": false
+    }
+  ],
+  "visual_observations": {
+    "interaction": "Consecutive contact strip inspected: reach, shared contact, ownership transfer and withdrawal remain visible. Stylized front-view figures; no walk, realistic hands, rear view or complex acting verified.",
+    "type": "Six actual frames inspected: original Chinese phrases render, clock hands develop, a paper-plane graphic travels and a window opens. Instrumental only; no arbitrary Chinese glyph-outline morph or singing alignment claim.",
+    "abstract": "Original geometric loop changes arrangement and returns; actual frames and reverse seeks checked.",
+    "source_replay": "All three final-source probe replays matched their original six still hashes; original/final full clip identity is recorded per case."
+  },
+  "browser_probe": {
+    "status": "passed",
+    "runtime": "Chromium 134.0.6998.35",
+    "platform": "linux",
+    "encoded_video_sha256": "45b4df61c21e119a043d8e952badc77661c9f0ceb4ba861516f0289c78b8516b",
+    "frames": 144,
+    "duration": 12,
+    "reverse_seek": true,
+    "feedback_bound": true,
+    "feedback_merge_preserves_pending": true,
+    "browser_playback": "decoded, sought and advanced same-timeline WebM preview; original MP4 kept",
+    "review_cjk_font": "selected local font",
+    "external_requests": 0,
+    "scope": "Actual Chromium Canvas2D interface and offline review playback/feedback; not p5, WebGL, Windows, sung words or artistic acceptance."
+  },
+  "browser_correction": "Initial Chromium lacked H.264 support. A same-timeline WebM preview was added and retested for actual loaded frames, seek and playback; original MP4 remains the feedback target. Merely finding a video element is not playback verification.",
+  "independent_use": {
+    "request": "9-second silent all-code navy/cream ring cut, arc movement, shape-match transition and reunion; no characters; direction specified and continue requested",
+    "artifacts": "Complete 9-second script, 8 actual 1920x1080 static frames, readable review page and derived handoff card",
+    "phase": "design",
+    "user_approvals_empty": true,
+    "no_video": true,
+    "final_source_replay": {
+      "stills": 8,
+      "all_hashes_match": true,
+      "no_video": true
+    },
+    "board_sha256": "3e0202dabcef144ff554fef42e46fbcb488714b34a0ebb1a1204466b89ab9ce7",
+    "scope": "Controlled synthetic forward-use task; not real end-user creative approval. Root inspected the actual board and replayed final helpers."
+  },
+  "windows_native_ci": {
+    "status": "probe_added_not_yet_observed",
+    "scope": "Separate Windows job installs selected dependencies and renders an original abstract mechanism; actual run evidence must be checked before claiming a pass."
+  },
+  "unverified": [
+    "Full real-song singing/phrase timing and complete artistic acceptance",
+    "General complex acting, realistic hands and arbitrary Chinese outline morphs",
+    "p5/WebGL and arbitrary destination environments"
+  ],
+  "source_sha256": {
+    "SKILL.md": "0274995eb84db55f9a555f02d4481750f1fd8dc3231a0127b4cc96133fd8966d",
+    "scripts/workflow_gate.py": "9bf6e1b4b93b1a2afdc62007bbdb7b811d9053b8707c795b3cc04ec5d1cbe203",
+    "scripts/project_contracts.py": "7e3da9a5a0d2aa31339c3454861ad8ddd65a62e8fe1d79981a34f7fc0517fd50",
+    "scripts/review_workspace.py": "81bbc9850d139b8af3d7ff7b3620cfc8a00c5e0e7d3be937997080e5f49fbaca",
+    "scripts/creative_probe.py": "7227da6fcf64e7a4ab513487ae39f063b0fec34295fa4c8c2f5f75b03aec8e21",
+    "scripts/scaffold.py": "f0ce8a916731520b729bfb8a49a849de4b62263e35d4df589a887b9a266df2cf",
+    "tests/test_review_v34.py": "fd73ed672508d788de338e878af613ea2773ba0b1b5d569826d4724690c690c1",
+    "tests/browser_smoke.mjs": "9d26b9dc35a7db0c8d3bd5134e63147f16dc3012895ff19eb3b52d81ed44fef6",
+    "assets/benchmarks/scene.js": "0db7849adcf5ab60f5759d3b3ed6559c8906810493ffb5a2d2d0d5fead80fd38",
+    "references/review-workspace.md": "d703f40e819c0ba3fe82124c34bba8d93c46db2e3507c8f431b413669686ebdb",
+    "references/creative-validation.md": "150bb30b213e21b021770ffdc5d2727088578faf4ac254f984da75af54a2b90f"
+  },
+  "source_hash_scope": "SKILL.md uses the public profile-free form; scripts/benchmarks are exact source files. Historical receipts retain their actual versions."
+}

@@ -103,7 +103,7 @@ def main():
     (target / 'brief.json').write_text(json.dumps(brief, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     config = {'duration': a.duration, 'width': width, 'height': height, 'fps': a.fps, 'bpm': 120, 'offset': 0, 'boil': 0, 'prototype': True, 'bpmMeasured': False}
     (target / 'src/config.js').write_text('// Prototype dimensions/timing are not a verified song plan.\nconst PROJECT = ' + json.dumps(config) + ';\nglobalThis.STORY_LYRICS_MODE = ' + json.dumps((brief.get('lyrics') or {}).get('mode') or 'unset') + ';\n', encoding='utf-8')
-    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py','workflow_gate.py'):
+    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py','workflow_gate.py','review_workspace.py','media_audit.py'):
         shutil.copy2(root/'scripts'/name,target/name)
     if not a.tool_self_test:
         from workflow_gate import relocate
