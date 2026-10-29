@@ -18,7 +18,8 @@
     "Native positive pipeline encodes pilot, rough animatic and full output using the selected original test audio, with separate synthetic user-stage records.",
     "Whole-scope authorization cannot substitute for the pilot interval in the accepted design package; actual [2,4] works and wrong/whole intervals refuse.",
     "Both browser-template FFmpeg-only encode branches exercised without launching a browser: actual global-index JPEGs encode with nonzero frame/audio offsets; wrong indices refuse.",
-    "Project-local contract CLI initializes neutral templates without treating the project as an installed skill."
+    "Project-local contract CLI initializes neutral templates without treating the project as an installed skill.",
+    "Preflight reports the real user-stage Pillow dependency separately from optional diagnostics."
   ],
   "independent_use": {
     "request": "12-second silent all-code geometric film; user supplies an exact direction and says continue",
@@ -56,6 +57,7 @@
     "assets/painted-template/render.mjs": "98cb79d8d89a9808ffca1c4c345ddba8f90d514a422f77eef7eaabbed29cd9c9",
     "tests/test_workflow_v33.py": "7f413b08b99a42d45a9ae8a35446ec26f791711d5668bb4a5389e0f822d4cbec",
     "tests/workflow_fixtures.py": "e69f62e9b439a56775e6ce2e1f0c6b3e52553b64d9ea621fa4724715f3478df6",
-    "references/user-stage-review.md": "66f6c2cb8457cfe7731ffd0d1eecca0709b1c5dff5518952ef261ca79b081e28"
+    "references/user-stage-review.md": "d9a800507312a5727c4a6517b0ce2ccdd90e989dc89b2fdeb78ff42cc9ae8795",
+    "scripts/preflight.py": "5d732e3ef9c30c61a9cac9263269dbfa92be69d94a95c51c37b47ac86e7fb736"
   }
 }
