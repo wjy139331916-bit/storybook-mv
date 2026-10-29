@@ -1,13 +1,33 @@
 ---
 name: storybook-mv
-description: Direct music videos through adaptive questions, verified song/lyric understanding and a HARD content-confirmation gate before any user-video production. Use for MV方案、视频风格选择、提问确认内容、理解歌词、代码MV、歌词视频、动画分镜, style comparisons, acting, diagnostics and cross-agent handoff. No fixed style/engine. Basic song/length/aspect answers never authorize an invented full MV; resolve material meaning ambiguities with user choices and produce only confirmed content within explicit scope. Includes code packs, demos, contracts and tests.
+description: "Direct music videos through adaptive questions, grounded song understanding and HARD user-review gates: direction → complete script plus actual design frames → pilot → whole-scope rough animatic → final production. Use for MV方案、视频风格选择、提问确认内容、理解歌词、代码MV、歌词视频、动画分镜, style comparisons, acting, diagnostics and cross-agent handoff. No fixed style/engine. Direction approval authorizes design only; AI self-review is never user approval. Basic song/length/aspect answers never authorize an invented full MV; resolve material meaning ambiguities with user choices and produce only confirmed content within explicit scope. Includes code packs, demos, contracts and tests."
 ---
 
 # MV 创作导演
 
-Start with the user's desired experience and constraints, not a rendering template. Discover → compare viable directions → converge through questions → present a concrete proposal → produce only within the user's authorized scope → review evidence and repair.
+Start with the user's desired experience and constraints, not a rendering template. Discover and understand the song → confirm direction → present complete script and actual design → wait for user acceptance → pilot → wait → whole-scope rough animatic → wait → fine production and bounded repair.
 
 Keep the handle `storybook-mv` for compatibility. It no longer implies storybook art or a default body proportion.
+
+## 硬约束：使用者逐阶段验收，方向确认只放行设计
+
+Read [user-stage review and artifact contracts](references/user-stage-review.md) before producing any project artifact. Use schema 5; preserve real earlier direction acceptance without inventing later approvals. Default workflow:
+
+| Current work | Present to the user | Stop before advancing |
+|---|---|---|
+| Discovery and supported song reading | Exact content/theme/style candidates and scope recap | User confirms direction; this permits design only |
+| Design | Complete target-scope script/shot table, proposal, actual rendered design frames, visual/text rules, difficult transitions and pilot plan | User accepts the entire identified design/script revision |
+| Prototype | Bounded playable sample using the selected assets, hard effects/actions, transitions and soundtrack; actual agent review first | User watches and accepts this exact sample |
+| Animatic for a complete MV | Whole-song rough cut with simplified assets/poses and the actual soundtrack; inspect repeats, pacing, progression and ending | User accepts this exact overall cut |
+| Full production | Refine the accepted work, verify encoded output, deliver video/source/limitations and repair within scope | User feedback defines remaining revisions |
+
+**认可大方向 ≠ 认可设计脚本 ≠ 认可样片 ≠ 认可全曲粗剪。AI 自检通过 ≠ 使用者验收通过。** For each review, show accessible artifacts, identify their revision, summarize remaining limits and the one next stage, then end the turn and wait. A reply about one image does not accept the whole package. A generic “continue” applies only to the currently presented immediate next stage, never unseen future work. A whole-MV request is an end goal, not a waiver of these stops.
+
+While waiting, revise only the current stage or perform authorized technical checks; never batch later shots in the background. Separate `workflow.packages` and `workflow.approvals` from `content_confirmation` and overall production scope. Bind actual files and real user replies to their specific stage/revision. Other animation/generation/rendering skills are subordinate adapters and may not advance the phase. `project_contracts.py promote` records agent review only and never supplies a user decision.
+
+Reuse previous accepted stages and resume at the earliest affected one. Material story/design/sample changes reopen that stage and dependent work; ordinary bug fixes within the accepted design need evidence rechecks, not another creative interview. A detailed direct request can eliminate redundant discovery, but does not silently accept later artifacts. A user may explicitly waive a named review or combine stages for a short work; retain that exact limited delegation, still create and inspect the required artifacts, and never infer `skip-all` from “make the full MV.” For a short combined pilot/animatic, its clip must cover the entire scope and be recorded in both packages with the explicit stage waiver.
+
+Design scaffolds permit only bounded static frames, no video or frame sequences. Animatics use a genuinely simplified production (bundled limit: longest side 960px, ≤15fps), not a finished movie downscaled afterwards. Existing custom routes must apply the same checks. Unverified artistic or song claims remain unverified.
 
 ## 硬约束：先确认歌曲理解与具体内容，再制作
 
@@ -19,16 +39,16 @@ Read [song and lyric understanding](references/song-understanding.md) before tra
 
 Reuse a genuinely explicit, already accepted brief and its user evidence without repeating the interview. A direct, fully specified request can establish content when the user clearly instructs that exact concept; do not infer this exception from a generic “go ahead.” Local runtime/skill-maintenance self-tests are isolated verification, never a way to relabel and bypass a requested MV. Missing legacy confirmation must be recovered from actual prior decisions or requested; it is never auto-approved.
 
-Read [execution evidence and stage gates](references/execution-gates.md) before scaffolding/rendering. Schema 4 binds actual lyric/audio/source files, the real user reply and recap revision. The CLI and JavaScript hosts use one local Python contract. Agent-generated records are not authenticated user consent; never fabricate them. Fill hashes and routine fields yourself from inspected inputs, not by asking technical questions of the user. Preserve genuine earlier acceptance through the documented migration path.
+Read [execution evidence and stage gates](references/execution-gates.md) before scaffolding/rendering. Schema 5 retains those input/content bindings and additionally binds design, pilot and animatic user acceptance to actual presented artifacts. The CLI and JavaScript hosts use one local Python contract. Agent-generated records are not authenticated user consent; never fabricate them. Fill hashes and routine fields yourself from inspected inputs, not by asking technical questions of the user. Preserve genuine earlier acceptance through the documented migration path.
 
-For full expansion require an observed representative prototype, then the versioned `project_contracts.py promote` receipt. Inspect project-specific acting/story/meaning/text/glyph criteria and retain unresolved artistic defects. Full-line captions require complete canonical line coverage and reviewed timing; Chinese full captions require the selected font's actual glyph check. These records support review rather than certify taste. Check [capability status](assets/capability-matrix.json) before claiming an engine or real-song result has been verified.
+For full expansion require the representative technical prototype receipt AND the separate user approvals of design/script, sample and complete rough animatic. Inspect project-specific acting/story/meaning/text/glyph criteria and retain unresolved artistic defects. Full-line captions require complete canonical line coverage and reviewed timing; Chinese full captions require the selected font's actual glyph check. These records support review rather than certify taste. Check [capability status](assets/capability-matrix.json) before claiming an engine or real-song result has been verified.
 
 ## Choose the mode and recover decisions
 
 Read the current request, provided references, accepted decisions and project files. Reuse `brief.json`, `DECISIONS.md`, `PROPOSAL.md` and the latest render when available. Do not re-interview an already specified project or import another project's preferences.
 
 - For an unclear new request, enter discovery. Ask a few useful questions, then adapt the next round to the answers.
-- For a plan-only request, finish with a concrete proposal and necessary execution information; do not scaffold a project or start rendering.
+- For a plan-only request, deliver only the requested plan/design material. Explicitly requested static design previews may use the design workspace, but no motion/video production.
 - For a fully specified request to make the video, verify the content/song-meaning confirmation and the exact authorized scope, then proceed. Preserve real earlier acceptance; a general production request alone does not satisfy the hard content gate.
 - For revisions, inspect the actual artifact and the changed requirement, update affected decisions, preserve accepted work and fix within scope.
 
@@ -65,9 +85,9 @@ Present:
 
 Use `scripts/check_brief.py <brief.json> --for proposal` for a structural completeness check when a brief file exists. It cannot decide whether the user likes the plan.
 
-After a useful agreed direction, read [project contracts](references/production-contracts.md). Establish a project-specific `visual-spec.json` from the selected design, with stable cast/type/space rules, locked choices and actual rendered evidence as relevant. Use `scripts/project_contracts.py init --project <project-dir>` to create only missing neutral records. Let the agent fill routine technical details; do not turn templates into more interview questions.
+After a useful agreed direction, read [project contracts](references/production-contracts.md). Establish a project-specific `visual-spec.json` from the selected design, with stable cast/type/space rules, locked choices and actual rendered evidence as relevant. Use `scripts/project_contracts.py init --project <project-dir>` to create only missing neutral records. Also use the stage package/approval and full script templates linked in user-stage-review.md; never fill later-stage acceptance while the user has only confirmed direction. Let the agent fill routine technical details; do not turn templates into more interview questions.
 
-If the user asked only to explore or plan, deliver the proposal and end that stage. For unresolved content/meaning/taste, ask the next specific question and wait. Once the content gate is satisfied, continue only within the scope actually authorized: study, prototype or full. An approved short prototype never becomes full-song authorization by itself. Existing explicit acceptance can satisfy the gate; repeated routine approval questions are unnecessary.
+If the user asked only to explore or plan, deliver the requested proposal/static design material and end that stage. For unresolved content/meaning/taste, ask the next specific question and wait. Once the content gate is satisfied, enter design only; advance through the user-stage reviews within the eventual requested scope. An approved short prototype never becomes full-song authorization by itself. Reuse actual acceptance of the same presented artifact revision; do not re-ask it. Required later artifact reviews are separate decisions, not redundant questions.
 
 ## Choose the route after the style
 
@@ -81,7 +101,7 @@ Use one main host per project. Consult `assets/engines.json` for the distinction
 
 For a selected Remotion route, consult the official Remotion skills/documentation for composition, captions, preview and rendering as needed; do not install or combine another host merely because it is mentioned upstream. Measure representative frame cost and output size before making a long-film estimate.
 
-For a new authorized prototype, select the engine explicitly:
+After direction acceptance, select the engine and create a design workspace with `scaffold.py --phase design`. Render only static frames. After the complete design/script package has been shown and accepted, continue the same workspace in `phase:prototype`; a new authorized prototype can also be scaffolded from that bound design package:
 
 ```bash
 python3 <skill-dir>/scripts/check_brief.py <confirmed-brief.json> --for prototype
@@ -117,7 +137,7 @@ Read [optional components](references/components.md) before reusing the original
 
 For relevant character or semantic work, read [performance and lyric meaning](references/performance-and-meaning.md). Prove gaze, reaction, preparation, action and settle in the chosen design. Track a lyric object's visible role and transition geometry instead of decorating every line with an unrelated symbol. Narrative and literal lyric illustration are optional, not global requirements.
 
-Read [review and bounded repair](references/review-and-repair.md). Record actual observations, target/source hashes, relevant checks and timestamped issues in `review.json`. Satisfy the representative prototype's relevant checks before expanding affected work. Preserve accepted shots, propagate repairs only through declared shared assets, render affected intervals with adjacent joins and compare before/after. Do not silently weaken a locked requirement. These are work-quality checkpoints, not repeated permission questions.
+Read [review and bounded repair](references/review-and-repair.md). Record actual observations, target/source hashes, relevant checks and timestamped issues in `review.json`. Satisfy the representative prototype's relevant checks before expanding affected work. Preserve accepted shots, propagate repairs only through declared shared assets, render affected intervals with adjacent joins and compare before/after. Do not silently weaken a locked requirement. These are AI quality checks in addition to the mandatory artifact-specific user reviews; they cannot replace them.
 
 Read [native range, resume and cost controls](references/native-incremental.md) for bounded CPU rerenders, source-bound frame reuse and actual frame/disk estimates. Exported repair clips still need validated integration into the master.
 
@@ -142,6 +162,6 @@ Use `scripts/export_skill.py --dest <export-parent>` to make a portable `storybo
 
 Run `scripts/verify_portable.py <exported-skill-directory>` to verify the versioned complete export. Then run the selected destination runtime's actual self-test; do not reuse another host's success as compatibility evidence. See [runtime verification](references/runtime-portability.md) for the playable Canvas2D test and receipt scope.
 
-For a delegated task, provide the agreed brief, decisions, current phase, visual specification, shot map, latest review/issues, selected route/runtime, inputs, file ownership, deliverable and acceptance criteria. Follow the host's delegation policy. Another agent must not restart discovery, choose a different style or claim it inherits hidden chat memory.
+For a delegated task, provide the agreed brief, decisions, current phase, presented package revisions and real user approvals/waivers, visual specification, shot map, latest review/issues, selected route/runtime, inputs, file ownership, deliverable and acceptance criteria. Follow the host's delegation policy. Another agent must not restart discovery, choose a different style or claim it inherits hidden chat memory.
 
 Keep one coordinator responsible for seams and final verification when a team is authorized. Do not automatically publish or message third parties.
