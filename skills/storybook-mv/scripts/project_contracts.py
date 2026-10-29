@@ -21,7 +21,7 @@ def digest(path):
 
 def fingerprint(project):
     files = []
-    for name in ('src', 'data', 'assets', 'visual-spec.json', 'package.json', 'package-lock.json', 'render_canvas.mjs', 'render.mjs', 'studio.html', 'production_gate.mjs'):
+    for name in ('src', 'data', 'assets', 'visual-spec.json', 'package.json', 'package-lock.json', 'render_canvas.mjs', 'render.mjs', 'studio.html', 'production_gate.mjs', 'check_brief.py', 'input_contracts.py', 'pilot_gate.py', 'project_contracts.py'):
         p = project/name
         if p.is_symlink():
             raise ValueError('resolve input symlinks explicitly')
@@ -87,6 +87,11 @@ def initialize(project, root):
             obj['locked_choices'] = [{'path': x, 'value': field(brief, x)} for x in brief.get('confirmed_fields', []) if isinstance(x, str)]
             if field(brief, 'lyrics.mode') not in (None, 'none'):
                 obj['required_checks'].append('text')
+                if str(field(brief,'lyrics.language')).lower().startswith(('zh','chinese')):
+                    obj['required_checks'].append('glyphs')
+            if field(brief,'structure.mode')=='narrative':obj['required_checks'].append('story')
+            if field(brief,'music.kind')=='lyrical':obj['required_checks'].append('meaning')
+            if field(brief,'characters.required'):obj['required_checks'].append('acting')
         write(dest, obj)
         made.append(dest.name)
     return {'created': made, 'preserved': kept, 'note': 'Templates contain unresolved fields; fill from agreed decisions and actual evidence, without re-interviewing routine details.'}
@@ -244,6 +249,12 @@ def inspect(project, stage):
             continue
         by_id[item['id']] = item
     required = set(spec.get('required_checks') or []) | {'composition', 'style', 'motion', 'continuity', 'music'}
+    if field(brief,'lyrics.mode') not in (None,'none'):
+        required.add('text')
+        if str(field(brief,'lyrics.language')).lower().startswith(('zh','chinese')):required.add('glyphs')
+    if field(brief,'structure.mode')=='narrative':required.add('story')
+    if field(brief,'music.kind')=='lyrical':required.add('meaning')
+    if field(brief,'characters.required'):required.add('acting')
     for key in sorted(required):
         item = by_id.get(key, {})
         if item.get('status') not in ('pass', 'not_applicable') or not isinstance(item.get('notes'),str) or not item['notes'].strip():
@@ -323,7 +334,7 @@ def repair(project, margin):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('action', choices=('init', 'check', 'repair', 'fingerprint'))
+    p.add_argument('action', choices=('init', 'check', 'repair', 'fingerprint', 'promote'))
     p.add_argument('--project', type=Path, required=True)
     p.add_argument('--stage', choices=('design', 'prototype', 'full'), default='prototype')
     p.add_argument('--margin', type=float, default=.25)
@@ -346,6 +357,9 @@ def main():
             result = inspect(project, a.stage)
         elif a.action == 'repair':
             result = repair(project, a.margin)
+        elif a.action == 'promote':
+            from pilot_gate import promote
+            result = promote(project)
         else:
             result = {'input_digest': fingerprint(project)}
         if output_path:

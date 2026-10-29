@@ -7,7 +7,8 @@ import math
 import shutil
 import subprocess
 from pathlib import Path
-from check_brief import production_gate
+from check_brief import entry_errors, aspect_parts
+from input_contracts import sha
 
 
 def main():
@@ -37,7 +38,7 @@ def main():
     else:
         if not a.brief:
             p.error('confirmed user content and scoped authorization are required: provide --brief; three basic answers are not production approval')
-        blocked = production_gate(brief, 'prototype', a.duration)
+        blocked = entry_errors(brief, a.brief.resolve().parent, 'prototype', a.duration)
         if blocked:
             p.error('Production blocked: '+'; '.join(blocked))
     for section in ('execution', 'output', 'style', 'lyrics'):
@@ -62,12 +63,16 @@ def main():
         width, height = a.width, a.height
     elif isinstance(resolution, list) and len(resolution) == 2:
         width, height = resolution
-    elif output.get('aspect_ratio') == '9:16':
-        width, height = 1080, 1920
     else:
-        width, height = 1920, 1080
+        ra,rb=aspect_parts(output.get('aspect_ratio') or ('16:9' if a.tool_self_test else None))
+        unit=max(2,math.ceil((1920 if ra<rb else 1080)/rb/2)*2)
+        width,height=ra*unit,rb*unit
     if not all(isinstance(x, int) and x > 0 and x % 2 == 0 for x in (width, height)):
         p.error('prototype dimensions must be positive even integers')
+    if not a.tool_self_test:
+        ra,rb=aspect_parts(output.get('aspect_ratio'))
+        if width*rb!=height*ra:
+            p.error('resolution conflicts with the approved aspect ratio')
     target = a.project.expanduser().resolve()
     if target == root or root in target.parents:
         p.error('project output must be outside the installed skill')
@@ -92,7 +97,26 @@ def main():
     (target / 'brief.json').write_text(json.dumps(brief, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     config = {'duration': a.duration, 'width': width, 'height': height, 'fps': a.fps, 'bpm': 120, 'offset': 0, 'boil': 0, 'prototype': True, 'bpmMeasured': False}
     (target / 'src/config.js').write_text('// Prototype dimensions/timing are not a verified song plan.\nconst PROJECT = ' + json.dumps(config) + ';\nglobalThis.STORY_LYRICS_MODE = ' + json.dumps((brief.get('lyrics') or {}).get('mode') or 'unset') + ';\n', encoding='utf-8')
-    shutil.copy2(root/'scripts/production_gate.mjs',target/'production_gate.mjs')
+    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py'):
+        shutil.copy2(root/'scripts'/name,target/name)
+    if not a.tool_self_test:
+        # Relocate only explicitly referenced, digest-checked inputs; preserve
+        # source attribution strings and content hashes across project handoff.
+        base=a.brief.resolve().parent
+        records=[brief['content_confirmation'].get('record'),brief.get('song_reading',{}).get('lyrics_document'),brief.get('lyrics',{}).get('display_document'),brief.get('lyrics',{}).get('font'),brief.get('lyrics',{}).get('glyph_review')]
+        records += [x.get('snapshot') for x in brief.get('song_reading',{}).get('sources',[]) if isinstance(x,dict)]
+        if brief.get('music',{}).get('audio'):
+            records.append({'path':brief['music']['audio'],'sha256':brief['music'].get('audio_sha256'),'_audio':True})
+        for i,record in enumerate(records):
+            if not isinstance(record,dict) or not record.get('path'):continue
+            source=Path(record['path']).expanduser()
+            if not source.is_absolute():source=base/source
+            dest=target/'assets'/('input-'+str(i)+source.suffix)
+            shutil.copy2(source,dest)
+            rel=dest.relative_to(target).as_posix()
+            if record.get('_audio'):brief['music']['audio']=rel
+            else:record['path']=rel
+        (target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n')
     renderer = target / 'render.mjs'
     renderer.write_text(renderer.read_text(encoding='utf-8').replace('args.fps || 30', 'args.fps || ' + str(a.fps)), encoding='utf-8')
     html = target / 'studio.html'
