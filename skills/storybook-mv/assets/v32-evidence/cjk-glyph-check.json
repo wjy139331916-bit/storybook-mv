@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "font_sha256": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9",
+  "text_document_sha256": "36a47b59c1ed007750d6dec932d50d110a7f90c9ea07febab53f7d6ca79b61e7",
+  "family": "Noto Sans SC",
+  "checked_characters": 46,
+  "missing": [],
+  "ok": true,
+  "scope": "Actual font cmap coverage only; inspect rendered glyph shapes, size, contrast and reading time separately."
+}

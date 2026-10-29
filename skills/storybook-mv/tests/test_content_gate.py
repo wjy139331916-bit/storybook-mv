@@ -1,5 +1,6 @@
 """Synthetic records exercise hard content/meaning/scope gates; they assert no real consent."""
 import copy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -15,7 +16,7 @@ from check_brief import content_digest, production_gate, song_reading_errors
 
 def agreed_fixture():
     b=json.loads((ROOT/'assets/brief.template.json').read_text())
-    b.update(goal='synthetic original time study',emotion='curiosity',asset_policy='all-code')
+    b.update(goal='synthetic original time study',emotion='curiosity',asset_policy='all-code',phase='prototype',request_mode='production')
     b['music'].update(source='none',kind='none',scope='six-second silent fixture')
     b['style'].update(direction='flat',medium='Canvas',motion='reusable strokes')
     b['characters'].update(required=False,roles=[])
@@ -31,9 +32,18 @@ def agreed_fixture():
 
 def lyrical_fixture():
     b=agreed_fixture();b['music'].update(kind='lyrical',title='Original unit-test song',artist='Synthetic fixture',version='test mix')
+    b['song_reading']['lyrics_document']={'path':str(ROOT/'tests/fixtures/original-lyrics.json'),'sha256':hashlib.sha256((ROOT/'tests/fixtures/original-lyrics.json').read_bytes()).hexdigest()}
     b['song_reading'].update(status='clarified',recording_basis='synthetic unit-test source',lyrics_status='provided',lyrics_source='original fixture cue file',central_meaning='a speaker notices hope after difficulty',intent_basis='text_interpretation',evidence=[{'cue_ids':['line-1','line-2'],'observation':'original fixture contrasts darkness and a visible light'}],needs_user_selection=True,options=[{'id':'hope','reading':'renewed hope'},{'id':'memory','reading':'remembered comfort'}],selected_direction='hope',user_selection_evidence='Synthetic test user selected hope')
     b['content_confirmation']['content_sha256']=content_digest(b)
     return b
+
+
+def bind_confirmation(brief,folder):
+    """Synthetic test messages only; never asserts real user acceptance."""
+    record=Path(folder)/'synthetic-confirmation.json'
+    record.write_text(json.dumps({'origin':'user-message','message_id':'synthetic-fixture-message','user_reply':'Synthetic unit fixture accepts this exact concept','recap_id':'fixture-recap','accepted_content_sha256':content_digest(brief)}))
+    brief['content_confirmation']['record']={'path':str(record),'sha256':hashlib.sha256(record.read_bytes()).hexdigest()}
+    return record
 
 
 class ContentGateTests(unittest.TestCase):
@@ -123,13 +133,13 @@ class ContentGateTests(unittest.TestCase):
         for name in ('canvas-template','painted-template'):
             self.assertEqual(original,(ROOT/'assets'/name/'production_gate.mjs').read_bytes())
             code=(ROOT/'assets'/name/'render.mjs').read_text()
-            self.assertIn('assertProduction(process.cwd())',code)
+            self.assertIn('assertProduction(process.cwd(),',code)
             self.assertGreaterEqual(code.count('assertProduction('),5)
 
     @unittest.skipUnless(os.environ.get('MV_CANVAS_MODULE'),'optional native Canvas dependency not selected')
     def test_confirmed_bounded_user_prototype_reaches_a_real_encode(self):
         with tempfile.TemporaryDirectory() as folder:
-            p=Path(folder);brief=agreed_fixture();(p/'brief.json').write_text(json.dumps(brief))
+            p=Path(folder);brief=agreed_fixture();bind_confirmation(brief,p);(p/'brief.json').write_text(json.dumps(brief))
             project=p/'project'
             subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(project),'--engine','canvas2d','--brief',str(p/'brief.json'),'--duration','2','--width','1280','--height','720','--fps','12'],check=True,capture_output=True,text=True)
             (project/'src/scene.js').write_bytes((ROOT/'assets/style-packs/time-clock.js').read_bytes())

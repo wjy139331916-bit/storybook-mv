@@ -5,18 +5,22 @@ import hashlib
 import json
 import math
 from pathlib import Path
+from fractions import Fraction
+from input_contracts import content_digest, reading_evidence_errors, confirmation_errors, media_errors, subtitle_errors, bound_file
 
 
-def content_digest(brief):
-    payload = {k: brief.get(k) for k in ('content', 'structure', 'characters')}
-    payload['lyrics_mode'] = (brief.get('lyrics') or {}).get('mode')
-    music, reading = brief.get('music') or {}, brief.get('song_reading') or {}
-    payload['song_basis'] = {k: music.get(k) for k in ('title','artist','version','kind')}
-    payload['song_meaning'] = {k: reading.get(k) for k in ('central_meaning','intent_basis','selected_direction','lyrics_source')}
-    return hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+def aspect_parts(value):
+    try:
+        a,b = str(value).split(':')
+        ratio = Fraction(a)/Fraction(b)
+        if ratio <= 0 or max(ratio.numerator, ratio.denominator)>1000:
+            raise ValueError()
+        return ratio.numerator, ratio.denominator
+    except (ValueError, ZeroDivisionError):
+        raise ValueError('aspect_ratio must be a positive numeric ratio such as 16:9, 1:1 or 4:3')
 
 
-def song_reading_errors(brief):
+def song_reading_errors(brief, project=None):
     music, reading = brief.get('music') or {}, brief.get('song_reading') or {}
     errors = []
     kind = music.get('kind')
@@ -49,10 +53,11 @@ def song_reading_errors(brief):
             errors.append('selected song interpretation is not among the recorded options')
     if any(isinstance(x,dict) and x.get('selection_required') and not x.get('resolved') for x in reading.get('uncertainties') or []):
         errors.append('material song-meaning uncertainty is still unresolved')
+    errors += reading_evidence_errors(brief, project)
     return errors
 
 
-def production_gate(brief, purpose='prototype', duration=None):
+def production_gate(brief, purpose='prototype', duration=None, project=None, audio=None):
     """Check recorded confirmation, not whether the alleged user evidence is truthful."""
     execution = brief.get('execution') or {}
     if execution.get('context') == 'tool-self-test':
@@ -67,7 +72,13 @@ def production_gate(brief, purpose='prototype', duration=None):
         if duration is not None and (not isinstance(duration,(int,float)) or isinstance(duration,bool) or not math.isfinite(duration) or not 0 < duration <= 60):
             errors.append('isolated tool self-tests are limited to 60 seconds')
         return errors
-    errors = song_reading_errors(brief)
+    errors = song_reading_errors(brief, project)
+    if brief.get('request_mode') in ('plan-only','explore') or brief.get('phase') in (None,'discover','proposal','awaiting-confirmation'):
+        errors.append('STAGE_BLOCKED: discovery/planning must not run production')
+    if purpose == 'production' and brief.get('phase') not in ('full','repair','deliver'):
+        errors.append('full production requires the explicit full/repair stage')
+    if purpose == 'prototype' and brief.get('phase') not in ('study','prototype','full','repair','deliver'):
+        errors.append('select the authorized study/prototype stage before rendering')
     content = brief.get('content') or {}
     for key in ('subject', 'core_idea'):
         if not isinstance(content.get(key),str) or not content[key].strip():
@@ -97,6 +108,16 @@ def production_gate(brief, purpose='prototype', duration=None):
         errors.append('render duration exceeds the authorized duration')
     if purpose == 'production' and isinstance(moments,list) and len(moments)<3:
         errors.append('full video needs an established beginning, development and ending/loop behavior')
+    if purpose == 'prototype':
+        pilot_cap = (brief.get('prototype') or {}).get('duration', cap)
+        if duration is not None and isinstance(pilot_cap,(int,float)) and duration > pilot_cap+.125:
+            errors.append('render exceeds the separately bounded prototype duration')
+    errors += confirmation_errors(brief, project)
+    errors += media_errors(brief, project, purpose, audio)
+    errors += subtitle_errors(brief, project, purpose)
+    for key in ('font','glyph_review'):
+        record=(brief.get('lyrics') or {}).get(key)
+        if record is not None:bound_file(project,record,'selected text '+key,errors)
     return errors
 
 
@@ -129,8 +150,16 @@ def check(brief, project=None):
         for q in questions:
             if isinstance(q, dict) and q.get('blocking') and not q.get('resolved'):
                 missing.append('unresolved: ' + str(q.get('question', q.get('field', 'material question'))))
-    prototype = list(missing) + production_gate(brief, 'prototype')
-    production = list(missing) + production_gate(brief, 'production')
+    if value('output.aspect_ratio'):
+        try:
+            a,b=aspect_parts(value('output.aspect_ratio'))
+            resolution=value('output.resolution')
+            if resolution is not None and (not isinstance(resolution,list) or len(resolution)!=2 or not all(isinstance(x,int) and not isinstance(x,bool) and x>0 and x%2==0 for x in resolution) or resolution[0]*b!=resolution[1]*a):
+                missing.append('resolution conflicts with the selected aspect ratio')
+        except ValueError as exc:
+            missing.append(str(exc))
+    prototype = list(missing) + production_gate(brief, 'prototype', project=project)
+    production = list(missing) + production_gate(brief, 'production', project=project)
     source = value('music.source')
     if source and source != 'none':
         audio = value('music.audio')
@@ -145,13 +174,49 @@ def check(brief, project=None):
     return {'ready_to_propose': not missing, 'missing_for_proposal': missing, 'ready_for_prototype': not prototype, 'missing_for_prototype': prototype, 'ready_for_full_production': not production, 'missing_for_full_production': production, 'content_sha256': content_digest(brief), 'scope': 'Recorded content confirmation and scoped authorization plus structural checks. User evidence must be truthful; no aesthetic/runtime certification.'}
 
 
+def entry_errors(brief, project, purpose=None, duration=None, audio=None, resolution=None, fps=None, timeline_duration=None):
+    """One authority shared by the CLI and both JavaScript rendering adapters."""
+    purpose=purpose or ('production' if brief.get('phase') in ('full','repair','deliver') else 'prototype')
+    result=check(brief,project)
+    if (brief.get('execution') or {}).get('context')=='tool-self-test':
+        return production_gate(brief,purpose,duration,project,audio)
+    errors=list(result['missing_for_proposal'])+production_gate(brief,purpose,duration,project,audio)
+    selected=brief.get('output') or {}
+    if resolution is not None and selected.get('resolution') is not None and resolution!=selected['resolution']:
+        errors.append('render dimensions differ from the approved output')
+    if fps is not None and selected.get('fps') is not None and fps!=selected['fps']:
+        errors.append('render fps differs from the approved output')
+    if purpose=='production':
+        from pilot_gate import pilot_errors
+        errors += pilot_errors(Path(project),brief)
+        if timeline_duration is not None and (brief.get('music') or {}).get('audio'):
+            import subprocess
+            path=Path(brief['music']['audio']);path=path if path.is_absolute() else Path(project)/path
+            try:
+                measured=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(path)],stderr=subprocess.PIPE,text=True))
+                if abs(measured-timeline_duration)>.125:errors.append('full timeline duration differs from the selected recording')
+            except (OSError,ValueError,subprocess.SubprocessError):errors.append('selected recording cannot be measured')
+    return list(dict.fromkeys(errors))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('brief', type=Path)
+    p.add_argument('brief', type=Path, nargs='?')
+    p.add_argument('--bridge', choices=('digest','song','gate','entry'))
     p.add_argument('--for', dest='purpose', choices=('proposal', 'prototype', 'production'), default='proposal')
     p.add_argument('--content-digest', action='store_true', help='print current content digest; does NOT confirm content or grant authorization')
     a = p.parse_args()
     try:
+        if a.bridge:
+            import sys
+            envelope=json.load(sys.stdin);data=envelope['brief'];o=envelope.get('options') or {}
+            if a.bridge=='digest':result=content_digest(data)
+            elif a.bridge=='song':result=song_reading_errors(data,o.get('project'))
+            elif a.bridge=='entry':result=entry_errors(data,o['project'],o.get('purpose'),o.get('duration'),o.get('audio'),o.get('resolution'),o.get('fps'),o.get('timeline_duration'))
+            else:result=production_gate(data,o.get('purpose','prototype'),o.get('duration'),o.get('project'),o.get('audio'))
+            print(json.dumps(result,ensure_ascii=False));return 0
+        if a.brief is None:
+            p.error('provide a brief file')
         data = json.loads(a.brief.read_text(encoding='utf-8'))
         if not isinstance(data, dict):
             raise ValueError('brief must be an object')
@@ -159,7 +224,11 @@ def main():
             print(content_digest(data))
             return 0
         result = check(data, a.brief.resolve().parent)
-    except (OSError, ValueError) as exc:
+        if a.purpose!='proposal':
+            blocked=entry_errors(data,a.brief.resolve().parent,a.purpose)
+            k='prototype' if a.purpose=='prototype' else 'full_production'
+            result['ready_for_'+k]=not blocked;result['missing_for_'+k]=blocked
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
         p.error(str(exc))
     print(json.dumps(result, ensure_ascii=False, indent=2))
     key = {'proposal':'ready_to_propose','prototype':'ready_for_prototype','production':'ready_for_full_production'}[a.purpose]

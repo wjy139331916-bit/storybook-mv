@@ -37,6 +37,7 @@ def main():
     if runtime == 'node-canvas' and engine != 'canvas2d':
         p.error('node-canvas is an optional canvas2d runtime only; it does not test p5, WebGL or another engine')
     required = ['ffmpeg', 'ffprobe']
+    dependencies_python = {'interpreter': __import__('sys').executable, 'major': __import__('sys').version_info.major}
     if engine in ('painted-p5', 'canvas2d', 'remotion', 'threejs'):
         required += ['node', 'npm']
     if engine == 'blender':
@@ -91,7 +92,7 @@ def main():
     guide_only = engine in ('remotion', 'threejs', 'blender', 'custom')
     if guide_only:
         missing.append('backend-specific executable probe is not bundled; verify the chosen adapter separately')
-    result = {'ready': not missing, 'engine': engine, 'runtime': runtime, 'template_support': 'guide-only' if guide_only else ('bundled' if engine else 'unselected'), 'tools': tools, 'chrome': chrome, 'project_dependencies': dependencies, 'python_media': python_media, 'chinese_font': font, 'missing': missing, 'scope': 'prerequisites and optional 2x2 CPU-canvas probe only; run runtime_smoke.py for an encoded sample. No project aesthetics or real-song sync was verified'}
+    result = {'ready': not missing, 'engine': engine, 'runtime': runtime, 'template_support': 'guide-only' if guide_only else ('bundled' if engine else 'unselected'), 'tools': tools, 'chrome': chrome, 'project_dependencies': dependencies, 'shared_contract_python':dependencies_python, 'python_media': python_media, 'chinese_font': font, 'missing': missing, 'scope': 'prerequisites and optional 2x2 CPU-canvas probe only; run runtime_smoke.py for an encoded sample. No project aesthetics or real-song sync was verified'}
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 2 if a.strict and missing else 0
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "project": null,
   "request_mode": "plan-first",
   "phase": "discover",
@@ -12,7 +12,8 @@
     "duration": null,
     "artist": null,
     "version": null,
-    "kind": null
+    "kind": null,
+    "audio_sha256": null
   },
   "style": {
     "direction": null,
@@ -39,7 +40,10 @@
   },
   "lyrics": {
     "mode": null,
-    "language": null
+    "language": null,
+    "display_document": null,
+    "font": null,
+    "glyph_review": null
   },
   "constraints": {
     "budget": null,
@@ -69,7 +73,9 @@
     "status": "pending",
     "summary": null,
     "user_evidence": null,
-    "content_sha256": null
+    "content_sha256": null,
+    "digest_version": 2,
+    "record": null
   },
   "song_reading": {
     "status": "pending",
@@ -85,6 +91,7 @@
     "options": [],
     "needs_user_selection": false,
     "selected_direction": null,
-    "user_selection_evidence": null
+    "user_selection_evidence": null,
+    "lyrics_document": null
   }
 }

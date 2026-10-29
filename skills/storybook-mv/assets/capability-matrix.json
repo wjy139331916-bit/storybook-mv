@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "toolkit_version": "3.2.0",
+  "meaning": "Status describes named evidence and its limits, not universal compatibility or aesthetic acceptance.",
+  "capabilities": [
+    {
+      "id": "adaptive-content-discovery",
+      "status": "implemented",
+      "evidence": "SKILL.md; references/discovery.md; prior independent basic/ambiguous-song tasks; current forward tasks recorded separately",
+      "limits": "No fixed round count; the agent must ground actual acceptance."
+    },
+    {
+      "id": "bound-content-meaning-stage-contract",
+      "status": "implemented",
+      "evidence": "tests/test_content_gate.py; tests/test_execution_v32.py",
+      "limits": "Checks records and local identities; cannot authenticate an invented message or prove interpretation is correct."
+    },
+    {
+      "id": "native-ranges-resume-cost",
+      "status": "implemented",
+      "evidence": "scripts/render_canvas.mjs; tests/test_execution_v32.py",
+      "limits": "Exports source intervals and validates frame reuse; does not automatically splice a repaired master or predict model billing."
+    },
+    {
+      "id": "complete-lyric-coverage",
+      "status": "implemented",
+      "evidence": "scripts/input_contracts.py; tests/test_execution_v32.py",
+      "limits": "Compares canonical occurrence IDs/text and reviewed timing records; actual listening remains required."
+    },
+    {
+      "id": "selected-font-cmap",
+      "status": "implemented",
+      "evidence": "scripts/font_check.py; tests/test_execution_v32.py",
+      "limits": "Actual cmap coverage, not proof of appearance, placement or reading comfort."
+    },
+    {
+      "id": "original-Chinese-caption-native-probe",
+      "status": "verified_scoped",
+      "evidence": "verification-v32.json; v32-evidence/cjk-board.png",
+      "limits": "18s original instrumental and Chinese captions with the selected regular font; no real singing or artistic acceptance."
+    },
+    {
+      "id": "native-canvas-original-studies",
+      "status": "verified_scoped",
+      "evidence": "assets/style-packs/verification.json; assets/studies/verification.json",
+      "limits": "Original 8s style studies, 30s instrumental scenic example and bounded graphic examples; receipts retain their actual build versions."
+    },
+    {
+      "id": "complex-character-performance",
+      "status": "partial",
+      "evidence": "assets/modules/acting.js; references/character-review.md",
+      "limits": "Limited stylized gaze/gesture/contact helpers; no universal realistic rig, rear/360 acting or automatic choreography."
+    },
+    {
+      "id": "word-to-object-transformations",
+      "status": "example_specific",
+      "evidence": "assets/style-packs/time-clock.js; time-verification.json",
+      "limits": "TIME-clock correspondence is implemented; arbitrary Chinese outline/semantic conversion is project work."
+    },
+    {
+      "id": "full-real-Chinese-sung-story-MV",
+      "status": "not_verified",
+      "evidence": null,
+      "limits": "No complete real sung recording, line-by-line listening and finished relationship-story acceptance evidence is supplied by this toolkit."
+    },
+    {
+      "id": "browser-player-p5-WebGL",
+      "status": "not_verified_in_this_environment",
+      "evidence": "tests/player_browser.mjs; references/runtime-portability.md",
+      "limits": "Templates/optional tests exist; CPU results are not browser/p5 compatibility evidence. Respect preview policy."
+    },
+    {
+      "id": "Windows-and-other-agent-hosts",
+      "status": "destination_test_required",
+      "evidence": "references/agent-interop.md; scripts/runtime_smoke.py",
+      "limits": "Complete-directory portability is tested; actual destination Python, renderer, fonts and tools must be exercised."
+    }
+  ],
+  "current_receipt": "verification-v32.json"
+}

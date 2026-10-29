@@ -44,7 +44,7 @@ def parse_lrc(text, duration, offset=0):
     for i, (start, line) in enumerate(unique):
         end = unique[i + 1][0] if i + 1 < len(unique) else duration
         if line:
-            cues.append({'start': round(start, 6), 'end': round(end, 6), 'text': line})
+            cues.append({'id':f'line-{len(cues)+1:03d}', 'start': round(start, 6), 'end': round(end, 6), 'text': line})
     if not cues:
         raise ValueError('no timestamped nonempty lyric lines found')
     warnings = ['Cue ends are provisional; check silence, holds and final release by ear.']

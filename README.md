@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.1.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.2.0**。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -29,6 +29,16 @@
 
 制作还须有明确范围：同意短样片不能自动扩大成全曲。脚本会检查内容确认记录、所选歌曲理解和时长上限；旧项目缺少确认记录时不会自动放行。记录必须来自真实用户回复，不能为了通过检查自行填成“已确认”。
 
+## 3.2 的执行检查
+
+- 歌词解读绑定实际歌词文件、可追溯行号和来源快照；作者本意需有已检查的原始来源。
+- 内容确认绑定真实用户回复和方案版本；规划状态、缺失音频、错误音轨与过期记录会拦截制作。
+- Python 与 JavaScript 制作入口共用同一套校验，修复数值表示导致的确认误判和非横屏画幅错误。
+- 整曲扩展前检查实际样片与评审回执；完整字幕检查漏句、重复、顺序、文本、复核状态和所选中文字体的实际字形覆盖。
+- 原生 Canvas 支持时间范围导出、校验后的断点续渲染、实测耗时/缓存估算与预算上限。
+
+这些检查不能认证伪造的用户回复、代替理解歌词或保证审美。具体协议见 [执行检查](skills/storybook-mv/references/execution-gates.md)、[局部渲染](skills/storybook-mv/references/native-incremental.md) 和 [能力状态](skills/storybook-mv/assets/capability-matrix.json)。相关记录由 agent 根据实际对话和文件填写，无需让使用者回答哈希或 JSON 问题。
+
 ## 能做什么
 
 - 自适应提问、参考分析、可行性取舍和具体方案。
@@ -54,7 +64,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 ## 制作依赖
 
-规划阶段不需要安装所有渲染工具。先确定方案和一个主要引擎，再按需准备依赖：
+规划阶段不需要安装所有渲染工具。制作入口使用 Python 3 的统一校验；JavaScript 渲染项目也需要 Python，可用 `MV_PYTHON` 指定解释器。先确定方案和一个主要引擎，再按需准备依赖：
 
 - `canvas2d`：内置空白 Canvas2D 项目，可选择浏览器或可选的 Node Canvas 运行方式。
 - `painted-p5`：内置 p5.js / p5.brush 模板，需要对应包、Chrome、FFmpeg 等依赖。
@@ -70,7 +80,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 版本 3.0.0 增加四种可执行画法、原创完整 30 秒示例、成片与音轨检查工具，以及随仓库分发的回归测试。所有示例都使用原创代码、测试文字和程序合成音乐，不包含个人照片或原歌曲音频。
 
-现有验证主要使用 CPU Canvas2D。浏览器、p5/WebGL、中文字体、任意完整歌曲及艺术效果需要按实际项目分别验证；不能把测试通过当作审美保证。新版示例和实测范围见 [3.0 验证记录](skills/storybook-mv/assets/style-packs/verification.json)，旧版受控研究见 [2.0 记录](skills/storybook-mv/assets/studies/verification.json)。
+现有验证主要使用 CPU Canvas2D。浏览器、p5/WebGL、任意完整歌曲及艺术效果需要按实际项目分别验证；3.2 增加了所选中文字体覆盖及原创中文字幕的局部验证；不能把测试通过当作审美保证。3.2 新增验证见 [3.2 验证记录](skills/storybook-mv/assets/verification-v32.json)。早期示例和实测范围见 [3.0 验证记录](skills/storybook-mv/assets/style-packs/verification.json)，旧版受控研究见 [2.0 记录](skills/storybook-mv/assets/studies/verification.json)。
 
 ## 测试和示例
 
@@ -79,7 +89,7 @@ python3 -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
 python3 -m unittest discover -s skills/storybook-mv/tests -v
 ```
 
-媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 49 项回归测试（包含原生渲染条件下的确认与拦截检查）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。仓库自动检查会运行测试和选定的原生渲染探针。
+媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 78 项回归测试（包含原生渲染条件下的确认与拦截检查）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。仓库自动检查会运行测试和选定的原生渲染探针。
 
 `tests/player_browser.mjs` 提供可选的真实浏览器交互检查，需要 Playwright 与匹配的 Chromium；当前环境未完成该项验证，不能用脚本语法通过替代。
 

@@ -52,3 +52,5 @@ For old projects without the new fields, recover actual accepted content from th
 ## Failure to prevent
 
 User answers: song name, full song, warm 16:9. Incorrect next action: invent two lovers, scaffold 240 seconds and render. Correct next action: ask what the film should show and which evidenced song reading to use; explore the progression, recap the chosen content, wait for confirmation, then enter the authorized next stage.
+
+Schema 4 also requires a hash-bound user-reply/recap record at execution, and binds actual canonical lyric/audio bytes. Follow execution-gates.md for format and legacy migration; a format conversion cannot supply missing acceptance.

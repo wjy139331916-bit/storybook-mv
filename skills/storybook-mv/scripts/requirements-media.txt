@@ -1,2 +1,4 @@
 numpy>=1.24,<3
 Pillow>=10,<13
+
+fonttools>=4.58,<5
