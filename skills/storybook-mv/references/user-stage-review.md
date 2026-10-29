@@ -42,6 +42,8 @@ Default stops may be waived only by explicit user instructions identifying which
 
 ## Bind the actual presentation
 
+Install the Python dependencies from `scripts/requirements-media.txt` for actual image-evidence decoding (Pillow); preflight checks this for user projects.
+
 Schema 5 adds `workflow:{schema_version:1,policy:"user-stage-review",packages:{},approvals:{}}`.
 All stage package/approval/artifact paths are relative to the project and their SHA-256 must match. Keep them in a stable `plan/` directory and `out/` artifact revisions. Do not put private project data in this reusable skill.
 

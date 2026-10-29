@@ -25,3 +25,5 @@ The bundled self-test certifies only its limited Canvas2D exercise. For painted-
 Official implementation references: https://github.com/Brooooooklyn/canvas (native Canvas API and platform support), https://pptr.dev/browsers-api (browser management), https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/reset (drawing-state reset). Consult current official documentation when adapting to a new runtime; keep tested versions in the project.
 
 Version 3.2 uses the same Python 3 contract from JavaScript entrypoints; copied projects include its helpers. Select MV_PYTHON explicitly if the destination interpreter is named differently. Native range/resume/estimate behavior is described in native-incremental.md; it is separate from browser compatibility.
+
+Version 3.3 user-stage contracts additionally decode actual design images with Pillow; install `scripts/requirements-media.txt` in the Python interpreter selected by `MV_PYTHON`. Preflight checks Pillow for a real user project even when optional media diagnostics are off. This adds no second rendering engine.
