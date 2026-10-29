@@ -37,7 +37,7 @@ class ToolkitTests(unittest.TestCase):
         p = self.temp/'project'
         p.mkdir()
         brief = json.loads((ROOT/'assets/brief.template.json').read_text())
-        brief.update(goal='original abstract test',emotion='curiosity',asset_policy='all-code')
+        brief.update(goal='original abstract test',emotion='curiosity',asset_policy='all-code',phase='prototype',request_mode='production')
         brief['style'].update(direction='geometric',medium='Canvas',motion='time-based')
         brief['structure'].update(mode='abstract',outline=['circle translates'])
         brief['characters']['required']=False
@@ -52,6 +52,8 @@ class ToolkitTests(unittest.TestCase):
         brief['execution'].update(context='user-project',authorized_scope='full',authorized_duration=6,authorization_evidence='synthetic test-user authorization; not a real user acceptance claim')
         from check_brief import content_digest
         brief['content_confirmation']={'status':'confirmed','summary':'Synthetic fixture: circle appears, moves and settles','user_evidence':'synthetic test-user message inside this unit fixture','content_sha256':content_digest(brief)}
+        from test_content_gate import bind_confirmation
+        bind_confirmation(brief,p)
         (p/'brief.json').write_text(json.dumps(brief))
         C.initialize(p,ROOT)
         spec=C.load(p/'visual-spec.json')
@@ -132,10 +134,12 @@ class ToolkitTests(unittest.TestCase):
 
     def test_full_recording_and_decode(self):
         p=self.fixture();shutil.copy2(self.temp/'runtime-tones.wav',p/'assets.wav')
-        self.edit(p,'brief.json',lambda x:(x['music'].update(source='provided',audio=str(p/'assets.wav')),x['output'].update(resolution=[640,360],fps=30)))
+        self.edit(p,'brief.json',lambda x:(x['music'].update(source='provided',audio=str(p/'assets.wav'),audio_sha256=C.digest(p/'assets.wav')),x['output'].update(resolution=[640,360],fps=30)))
         self.edit(p,'brief.json',lambda x:x['music'].update(kind='instrumental'))
         from check_brief import content_digest
-        self.edit(p,'brief.json',lambda x:x['content_confirmation'].update(content_sha256=content_digest(x)))
+        self.edit(p,'brief.json',lambda x:(x.update(phase='full'),x['content_confirmation'].update(content_sha256=content_digest(x))))
+        from test_content_gate import bind_confirmation
+        b=C.load(p/'brief.json');bind_confirmation(b,p);(p/'brief.json').write_text(json.dumps(b))
         self.edit(p,'shot-map.json',lambda x:x.update(duration_status='recording_measured',audio_sha256=C.digest(p/'assets.wav')))
         self.edit(p,'review.json',lambda x:(x.update(scope='full'),next(c for c in x['checks'] if c['id']=='music').update(status='pass',evidence=['out/prototype.mp4'])))
         result=C.inspect(p,'full');self.assertTrue(result['ok'],result)
