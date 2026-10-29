@@ -1,5 +1,7 @@
 # Other agents, portability and handoff
 
+For project continuation use the review workspace helper linked directly from SKILL.md to derive `plan/STATUS.md` and `plan/status.json` from actual packages, decisions and unresolved issues. The card is a concise starting point, not new acceptance; verify its underlying revisions before continuing. Preserve known limitations and do not restart an already settled interview.
+
 ## Transfer a complete skill
 
 A host-neutral Agent Skill consists of SKILL.md and its referenced scripts, references and assets. The recipient needs the whole directory, with relative paths preserved. A skill name in a chat or a ChatGPT installation alone does not transfer files, tools, subscriptions or private project inputs to another host.

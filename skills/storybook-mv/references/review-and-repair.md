@@ -6,6 +6,10 @@ In `review.json`, record scope (`prototype`/`full`), reviewer and target `{path,
 
 Record checks as `{id,status,notes,evidence}` with status `pass`, `fail`, `unreviewed` or `not_applicable`. Explain non-applicability. Always review composition, style, motion, continuity and music as relevant; text is required when visible lyrics are selected. Add contact, pixel grid, glyphs, materials or another project-specific criterion. A purposeful hold can pass motion review if it supports the chosen language; do not require idle motion everywhere. No arbitrary numerical aesthetic score is a pass criterion.
 
+For explicitly selected mandatory checks and automatically applicable acting/story/meaning/glyph checks, `not_applicable` cannot supply a pass. Remove an obsolete selected criterion only through the actual affected design decision; do not silently exempt it. Silent work may mark music inapplicable; absent visible text may mark text/glyph checks inapplicable.
+
+Temporal passes (`motion`, `acting`, `contact`, `continuity`, `transition[s]`) include an inspected output-time `range:[start,end]` inside the actual encoded video, plus a playable video or a decoded strip. One still is insufficient. A strip uses `review.sequences` entries `{path,sha256,source_sha256,times:[...]}` with at least three increasing source-video output times; bind the actual image and current reviewed video's digest. Produce and inspect consecutive frames at the cadence needed for that action, not a montage of unrelated moments. This verifies record type/identity, not whether an agent actually looked or whether motion is natural.
+
 ```json
 {"id":"contact","status":"fail","notes":"The prop leaves the giver before the receiver touches it.","evidence":["out/check/contact-strip.png","out/prototype.mp4"]}
 ```
