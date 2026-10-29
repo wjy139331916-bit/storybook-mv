@@ -728,5 +728,9 @@
       "user recording relabelled as self-test"
     ],
     "positive_case": "Confirmed, bounded synthetic user-prototype fixture reaches a real 24-frame encode."
+  },
+  "historical_source_snapshot": {
+    "repository_commit": "e821b3659696578053d6a9104d202635b8a0766d",
+    "note": "3.1 toolkit identities and 3.0 media build are historical; current code evidence is assets/verification-v32.json."
   }
 }
