@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.3.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.4.0**。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -29,7 +29,7 @@
 
 制作还须有明确范围：同意短样片不能自动扩大成全曲。脚本会检查内容确认记录、所选歌曲理解和时长上限；旧项目缺少确认记录时不会自动放行。记录必须来自真实用户回复，不能为了通过检查自行填成“已确认”。
 
-## 3.3 的默认运行流程
+## 默认运行流程
 
 **方向确认只放行设计，AI 自检通过不等于使用者验收通过。**
 
@@ -44,6 +44,25 @@
 每次展示后应结束当前轮次并等待回复。“继续”只适用于当前已展示的稿件和下一阶段；先前的完整 MV 目标不能接受尚未出现的稿件。每阶段记录绑定实际文件、版本和真实回复。仅在使用者明确指定时允许有限地跳过某个验收，仍须完成和检查对应工作。
 
 制作入口增加独立设计阶段（只允许静态图）、获准样片区间检查、全曲粗剪范围与低成本规格检查，以及旧项目/跨 agent 的阶段恢复。正常修错无需重问创意方向；实质改动回到受影响的验收点。详细规则见 [逐阶段验收](skills/storybook-mv/references/user-stage-review.md)。
+
+## 3.4：补漏检，统一审片与交接
+
+保留原有三个审片验收点，不增加确认轮数。由 agent 整理技术记录，使用者查看实际作品并回复意见。
+
+| 改进 | 实际行为 |
+|---|---|
+| 样片不能缩水或换区间 | 验收包重新核对视频实际时长、完整获准样片区间、画幅及音轨身份；约定 6 秒的样片不能用 2 秒视频过审 |
+| 必检项不能填“不适用”放行 | 项目选定的接触、动作等必检项需要实际检查；有意静止应审看其作用 |
+| 动态结论需要动态证据 | 动作、表演、接触及转场等需要视频或绑定原视频的连续帧，以及实际审看的时间范围 |
+| 一处审看作品 | 同页展示完整脚本、实际设计图或视频、版本、已知不足与下一阶段；审片页不会自行批准制作 |
+| 跨 agent 状态卡 | 自动推导当前阶段、已确认版本、待修改事项与已知限制；卡片不能替代真实回复和稿件 |
+| 播放兼容与时间点反馈 | 可按需生成同时间轴 WebM 预览并保留原视频；反馈绑定原视频版本，作为待处理意见导入 |
+
+使用 [审片工作区](skills/storybook-mv/references/review-workspace.md) 的 `review_workspace.py present / accept / status / handoff` 整理稿件与真实验收。工具只自动填写机械字段，不能判断或伪造用户同意。对照已认可的设计图检查制作效果，避免无声降低画面质量。
+
+新增三类原创 12 秒机制探针：人物递物、中文文字画面、抽象图形。它们使用代码与原创器乐，展示有限机制，不代表已经完成真实演唱歌曲 MV 或自然人物表演。[验证方法](skills/storybook-mv/references/creative-validation.md) · [3.4 实测记录](skills/storybook-mv/assets/verification-v34.json)
+
+![原创递物机制的连续帧证据](skills/storybook-mv/assets/benchmarks/evidence/contact-strip.png)
 
 ## 保留的输入与执行检查
 
@@ -96,7 +115,9 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 版本 3.0.0 增加四种可执行画法、原创完整 30 秒示例、成片与音轨检查工具，以及随仓库分发的回归测试。所有示例都使用原创代码、测试文字和程序合成音乐，不包含个人照片或原歌曲音频。
 
-现有验证主要使用 CPU Canvas2D。浏览器、p5/WebGL、任意完整歌曲及艺术效果需要按实际项目分别验证；3.2 增加了所选中文字体覆盖及原创中文字幕的局部验证；不能把测试通过当作审美保证。3.3 阶段检查、实际原生制作链和独立 agent 试用见 [3.3 验证记录](skills/storybook-mv/assets/verification-v33.json)。浏览器模板仅新增验证 FFmpeg 编码分支，尚未验证 Chrome/p5 渲染。3.2 的历史验证见 [3.2 验证记录](skills/storybook-mv/assets/verification-v32.json)。早期示例和实测范围见 [3.0 验证记录](skills/storybook-mv/assets/style-packs/verification.json)，旧版受控研究见 [2.0 记录](skills/storybook-mv/assets/studies/verification.json)。
+3.4 已实际运行原生 Canvas 的三类原创机制，以及 Linux Chromium 134 的 Canvas2D 画面和离线审片播放、定位、反馈导出及导入。原视频保留，WebM 是同时间轴的兼容预览。它不等于 p5/WebGL、任意浏览器、完整演唱同步或艺术效果已通过。独立 agent 试用生成了完整 9 秒脚本、8 张静态设计图和状态卡，并停在 design，后续验收为空；最终代码重放的 8 张图均一致。详见 [3.4 验证记录](skills/storybook-mv/assets/verification-v34.json)。
+
+历史记录保持原版本与验证范围：[3.3](skills/storybook-mv/assets/verification-v33.json)、[3.2](skills/storybook-mv/assets/verification-v32.json)、[3.0](skills/storybook-mv/assets/style-packs/verification.json)、[2.0](skills/storybook-mv/assets/studies/verification.json)。不能把技术检查通过当作审美保证。
 
 ## 测试和示例
 
@@ -105,7 +126,11 @@ python3 -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
 python3 -m unittest discover -s skills/storybook-mv/tests -v
 ```
 
-媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 110 项回归测试（包含原生渲染条件下的确认与拦截检查）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。仓库自动检查会运行测试和选定的原生渲染探针。
+媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 135 项回归测试，零跳过（包含所选原生适配器和中文字体）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。
+
+仓库新增独立的 Ubuntu Chromium 审片和 Windows 原生 Canvas 任务，实际是否通过以 Actions 的具体运行结果为准。Windows 字体可用性单独检查；不能从 Linux 的结果推断 Windows 的中文字体或任意宿主均兼容。
+
+运行新浏览器探针：选择 `playwright@1.51.1` 和匹配 Chromium，以 `MV_PLAYWRIGHT_MODULE` 指向模块，再运行 `node skills/storybook-mv/tests/browser_smoke.mjs <空输出目录>`。它验证实际加载、播放、定位和反馈导入，不以视频标签存在代替播放。
 
 `tests/player_browser.mjs` 提供可选的真实浏览器交互检查，需要 Playwright 与匹配的 Chromium；当前环境未完成该项验证，不能用脚本语法通过替代。
 
@@ -122,6 +147,8 @@ python3 skills/storybook-mv/scripts/build_demo.py ./original-mv --kind film --st
 ## 项目交接
 
 交给另一个 agent 时，除技能目录外，还需提供项目的 `brief.json`、`DECISIONS.md`、`PROPOSAL.md`，以及已有的视觉规范、分镜、评审、源码和获准转移的素材。注明当前阶段、已展示的稿件版本、真实使用者验收/有限豁免、待修改事项和交付要求，不能把旧方向确认当作后续审片通过。
+
+先运行 `review_workspace.py --project <项目> handoff` 刷新 `plan/STATUS.md` 和 `plan/status.json`，再核对其中引用的原始稿件与决定。另一个 agent 继续当前阶段，不重复已经完成的创意访谈。
 
 此通用发行目录不包含个人歌曲项目的角色设定、私人照片、歌曲音频、账号凭据或浏览器状态。
 
