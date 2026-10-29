@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "toolkit_version": "3.2.0",
+  "checked_on": "2026-10-29",
+  "scope": "Evidence and execution regression validation; no global artistic, real-song singing or cross-host claim.",
+  "tests": {
+    "passed": 78,
+    "skipped": 0,
+    "native_canvas": "0.1.100",
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "Pillow": "12.3.0",
+    "fonttools": "4.61.1"
+  },
+  "regressions": [
+    "null/empty lyric evidence and invalid artist sources rejected",
+    "canonical line IDs and file/reply identities checked",
+    "Python/JavaScript numeric digest parity",
+    "planning state, missing/mismatched audio, stale scope and blocking questions rejected",
+    "square/four-three output and selected fps protected",
+    "source-bound observed pilot required for full entry",
+    "complete lyric text/order/coverage and alignment review checked",
+    "selected font cmap measured including positive CJK and missing-glyph negatives",
+    "actual native range/audio trim, resume/cache corruption and changed-source refusal",
+    "sample cost budget refused before output creation",
+    "legacy format migration cannot create new authorization"
+  ],
+  "native_smoke": {
+    "styles": [
+      "flat",
+      "cut-paper",
+      "pixel",
+      "ink"
+    ],
+    "encoded_styles": [
+      "flat",
+      "pixel"
+    ],
+    "exact_png_palette_grid": true,
+    "synthetic_declared_hold_text_bounds": true,
+    "limits": "Selected probes; no automatic natural-acting judgment."
+  },
+  "cjk_probe": {
+    "recipe": "scripts/build_cjk_probe.py",
+    "duration": 18,
+    "frames": 216,
+    "dimensions": [
+      640,
+      360
+    ],
+    "fps": 12,
+    "full_decode": true,
+    "audio": true,
+    "sung_lyrics": false,
+    "actual_font_family": "Noto Sans SC",
+    "font_source": "https://github.com/notofonts/noto-cjk/blob/main/Sans/SubsetOTF/SC/NotoSansSC-Regular.otf",
+    "font_license_source": "https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE",
+    "font_sha256": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9",
+    "font_bundled": false,
+    "renderer_sha256": "c79f87daea6bbe2b1df3726fb0e8867f4dd459cc6d1045052dfb11e6d6f300dc",
+    "source_manifest": [
+      {
+        "path": "assets/FONT_LICENSE.txt",
+        "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+      },
+      {
+        "path": "assets/original-score.wav",
+        "sha256": "94d3546cb026cd364a0dba2dfcd81c2865ed01708c61574951696fcf3c3422bf"
+      },
+      {
+        "path": "assets/selected-font.otf",
+        "sha256": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9"
+      },
+      {
+        "path": "check_brief.py",
+        "sha256": "dad05372ac652076ccb1a9f654d8af4080cf4acf2bd091bc7f5bfc44bfad86b9"
+      },
+      {
+        "path": "data/glyph-check.json",
+        "sha256": "ce9d937f94b6a7415b211df1f107c023b480310d4d092d372071bed378b56c65"
+      },
+      {
+        "path": "data/original-chinese.json",
+        "sha256": "36a47b59c1ed007750d6dec932d50d110a7f90c9ea07febab53f7d6ca79b61e7"
+      },
+      {
+        "path": "data/score.json",
+        "sha256": "84706b984b84ad2a4518ef3851ac6b9944f0da1404d9a58e7fc9f54ab94f69bd"
+      },
+      {
+        "path": "input_contracts.py",
+        "sha256": "4746443bd8216846c3c143dae7ea0d4690d175896f33de77566f0b378c6b158a"
+      },
+      {
+        "path": "package.json",
+        "sha256": "60e98b87d9d8ae0cf4e55b877b8ddc6230a8d911f3133d58c01441c3f375617a"
+      },
+      {
+        "path": "pilot_gate.py",
+        "sha256": "d9bc74f8fad4629ca6f85a4b70701e9cbf013de54a24169f049810812eb0de92"
+      },
+      {
+        "path": "production_gate.mjs",
+        "sha256": "b1ec4f7156135e37954ff18b5fc972e7c7a7a34eee0bff5db2000f2cadda8a93"
+      },
+      {
+        "path": "project_contracts.py",
+        "sha256": "4af84e662d9e939f1e7d6828f996bf84e352ebeba76ad90f18fa7faa6b0c204a"
+      },
+      {
+        "path": "render.mjs",
+        "sha256": "b7a737e664b264e304a876e693d9258e197c593c4d4854bd71da0dc03638a13b"
+      },
+      {
+        "path": "render_canvas.mjs",
+        "sha256": "c79f87daea6bbe2b1df3726fb0e8867f4dd459cc6d1045052dfb11e6d6f300dc"
+      },
+      {
+        "path": "src/acting.js",
+        "sha256": "c94c3c2bdd38351d3b122e74714fbf44cf82ee52babdad5a73132fd3cbe94fb4"
+      },
+      {
+        "path": "src/config.js",
+        "sha256": "2f0758f39d4a053a67b066777d7ab335aa83daa2121897c87b9a49523726ee24"
+      },
+      {
+        "path": "src/data/lyrics.js",
+        "sha256": "d737e7975a8822bb6a925bc8d081f64cdca197b938594f63166d58cc6deaa6fd"
+      },
+      {
+        "path": "src/demo.js",
+        "sha256": "4afc51de7df0471fcab0c46cb3b01bc421a5574fc0eaa621051b3398a70f9e5a"
+      },
+      {
+        "path": "src/lyrics-overlay.js",
+        "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+      },
+      {
+        "path": "src/motion.js",
+        "sha256": "4499b8bea45f1cffdcf6f4235422501a8132c89be7e70b7494353ba41ea0cb2a"
+      },
+      {
+        "path": "src/render-entry.json",
+        "sha256": "270b6eff81bdcc436c79d7ad835870449f67cd8fd502cff4c607b3ec034813e2"
+      },
+      {
+        "path": "src/runtime.js",
+        "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+      },
+      {
+        "path": "src/scene.js",
+        "sha256": "04e6d986894b693dfe73ebe0ea97d88624e5b0a49725ac5ef393458d89265ee2"
+      },
+      {
+        "path": "src/style-kit.js",
+        "sha256": "1b9db3d150f9f4efe48c7d4b49ab02f7f5201f4838f7a8f4b585246bc77ae793"
+      },
+      {
+        "path": "studio.html",
+        "sha256": "4b29a10718214fdc425a93a5ae202efaf81bda5e87169eb0a7f64125ce04a804"
+      }
+    ],
+    "reverse_seek": [
+      {
+        "t": 13.14,
+        "sha256": "bf39e89f9addcf0d827d11120603f18c7922fd17d83dbf35a1dc7af8771c09e6",
+        "passed": true
+      },
+      {
+        "t": 6.66,
+        "sha256": "48437950ebc316b9e05267deee646d7b73eacf3deb02c736a8f306c7ed70fb73",
+        "passed": true
+      },
+      {
+        "t": 0,
+        "sha256": "e04ddfa47a2c1c34328b504ae7f6892716231ee426369f4b219e1126023bd544",
+        "passed": true
+      }
+    ],
+    "observations": [
+      "Inspected actual Chinese glyphs and wrapping in the rendered scene sheet.",
+      "Initial variable-font instance was too light; selected the actual regular static font and re-rendered."
+    ],
+    "limits": [
+      "Original procedural instrumental and original Chinese captions, no real singing/alignment evidence.",
+      "Illustrative scene/acting kit remains limited; this is not reference-film aesthetic acceptance."
+    ]
+  },
+  "independent_use": [
+    {
+      "task": "Exact 2s 480x480 12fps silent monochrome circle separation/reunion prototype",
+      "observed": "Agent reused the explicit concept, recorded the supplied request, produced only the bounded clip and inspected all decoded frames; prototype checks passed.",
+      "artifact": "v32-evidence/direct-use.mp4",
+      "sha256": "31a8be0c3828abcf0bcf99ffe53dea64dde48b42b3c2b808db9771b04e34e1ce",
+      "frames": 24,
+      "actual_forward_copied_code": [
+        {
+          "path": "check_brief.py",
+          "sha256": "dad05372ac652076ccb1a9f654d8af4080cf4acf2bd091bc7f5bfc44bfad86b9"
+        },
+        {
+          "path": "input_contracts.py",
+          "sha256": "4746443bd8216846c3c143dae7ea0d4690d175896f33de77566f0b378c6b158a"
+        },
+        {
+          "path": "production_gate.mjs",
+          "sha256": "b1ec4f7156135e37954ff18b5fc972e7c7a7a34eee0bff5db2000f2cadda8a93"
+        },
+        {
+          "path": "project_contracts.py",
+          "sha256": "4af84e662d9e939f1e7d6828f996bf84e352ebeba76ad90f18fa7faa6b0c204a"
+        },
+        {
+          "path": "pilot_gate.py",
+          "sha256": "d9bc74f8fad4629ca6f85a4b70701e9cbf013de54a24169f049810812eb0de92"
+        },
+        {
+          "path": "render_canvas.mjs",
+          "sha256": "c79f87daea6bbe2b1df3726fb0e8867f4dd459cc6d1045052dfb11e6d6f300dc"
+        }
+      ],
+      "final_current_contract_replay": {
+        "frames": 24,
+        "reused_frames": 0,
+        "encoded": {
+          "video": true,
+          "audio": false,
+          "full_decode": true
+        },
+        "input_digest": "3f897024cbc88b3e4a289fba2a7628ff138da59a3adb995ad2f6310e8e2bc0c6",
+        "source_manifest": [
+          {
+            "path": "assets/input-0.json",
+            "sha256": "030117294d93a9d31e9daebec4191e01bfe7f015d35bfddd00abf60891e8e65e"
+          },
+          {
+            "path": "check_brief.py",
+            "sha256": "dad05372ac652076ccb1a9f654d8af4080cf4acf2bd091bc7f5bfc44bfad86b9"
+          },
+          {
+            "path": "input_contracts.py",
+            "sha256": "c2c524f69e7af0de328bb0d75156b225341037a033fcf8d76228c3c99e489e46"
+          },
+          {
+            "path": "package.json",
+            "sha256": "a9157b92d1ee16b0a96bd6ebc96b8ab867131eaf5fcc3fe2346001024d0b49a4"
+          },
+          {
+            "path": "pilot_gate.py",
+            "sha256": "d9bc74f8fad4629ca6f85a4b70701e9cbf013de54a24169f049810812eb0de92"
+          },
+          {
+            "path": "production_gate.mjs",
+            "sha256": "b1ec4f7156135e37954ff18b5fc972e7c7a7a34eee0bff5db2000f2cadda8a93"
+          },
+          {
+            "path": "project_contracts.py",
+            "sha256": "4af84e662d9e939f1e7d6828f996bf84e352ebeba76ad90f18fa7faa6b0c204a"
+          },
+          {
+            "path": "render.mjs",
+            "sha256": "633c89a6738482b586d5fdc78966ddf903c4d8439316f536b56ea97fda44e5b4"
+          },
+          {
+            "path": "render_canvas.mjs",
+            "sha256": "c79f87daea6bbe2b1df3726fb0e8867f4dd459cc6d1045052dfb11e6d6f300dc"
+          },
+          {
+            "path": "src/config.js",
+            "sha256": "bfcde8b88a948e5e0b4a1e56d4409c328dc14de19e914dfe89e44cf3c1b9bc10"
+          },
+          {
+            "path": "src/data/lyrics.js",
+            "sha256": "29e70ffa263ff86b970a5fedb8f755021a6fdf31ff74527ba0e468bf7fb129ec"
+          },
+          {
+            "path": "src/lyrics-overlay.js",
+            "sha256": "528c9d7e38954bbde6313e3d52fefb531e27ef8254e531cb8715ca2ba24fb1a8"
+          },
+          {
+            "path": "src/runtime.js",
+            "sha256": "12a4e06f8ba215fcaf9a101d9e36ac4054c13a76bd9177690d3f9d7eb9fbee08"
+          },
+          {
+            "path": "src/scene.js",
+            "sha256": "93cda36aaab4829631362ed2539ac3347c71717e96410b590d185d0eb618fd32"
+          },
+          {
+            "path": "studio.html",
+            "sha256": "3a944a862f4afe50b437573e8a24b72bc5211635694addde000ccebaf31aee2c"
+          },
+          {
+            "path": "visual-spec.json",
+            "sha256": "ca6ba4b2763e751a49e42ddf7a469542745d22dab992ed5503bd98c3a8187b26"
+          }
+        ],
+        "same_video_bytes_as_independent_run": true
+      },
+      "limit": "Forward creation used its recorded code snapshot. Final contract replay used current gate bytes after the last narrowly scoped CLI-audio guard regression; it is not another independent artistic judgment."
+    },
+    {
+      "task": "Original four-line fragment with lover/family/hometown meaning unresolved; discussion only",
+      "observed": "Read the supplied words, distinguished three supported interpretations and their uncertainties, asked one relevant follow-up, did not create a video.",
+      "limit": "Bounded discovery behavior, not a full-song factual source or singing-alignment certification."
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "scripts/check_brief.py",
+      "sha256": "dad05372ac652076ccb1a9f654d8af4080cf4acf2bd091bc7f5bfc44bfad86b9"
+    },
+    {
+      "path": "scripts/input_contracts.py",
+      "sha256": "c2c524f69e7af0de328bb0d75156b225341037a033fcf8d76228c3c99e489e46"
+    },
+    {
+      "path": "scripts/production_gate.mjs",
+      "sha256": "b1ec4f7156135e37954ff18b5fc972e7c7a7a34eee0bff5db2000f2cadda8a93"
+    },
+    {
+      "path": "scripts/pilot_gate.py",
+      "sha256": "d9bc74f8fad4629ca6f85a4b70701e9cbf013de54a24169f049810812eb0de92"
+    },
+    {
+      "path": "scripts/project_contracts.py",
+      "sha256": "4af84e662d9e939f1e7d6828f996bf84e352ebeba76ad90f18fa7faa6b0c204a"
+    },
+    {
+      "path": "scripts/render_canvas.mjs",
+      "sha256": "c79f87daea6bbe2b1df3726fb0e8867f4dd459cc6d1045052dfb11e6d6f300dc"
+    },
+    {
+      "path": "scripts/scaffold.py",
+      "sha256": "821d11e368e1ea6998a8c217affd0cee435962c90d58a813a0cfac45e3395d20"
+    },
+    {
+      "path": "scripts/prepare_lyrics.py",
+      "sha256": "952209b75e7df5d81aa8e41a0440695bd992a9008bcd4b8a75cbd189dee40bf5"
+    },
+    {
+      "path": "scripts/migrate_confirmation.py",
+      "sha256": "985a17cf17c2b8ca8dbc299ffb3d4910104cc28e331e760d17bcc77f6b7c8714"
+    },
+    {
+      "path": "scripts/font_check.py",
+      "sha256": "cdece1648bddebcc6d765308bfbeae9dca16b7599a2203b68bfe5eb200c31db2"
+    },
+    {
+      "path": "scripts/build_cjk_probe.py",
+      "sha256": "cc15cee8398c4f31c22e71e143781df62902217405c26d19714ead04cb0f7c3b"
+    },
+    {
+      "path": "tests/test_execution_v32.py",
+      "sha256": "b9b765325d2ff6ad7f847110b881440904ba2f2581dbf907185c278dafda2a11"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "v32-evidence/cjk-board.png",
+      "bytes": 82672,
+      "sha256": "044cfde86b4432e41da90d611715c421273614aedba3c7398393ce53135b0de1"
+    },
+    {
+      "path": "v32-evidence/cjk-glyph-check.json",
+      "bytes": 413,
+      "sha256": "ce9d937f94b6a7415b211df1f107c023b480310d4d092d372071bed378b56c65"
+    },
+    {
+      "path": "v32-evidence/cjk-lines.json",
+      "bytes": 497,
+      "sha256": "36a47b59c1ed007750d6dec932d50d110a7f90c9ea07febab53f7d6ca79b61e7"
+    },
+    {
+      "path": "v32-evidence/cjk-original-probe.mp4",
+      "bytes": 352659,
+      "sha256": "8cfee891f80a5e1745d77818f5f8554c7a55cc37b3526f2c3c44fa5e928c3075"
+    },
+    {
+      "path": "v32-evidence/direct-use-board.png",
+      "bytes": 87257,
+      "sha256": "f26a792f674aa6da153245130439b5bb3f02dba034e1077d26f66cf06966bc3d"
+    },
+    {
+      "path": "v32-evidence/direct-use-source.js",
+      "bytes": 1330,
+      "sha256": "93cda36aaab4829631362ed2539ac3347c71717e96410b590d185d0eb618fd32"
+    },
+    {
+      "path": "v32-evidence/direct-use.mp4",
+      "bytes": 15042,
+      "sha256": "31a8be0c3828abcf0bcf99ffe53dea64dde48b42b3c2b808db9771b04e34e1ce"
+    }
+  ],
+  "remaining": [
+    "Full real-song Chinese singing and relationship-story acceptance are not verified.",
+    "Complex realistic/multiview character acting and arbitrary Chinese word-to-object morphs remain project-specific.",
+    "Browser/p5/WebGL/Windows need destination execution; earlier local-player policy rejection remains unverified, no workaround attempted."
+  ]
+}

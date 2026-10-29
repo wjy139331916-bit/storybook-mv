@@ -1,8 +1,8 @@
 {
   "name": "storybook-mv",
   "display_name": "MV创作导演",
-  "version": "3.1.0",
-  "brief_schema": 3,
+  "version": "3.2.0",
+  "brief_schema": 4,
   "production_contract_schema": 1,
   "optional_cpu_canvas_version": "0.1.100",
   "bundled_engines": [
@@ -19,5 +19,7 @@
   "style_pack_schema": 1,
   "media_audit_schema": 1,
   "content_gate": "confirmed content plus explicitly scoped production; missing legacy confirmation fails closed",
-  "song_reading_gate": "verified/provided lyrics, evidence-based interpretation, user-selected material ambiguities before content confirmation"
+  "song_reading_gate": "verified/provided lyrics, evidence-based interpretation, user-selected material ambiguities before content confirmation",
+  "content_digest_version": 2,
+  "shared_contract_runtime": "Python 3; JavaScript adapters invoke the same local implementation"
 }
