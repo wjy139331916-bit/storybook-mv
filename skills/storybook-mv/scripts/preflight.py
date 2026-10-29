@@ -44,6 +44,11 @@ def main():
         required += ['blender']
     tools = {k: shutil.which(k) for k in required}
     missing = [k for k, v in tools.items() if not v]
+    # User-stage design evidence is decoded even without optional diagnostics.
+    contract_dependencies = {'PIL': importlib.util.find_spec('PIL') is not None} if brief and (brief.get('execution') or {}).get('context') != 'tool-self-test' else {}
+    dependencies_python['dependencies'] = contract_dependencies
+    if contract_dependencies.get('PIL') is False:
+        missing.append('Pillow for actual design-image evidence (install scripts/requirements-media.txt)')
     python_media = {name: importlib.util.find_spec(name) is not None for name in ('numpy', 'PIL')} if a.media_tools else {}
     missing += [name+' for the selected media tools (see scripts/requirements-media.txt)' for name, present in python_media.items() if not present]
     if not engine:
