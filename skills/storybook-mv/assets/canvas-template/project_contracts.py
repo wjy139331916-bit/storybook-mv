@@ -62,6 +62,9 @@ def finite(n):
 
 
 def contained(project, rel):
+    # Windows temporary roots may use an 8.3 alias; compare canonical paths
+    # on both sides without weakening the project boundary.
+    project = Path(project).resolve()
     if not isinstance(rel, str) or not rel.strip():
         raise ValueError('missing artifact path')
     p = (project/rel).resolve()
@@ -237,7 +240,7 @@ def inspect(project, stage):
             errors.append('shot-map must identify the actual final audio by SHA-256')
         else:
             import subprocess
-            measured = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(audio)], text=True))
+            measured = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(audio)], text=True, encoding='utf-8'))
             if not finite(mapping.get('duration')) or abs(mapping['duration']-measured)>.12:
                 errors.append('full shot-map duration differs from the final recording')
     review = load(project/'review.json')
@@ -422,4 +425,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     sys.exit(main())

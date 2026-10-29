@@ -35,7 +35,7 @@ def target_duration(brief, project):
         if project is not None and music.get('audio'):
             audio=Path(music['audio']);audio=audio if audio.is_absolute() else Path(project)/audio
             if audio.is_file():
-                return float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(audio)],stderr=subprocess.PIPE,text=True))
+                return float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(audio)],stderr=subprocess.PIPE,text=True, encoding='utf-8'))
         return music.get('duration') or execution.get('authorized_duration')
     return execution.get('authorized_duration')
 
@@ -288,4 +288,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     raise SystemExit(main())
