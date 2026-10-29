@@ -80,7 +80,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 ## 制作依赖
 
-规划阶段不需要安装所有渲染工具。制作入口使用 Python 3 的统一校验；JavaScript 渲染项目也需要 Python，可用 `MV_PYTHON` 指定解释器。先确定方案和一个主要引擎，再按需准备依赖：
+规划阶段不需要安装所有渲染工具。制作入口使用 Python 3 的统一校验，使用者项目的实际设计图验证还需要 Pillow（见 `scripts/requirements-media.txt`）；JavaScript 渲染项目也需要 Python，可用 `MV_PYTHON` 指定解释器。先确定方案和一个主要引擎，再按需准备依赖：
 
 - `canvas2d`：内置空白 Canvas2D 项目，可选择浏览器或可选的 Node Canvas 运行方式。
 - `painted-p5`：内置 p5.js / p5.brush 模板，需要对应包、Chrome、FFmpeg 等依赖。
