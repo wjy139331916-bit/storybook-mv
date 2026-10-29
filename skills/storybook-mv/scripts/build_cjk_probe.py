@@ -18,16 +18,21 @@ def main():
     if not a.tool_self_test:p.error('reserved for isolated toolkit verification, never user-MV production')
     if not a.font.is_file() or not a.font_license.is_file():p.error('supply the actual local font and its license')
     root=Path(__file__).resolve().parents[1]
-    subprocess.run([sys.executable,str(root/'scripts/build_demo.py'),str(a.project),'--kind','film','--style','flat','--subject','figures','--duration','18','--width','640','--height','360','--fps','12','--tool-self-test'],check=True,capture_output=True,text=True)
+    subprocess.run([sys.executable,str(root/'scripts/build_demo.py'),str(a.project),'--kind','film','--style','flat','--subject','figures','--duration','18','--width','640','--height','360','--fps','12','--tool-self-test'],check=True,capture_output=True,text=True, encoding='utf-8')
     target=a.project.resolve();font=target/'assets'/('selected-font'+a.font.suffix);shutil.copy2(a.font,font);shutil.copy2(a.font_license,target/'assets/FONT_LICENSE.txt')
-    doc=target/'data/original-chinese.json';doc.write_text(json.dumps({'lines':[{'id':f'line-{i+1:03d}','text':t} for i,t in enumerate(LINES)]},ensure_ascii=False,indent=2)+'\n')
-    proof=inspect_font(font,doc);(target/'data/glyph-check.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
+    doc=target/'data/original-chinese.json';doc.write_text(json.dumps({'lines':[{'id':f'line-{i+1:03d}','text':t} for i,t in enumerate(LINES)]},ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
+    proof=inspect_font(font,doc);(target/'data/glyph-check.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
     if not proof['ok']:p.error('selected font lacks required glyphs; probe created with a failed glyph report')
-    brief=json.loads((target/'brief.json').read_text());brief['lyrics'].update(language='zh-CN',font={'path':font.relative_to(target).as_posix(),'sha256':sha(font),'family':proof['family']});(target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n')
+    brief=json.loads((target/'brief.json').read_text(encoding='utf-8'));brief['lyrics'].update(language='zh-CN',font={'path':font.relative_to(target).as_posix(),'sha256':sha(font),'family':proof['family']});(target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
     cues={'alignment_status':'synthetic_known_instrumental','cues':[{'id':f'line-{i+1:03d}','start':i*3,'end':(i+1)*3,'text':t} for i,t in enumerate(LINES)]}
-    (target/'src/data/lyrics.js').write_text('globalThis.STORY_LYRICS_MODE="full-lines";globalThis.STORY_LYRICS='+json.dumps(cues,ensure_ascii=False)+';\n')
-    scene=target/'src/scene.js';scene.write_text('\n'.join(x for x in scene.read_text().splitlines() if 'kit.text(c,captions[' not in x and 'if(t<2)kit.text' not in x)+'\n')
+    (target/'src/data/lyrics.js').write_text('globalThis.STORY_LYRICS_MODE="full-lines";globalThis.STORY_LYRICS='+json.dumps(cues,ensure_ascii=False)+';\n', encoding='utf-8')
+    scene=target/'src/scene.js';scene.write_text('\n'.join(x for x in scene.read_text(encoding='utf-8').splitlines() if 'kit.text(c,captions[' not in x and 'if(t<2)kit.text' not in x)+'\n', encoding='utf-8')
     print(json.dumps({'project':str(target),'font_family':proof['family'],'checked_glyphs':proof['checked_characters'],'scope':'18-second original instrumental-caption probe only; no real-song singing alignment or aesthetic acceptance.'},ensure_ascii=False))
 
 
-if __name__=='__main__':main()
+if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
+    main()

@@ -67,7 +67,7 @@ def main():
     if runtime == 'node-canvas':
         try:
             module = str(a.canvas_module.expanduser().resolve()) if a.canvas_module else '@napi-rs/canvas'
-            probe = subprocess.run(['node', '-e', 'const m=require(process.argv[1]);console.log(m.createCanvas(2,2).toBuffer("image/png").length)', module], cwd=a.project or Path.cwd(), capture_output=True, text=True, timeout=10)
+            probe = subprocess.run(['node', '-e', 'const m=require(process.argv[1]);console.log(m.createCanvas(2,2).toBuffer("image/png").length)', module], cwd=a.project or Path.cwd(), capture_output=True, text=True, timeout=10, encoding='utf-8')
             dependencies['@napi-rs/canvas'] = probe.returncode == 0
         except (OSError, subprocess.SubprocessError):
             dependencies['@napi-rs/canvas'] = False
@@ -82,7 +82,7 @@ def main():
     fc = shutil.which('fc-list')
     if fc:
         try:
-            r = subprocess.run([fc, ':lang=zh', 'family'], capture_output=True, text=True, timeout=5, check=True)
+            r = subprocess.run([fc, ':lang=zh', 'family'], capture_output=True, text=True, timeout=5, check=True, encoding='utf-8')
             families = sorted(set(x.strip() for x in r.stdout.splitlines() if x.strip()))
             font = {'status': 'found' if families else 'missing', 'families': families[:6]}
         except (OSError, subprocess.SubprocessError):
@@ -103,4 +103,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     raise SystemExit(main())

@@ -19,14 +19,19 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('brief',type=Path);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
     if a.out.exists():p.error('output exists; prior brief was preserved')
     try:
-        b=json.loads(a.brief.read_text());c=b.get('content_confirmation') or {}
+        b=json.loads(a.brief.read_text(encoding='utf-8'));c=b.get('content_confirmation') or {}
         if c.get('status')!='confirmed' or not c.get('user_evidence') or c.get('content_sha256')!=legacy_digest(b):
             raise ValueError('legacy acceptance is absent/stale; recover actual decisions instead of auto-approving')
         old=c['content_sha256'];c.update(content_sha256=content_digest(b),digest_version=2)
         b['schema_version']=4;b['format_migration']={'from_digest':old,'scope':'Format only. Missing evidence, stage and input records remain unresolved; this grants no production approval.'}
-        a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(b,ensure_ascii=False,indent=2)+'\n')
+        a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(b,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
         print(json.dumps({'migrated':True,'production_approved':False,'output':str(a.out)}))
     except (OSError,ValueError,TypeError) as exc:p.error(str(exc))
 
 
-if __name__=='__main__':main()
+if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
+    main()

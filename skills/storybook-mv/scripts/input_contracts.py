@@ -201,7 +201,7 @@ def subtitle_errors(brief, project, purpose):
         proof=bound_file(project,brief['lyrics'].get('glyph_review'),'glyph coverage report',errors)
         if font and proof:
             try:
-                d=json.loads(proof.read_text())
+                d=json.loads(proof.read_text(encoding='utf-8'))
                 if d.get('ok') is not True or d.get('missing')!=[] or d.get('font_sha256')!=sha(font) or d.get('text_document_sha256')!=sha(canonical):
                     errors.append('glyph report does not prove coverage of the current font and canonical text')
             except (OSError,ValueError,AttributeError):errors.append('invalid glyph coverage report')

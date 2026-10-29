@@ -55,7 +55,7 @@ def main():
         p.error('select --engine after the style/route is decided; there is no default style or engine')
     if selected and a.engine and selected != a.engine:
         p.error('engine conflicts with the brief; update the agreed route first')
-    registry = json.loads((root / 'assets/engines.json').read_text())
+    registry = json.loads((root / 'assets/engines.json').read_text(encoding='utf-8'))
     if engine not in registry or registry[engine]['status'] != 'bundled':
         p.error('this route is guide-only here; set it up from appropriate documentation instead of silently using another engine')
     if not math.isfinite(a.duration) or a.duration <= 0 or not 1 <= a.fps <= 120:
@@ -124,7 +124,7 @@ def main():
             rel=dest.relative_to(target).as_posix()
             if record.get('_audio'):brief['music']['audio']=rel
             else:record['path']=rel
-        (target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n')
+        (target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
     renderer = target / 'render.mjs'
     renderer.write_text(renderer.read_text(encoding='utf-8').replace('args.fps || 30', 'args.fps || ' + str(a.fps)), encoding='utf-8')
     html = target / 'studio.html'
@@ -143,4 +143,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()

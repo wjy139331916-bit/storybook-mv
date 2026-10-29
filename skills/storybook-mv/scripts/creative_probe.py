@@ -17,8 +17,8 @@ CN=['把未说完的话','折进一封小小的信','你向前走 我慢慢挥�
 def prepare(project,kind,font=None):
     root=Path(__file__).resolve().parents[1]
     if kind=='type' and not font:raise ValueError('the Chinese type probe needs a selected local --font')
-    subprocess.run([sys.executable,str(root/'scripts/scaffold.py'),str(project),'--engine','canvas2d','--duration','12','--width','960','--height','540','--fps','12','--tool-self-test'],check=True,capture_output=True,text=True)
-    brief=json.loads((project/'brief.json').read_text());family=None
+    subprocess.run([sys.executable,str(root/'scripts/scaffold.py'),str(project),'--engine','canvas2d','--duration','12','--width','960','--height','540','--fps','12','--tool-self-test'],check=True,capture_output=True,text=True, encoding='utf-8')
+    brief=json.loads((project/'brief.json').read_text(encoding='utf-8'));family=None
     if font:
         from font_check import inspect_font
         # Exercise the actual local cmap before claiming Chinese text coverage.
@@ -34,7 +34,7 @@ def prepare(project,kind,font=None):
     brief['execution']['runtime']='node-canvas';brief['music'].update(kind='instrumental',source='original-code',audio='assets/original-score.wav',duration=12)
     score=original_score(project/'assets/original-score.wav',12);brief['music']['audio_sha256']=sha(project/'assets/original-score.wav')
     (project/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    config=project/'src/config.js';config.write_text(config.read_text()+'\nglobalThis.PROBE='+json.dumps({'kind':kind,'font':family})+';\n',encoding='utf-8')
+    config=project/'src/config.js';config.write_text(config.read_text(encoding='utf-8')+'\nglobalThis.PROBE='+json.dumps({'kind':kind,'font':family})+';\n',encoding='utf-8')
     shutil.copy2(root/'assets/benchmarks/scene.js',project/'src/scene.js')
     (project/'PROBE.json').write_text(json.dumps({'kind':kind,'duration':12,'score':score,'font_checked':bool(font),
         'scope':'Original 12-second stylized mechanism, not a full real sung MV, user approval or general acting/style certification.'},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
@@ -50,11 +50,16 @@ def main():
         if not a.prepare_only:
             if not a.canvas_module:raise ValueError('select --canvas-module or use --prepare-only for another actual runtime')
             command=['node',str(target/'render_canvas.mjs'),'--project='+str(target),'--out=out/probe','--canvas-module='+a.canvas_module,'--times=1,3,4.25,5.5,8.5,10.5']
-            subprocess.run(command,check=True,capture_output=True,text=True)
+            subprocess.run(command,check=True,capture_output=True,text=True, encoding='utf-8')
             result['rendered']=True;result['video']='out/probe/clip.mp4'
         print(json.dumps(result,ensure_ascii=False));return 0
     except (ValueError,OSError,subprocess.SubprocessError) as exc:
         p.error(getattr(exc,'stderr',None) or str(exc))
 
 
-if __name__=='__main__':raise SystemExit(main())
+if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
+    raise SystemExit(main())

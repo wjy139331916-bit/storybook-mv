@@ -186,18 +186,20 @@ def compare_images(reference, rendered, out):
 
 
 def pcm(path, start=0, duration=None, rate=8000):
-    args = ['ffmpeg', '-v', 'error', '-ss', str(start), '-i', str(path), '-vn']
-    if duration is not None:
-        args += ['-t', str(duration)]
+    # Decode before trimming: input seeking at zero can change AAC priming
+    # handling across FFmpeg builds and erase a real leading delay.
+    trim = 'atrim=start='+str(start)+((':duration='+str(duration)) if duration is not None else '')
+    filters = 'aresample=async=1:first_pts=0,'+trim+',asetpts=PTS-STARTPTS'
+    args = ['ffmpeg', '-v', 'error', '-i', str(path), '-vn', '-af', filters]
     data = command(args + ['-ac', '1', '-ar', str(rate), '-f', 'f32le', '-'])
     return np.frombuffer(data, dtype='<f4').copy()
 
 
 def loudness(path, start=0, duration=None):
-    args = ['ffmpeg', '-hide_banner', '-nostats', '-ss', str(start), '-i', str(path)]
-    if duration is not None:
-        args += ['-t', str(duration)]
-    r = subprocess.run(args + ['-vn', '-af', 'ebur128=peak=true', '-f', 'null', '-'], capture_output=True, text=True)
+    trim = 'atrim=start='+str(start)+((':duration='+str(duration)) if duration is not None else '')
+    filters = 'aresample=async=1:first_pts=0,'+trim+',asetpts=PTS-STARTPTS,ebur128=peak=true'
+    args = ['ffmpeg', '-hide_banner', '-nostats', '-i', str(path)]
+    r = subprocess.run(args + ['-vn', '-af', filters, '-f', 'null', '-'], capture_output=True, text=True, encoding='utf-8')
     if r.returncode:
         raise ValueError(r.stderr[-2000:])
     integrated = re.findall(r'I:\s*(-?[\d.]+) LUFS', r.stderr)
@@ -266,7 +268,7 @@ def main():
     try:
         out = output_dir(a.out)
         if a.mode in ('reference', 'inspect'):
-            result = video_audit(a.video.resolve(), out, a.crop, a.sample_fps, json.loads(a.shot_map.read_text()) if a.shot_map else None, json.loads(a.policy.read_text()) if a.policy else None)
+            result = video_audit(a.video.resolve(), out, a.crop, a.sample_fps, json.loads(a.shot_map.read_text(encoding='utf-8')) if a.shot_map else None, json.loads(a.policy.read_text(encoding='utf-8')) if a.policy else None)
         elif a.mode == 'compare':
             result = compare_images(a.reference, a.rendered, out)
         else:
@@ -277,4 +279,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()
