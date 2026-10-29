@@ -147,7 +147,7 @@ def media_errors(brief, project, purpose, audio=None):
     m = brief.get('music') or {}
     source = m.get('source')
     declared = m.get('audio')
-    if source not in ('none', None) and (purpose == 'production' or declared or audio):
+    if source not in ('none', None) and (purpose in ('production','animatic') or declared or audio):
         p = bound_file(project, {'path': declared, 'sha256': m.get('audio_sha256')}, 'selected recording', errors)
         if audio and p:
             other = Path(audio)
