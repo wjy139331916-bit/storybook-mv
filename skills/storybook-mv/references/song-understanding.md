@@ -38,3 +38,5 @@ If materially different choices exist, set `needs_user_selection:true`, preserve
 For a verified/supplied instrumental or no-song task, use `status:"not_applicable"` and a truthful reason. Do not mark a song instrumental because no lyrics were supplied or because the user wants no text on screen. Unknown applicability remains pending.
 
 The content digest includes the song identity and selected meaning. Changing them invalidates old content acceptance. The brief validator and bundled production entrypoints block missing/unsupported reading records; they cannot authenticate a fabricated citation or user reply. An agent must actually inspect the evidence and preserve uncertainty.
+
+Schema 4 execution checks the canonical lyric document, actual cited line IDs and structured checked-source snapshots. Follow execution-gates.md. These checks reject empty or missing evidence; they cannot establish the truth of an agent-invented source or interpretation. Preserve uncertainty and inspect the actual retrieved material.

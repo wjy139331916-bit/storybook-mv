@@ -2,7 +2,7 @@
 
 Create records in the project after the brief is useful; do not force a long technical form into the interview.
 
-Before user-video production, the schema-3 content/song-understanding gates and scoped user authorization must be satisfied. A stored production boolean or a renderer passing its self-test is insufficient. `check --stage prototype|full` also checks the appropriate scope; an isolated tool self-test never passes a full commissioned-video contract. Recover real earlier acceptance during migration, or ask for the missing content confirmation.
+Before user-video production, the schema-4 content/song-understanding gates and scoped user authorization must be satisfied. A stored production boolean or a renderer passing its self-test is insufficient. `check --stage prototype|full` also checks the appropriate scope; an isolated tool self-test never passes a full commissioned-video contract. Recover real earlier acceptance during migration, or ask for the missing content confirmation.
 
 ```bash
 python3 <skill-dir>/scripts/project_contracts.py init --project <project-dir>
@@ -37,3 +37,5 @@ python3 <skill-dir>/scripts/project_contracts.py check --project <project-dir> -
 ```
 
 These check structure and the freshness of recorded evidence. They cannot evaluate artistic quality. Missing/unreviewed fields do not pass. For legacy projects migrate incrementally, preserving code and accepted work; do not recreate or overwrite the project to get the new records.
+
+For the schema-4 file/reply records and the source-bound `promote` checkpoint, follow the execution-gates reference linked directly from SKILL.md. Default stage changes never grant user approval.
