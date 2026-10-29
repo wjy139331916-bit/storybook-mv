@@ -68,7 +68,7 @@ class ToolkitTests(unittest.TestCase):
         mapping={'schema_version':1,'duration':2,'duration_status':'prototype','audio_sha256':None,'sections':[{'id':'a','start':0,'end':2}], 'shots':[{'id':'s01','start':0,'end':2,'section_id':'a','objective':'observe change','visible_change':'circle moves','assets':['circle']} ]}
         (p/'shot-map.json').write_text(json.dumps(mapping))
         # Deliberately synthetic review records exercise record validation, not visual truth.
-        review={'schema_version':1,'scope':'prototype','reviewer':'synthetic validator fixture','target':{'path':'out/prototype.mp4','sha256':C.digest(p/'out/prototype.mp4'),'input_digest':C.fingerprint(p)},'checks':[{'id':k,'status':'not_applicable' if k=='music' else 'pass','notes':'fixture only; no aesthetic claim','evidence':[] if k=='music' else ['out/reference.png']} for k in spec['required_checks']],'issues':[]}
+        review={'schema_version':1,'scope':'prototype','reviewer':'synthetic validator fixture','target':{'path':'out/prototype.mp4','sha256':C.digest(p/'out/prototype.mp4'),'input_digest':C.fingerprint(p)},'checks':[{'id':k,'status':'not_applicable' if k=='music' else 'pass','notes':'fixture only; no aesthetic claim','range':[0,2],'evidence':[] if k=='music' else ['out/prototype.mp4'] if k in ('motion','continuity') else ['out/reference.png']} for k in spec['required_checks']],'issues':[]}
         (p/'review.json').write_text(json.dumps(review))
         runtime={'status':'passed','engine':'canvas2d','runtime_backend':'node-canvas','encoded':{'full_decode':True},'artifact':{'path':'out/prototype.mp4','sha256':C.digest(p/'out/prototype.mp4')}}
         (p/'runtime-report.json').write_text(json.dumps(runtime))

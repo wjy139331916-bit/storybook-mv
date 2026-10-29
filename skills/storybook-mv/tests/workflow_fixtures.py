@@ -56,6 +56,14 @@ def design(brief, project):
 
 
 def video_stage(brief, project, stage, clip, report):
+    # Compatibility fixture metadata is explicit; production reports must be
+    # written from the actual renderer/inspection, never inferred this way.
+    report_data=json.loads((project/report).read_text())
+    plan=json.loads((project/brief['workflow']['packages']['design']['path']).read_text())['pilot']
+    report_data.setdefault('range',[plan['start'],plan['end']] if stage=='prototype' else [0,target_duration(brief,project)])
+    if brief.get('music',{}).get('audio'):
+        report_data.setdefault('audio',{'sha256':brief['music']['audio_sha256']})
+    save(project/report,report_data)
     review={'scope':stage,'status':'observed_pass','reviewer':'synthetic review fixture',
             'target_sha256':sha(project/clip),'observations':'Synthetic fixture exercises recorded review checks; no real taste claim.'}
     artifacts=[record(project,clip,role='video'),record(project,report,role='render_report'),
