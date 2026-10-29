@@ -1,12 +1,12 @@
-# Evidence, stages and expansion (3.2)
+# Evidence, stages and expansion (3.3)
 
-Read before scaffolding or rendering a user video. Use schema 4. These records are an agent's working files, not extra technical questions for the user. Recover real earlier replies and inputs; never ask the user to calculate hashes or populate JSON. A record is auditable evidence, not authentication of a fabricated message or a proof of aesthetic quality.
+Read before scaffolding or rendering a user video. Use schema 5 and the user-stage-review reference linked directly from SKILL.md. These records are an agent's working files, not extra technical questions for the user. Recover real earlier replies and inputs; never ask the user to calculate hashes or populate JSON. A record is auditable evidence, not authentication of a fabricated message or a proof of aesthetic quality.
 
 ## One contract at every entry
 
 `check_brief.py` is the authority. The Python scaffold and JavaScript renderers invoke it; both bundled projects contain the same checker and helpers. Python 3 is required alongside the selected renderer. Set `MV_PYTHON` to a real interpreter path when the host has no `python3`/`python` command. Do not silently disable the gate if Python or evidence is unavailable.
 
-Use `request_mode:"plan-only"` for a planning task. `phase:"discover"`, `"proposal"` and `"awaiting-confirmation"` cannot produce a user video even when an old production boolean is true. After actual content acceptance use `"study"` or `"prototype"` for the bounded sample. `prototype.duration` is a separate bound, including when the user already authorized an eventual full MV. Full/repair rendering needs `phase:"full"` or `"repair"`, full authorization and the pilot receipt below. Do not switch stages to evade a missing decision.
+Use `request_mode:"plan-only"` for a planning task. `phase:"discover"`, `"proposal"` and `"awaiting-confirmation"` cannot produce a user video even when an old production boolean is true. After actual direction acceptance enter `"design"` for static designs and the complete script. Only after the user accepts that package enter `"study"`/`"prototype"` for a bounded sample; after sample acceptance enter `"animatic"` for the whole-scope rough cut, then await its acceptance before full production. `prototype.duration` is a separate bound, including when the user already authorized an eventual full MV. Full/repair rendering needs `phase:"full"` or `"repair"`, full scope, all three artifact-specific user stage decisions and the separate technical pilot receipt below. Do not switch stages to evade a missing decision.
 
 ## Bind actual inputs
 
@@ -41,7 +41,7 @@ python3 <skill>/scripts/project_contracts.py check --project <project> --stage p
 python3 <skill>/scripts/project_contracts.py promote --project <project>
 ```
 
-`promote` requires the observed prototype review, actual encoded target, runtime receipt and current source/design fingerprint. It saves a versioned `prototype-pass` receipt and immutable review copies. It grants no user authorization and cannot promote a tool self-test. Only after scope is already authorized and this evidence is valid, set the full stage. New source/design requires a representative recheck; a short range of the full timeline can be the sample. Previous receipts and clips remain intact. Do not ask the user again for routine fixes already authorized, but do not turn an agent's technical pass into user taste acceptance.
+`promote` requires the observed prototype review, actual encoded target, runtime receipt and current source/design fingerprint. It saves a versioned `prototype-pass` receipt and immutable review copies. It grants no user authorization and cannot promote a tool self-test. This evidence alone never opens full production. Only after actual design/script, sample and whole-scope animatic acceptance and full scope may the full stage open. New source/design requires a representative recheck; a short range of the full timeline can be the sample. Previous receipts and clips remain intact. Reuse actual acceptance of unchanged artifacts; routine in-scope fixes need technical rechecks. Never omit the required later user-stage stop or turn a technical pass into user taste acceptance.
 
 ## Full lyrics and actual glyphs
 
