@@ -15,7 +15,6 @@
 //     node render.mjs --loop=emotions --png --out=out/loop_emotions                          one cycle as PNGs (for GIFs)
 //   Music: --audio=assets/song.mp3 (or PROJECT.audio) is muxed into --clip and --encode. Other flags: --fps=24,
 //   --chrome=<path to Chrome/Chromium>.
-import puppeteer from 'puppeteer-core';
 import {assertProduction} from './production_gate.mjs';
 import fs from 'node:fs';
 import { spawn } from 'node:child_process';
@@ -25,7 +24,10 @@ import { pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const acceptedBrief=assertProduction(process.cwd(),{audio:args.audio||undefined,fps:args.fps?Number(args.fps):undefined});
+const operation=(args.sheet||args.stills)&&!(args.strip||args.clip||args.png||args.frames||args.encode)?'stills':'video';
+const stillCount=operation==='stills'?String(args.sheet||args.stills).split(',').length:undefined;
+const stageAssert=options=>assertProduction(process.cwd(),{operation,still_count:stillCount,...options});
+const acceptedBrief=stageAssert({audio:args.audio||undefined,fps:args.fps?Number(args.fps):undefined});
 args.audio=args.audio||acceptedBrief.music?.audio||undefined;
 const CHROMES = [args.chrome, process.env.CHROME_PATH, 'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser',
@@ -38,7 +40,6 @@ function playwrightChromes() {
     .map(n => `${dir}/${n}/chrome-linux64/chrome`);
 }
 const CHROME = CHROMES.find(p => p && existsSync(p));
-if (!CHROME) { console.error('Chrome not found: pass --chrome=<path> or set CHROME_PATH'); process.exit(1); }
 const fps = +(args.fps || 30), FRAMES_DIR = 'out/frames';
 const run = (cmd, a) => new Promise((ok, bad) => { const p = spawn(cmd, a, { stdio: 'inherit' }); p.on('close', c => c ? bad(new Error(cmd + ' exited ' + c)) : ok()); });
 const times = s => String(s).split(',').map(Number);
@@ -47,11 +48,17 @@ const span = s => String(s).split(':').map(Number);
 const fields = s => { const out = []; let d = 0, cur = ''; for (const ch of String(s)) { if (ch === ',' && !d) { out.push(cur); cur = ''; continue; } d += ch === '(' ? 1 : ch === ')' ? -1 : 0; cur += ch; } out.push(cur); return out.map(v => isNaN(+v) ? v : +v); };
 
 if (args.encode) {
-  const out = args.out || 'out/video.mp4', n = readdirSync(FRAMES_DIR).filter(f => f.endsWith('.jpg')).length, audio = args.audio;
-  assertProduction(process.cwd(),{duration:n/fps});
+  const out = args.out || 'out/video.mp4', audio = args.audio;
+  const files=readdirSync(FRAMES_DIR).filter(f=>/^f[0-9]+[.]jpg$/.test(f)).sort((a,b)=>Number(a.slice(1,-4))-Number(b.slice(1,-4)));
+  const indices=files.map(f=>Number(f.slice(1,-4))),n=indices.length,first=indices[0];
+  if(!n||indices.some((value,i)=>value!==first+i))throw Error('encoding requires a nonempty contiguous frame interval');
+  const frameFile=FRAMES_DIR+'/'+files[0];
+  const probe=await new Promise((ok,bad)=>{let data='',err='';const child=spawn('ffprobe',['-v','error','-show_entries','stream=width,height','-of','json',frameFile]);child.stdout.on('data',b=>data+=b);child.stderr.on('data',b=>err+=b);child.on('error',bad);child.on('close',code=>code?bad(Error(err)):ok(JSON.parse(data)));});
+  const video=probe.streams[0],start=first/fps,end=(first+n)/fps;
+  stageAssert({duration:n/fps,timeline_range:[start,end],resolution:[video.width,video.height],fps});
   console.log(`encoding ${n} frames → ${out}${audio ? ' with ' + audio : ''}`);
-  await run('ffmpeg', ['-y', '-loglevel', 'error', '-stats', '-framerate', String(fps), '-i', `${FRAMES_DIR}/f%05d.jpg`,
-    ...(audio ? ['-i', audio, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),
+  await run('ffmpeg', ['-y', '-loglevel', 'error', '-stats', '-framerate', String(fps), '-start_number',String(first),'-i', `${FRAMES_DIR}/f%05d.jpg`,
+    ...(audio ? ['-ss',String(start),'-t',String(n/fps),'-i', audio, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '17', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out]);
   console.log('wrote ' + out);
   process.exit(0);
@@ -67,6 +74,8 @@ const gpu = args['soft-gl'] ? ['--use-angle=swiftshader', '--enable-unsafe-swift
   : process.platform === 'win32' ? ['--use-angle=d3d11'] : process.platform === 'darwin' ? ['--use-angle=metal'] : ['--use-gl=angle'];
 // Ubuntu 23.10+ blocks Chrome's user-namespace sandbox; headless rendering of local files doesn't need it.
 const sandbox = process.platform === 'linux' ? ['--no-sandbox'] : [];
+if (!CHROME) { console.error('Chrome not found: pass --chrome=<path> or set CHROME_PATH'); process.exit(1); }
+const {default:puppeteer}=await import('puppeteer-core');
 const browser = await puppeteer.launch({
   executablePath: CHROME, headless: true, protocolTimeout: 0,
   args: [...sandbox, '--allow-file-access-from-files', '--ignore-gpu-blocklist', ...gpu, '--enable-gpu-rasterization', '--window-size=1920,1080', '--disable-renderer-backgrounding', '--disable-background-timer-throttling']
@@ -77,10 +86,12 @@ async function openPage(tag = '') {
   page.on('pageerror', e => console.log(`[page error${tag}]`, e.message));
   await page.goto(pathToFileURL(resolve('studio.html')).href + '?render', { waitUntil: 'networkidle0' });
   await page.waitForFunction('window.ready === true', { timeout: 60000 });
+  const resolution=await page.evaluate(()=>{const cv=document.getElementById('out');return [cv.width,cv.height];});
+  stageAssert({resolution,fps});
   if(acceptedBrief.lyrics?.font?.path){
     await page.evaluate(async data=>{const face=new FontFace(data.family,'url('+JSON.stringify(data.url)+')');await face.load();document.fonts.add(face);window.STORY_TEXT_STYLE={...(window.STORY_TEXT_STYLE||{}),font:JSON.stringify(data.family)+',sans-serif'};},{family:acceptedBrief.lyrics.font.family,url:pathToFileURL(resolve(acceptedBrief.lyrics.font.path)).href});
   }
-  if(acceptedBrief.execution?.context!=='tool-self-test'&&['full','full-lines'].includes(acceptedBrief.lyrics?.mode)){
+  if(acceptedBrief.phase!=='design'&&acceptedBrief.execution?.context!=='tool-self-test'&&['full','full-lines'].includes(acceptedBrief.lyrics?.mode)){
     const display=JSON.parse(fs.readFileSync(resolve(acceptedBrief.lyrics.display_document.path),'utf8'));
     await page.evaluate(data=>{if(typeof window.overlayHook!=='function')throw Error('full-line subtitle renderer is absent');window.STORY_LYRICS=data;window.STORY_LYRICS_MODE='full-lines';},display);
   }
@@ -118,7 +129,7 @@ if (args.sheet || args.strip) {
   // PNG sequence (for GIFs): a loop's full cycle (frame n equals frame 0, so it isn't rendered), or --range=a:b.
   const probe = await openPage(), len = await lengthOf(probe); await probe.close();
   const [a, b] = args.range ? span(args.range) : [0, len], n = Math.round((b - a) * fps);
-  assertProduction(process.cwd(),{duration:b-a,timeline_duration:len,fps});
+  stageAssert({duration:b-a,timeline_duration:len,fps,timeline_range:[a,b]});
   const out = args.out || `out/${args.loop ? 'loop_' + args.loop : 'png'}`, workers = +(args.workers || 3); mkdirSync(out, { recursive: true });
   let next = 0; const start = Date.now();
   await Promise.all(Array.from({ length: workers }, async (_, w) => {
@@ -130,7 +141,7 @@ if (args.sheet || args.strip) {
   // Parallel and resumable: each worker pulls the next missing frame; files are written atomically.
   const probe = await openPage(), len = await lengthOf(probe); await probe.close();
   const [a, b] = args.range ? span(args.range) : [0, len], workers = +(args.workers || 4);
-  assertProduction(process.cwd(),{duration:b-a,timeline_duration:len,fps});
+  stageAssert({duration:b-a,timeline_duration:len,fps,timeline_range:[a,b]});
   mkdirSync(FRAMES_DIR, { recursive: true });
   const first = Math.round(a * fps), last = Math.min(Math.ceil(len * fps) - 1, Math.round(b * fps) - 1);
   const todo = []; for (let i = first; i <= last; i++) { const f = `${FRAMES_DIR}/f${String(i).padStart(5, '0')}.jpg`; if (!existsSync(f) || statSync(f).size < 1000) todo.push(i); }
@@ -151,9 +162,9 @@ if (args.sheet || args.strip) {
 } else if (args.clip) {
   const page = await openPage(), len = await lengthOf(page);
   const [a, b] = args.range ? span(args.range) : typeof args.clip === 'string' ? span(args.clip) : [0, len];
-  assertProduction(process.cwd(),{duration:b-a,timeline_duration:len,fps});
+  stageAssert({duration:b-a,timeline_duration:len,fps,timeline_range:[a,b]});
   const audio = args.audio || await page.evaluate(() => PROJECT.audio || '');
-  assertProduction(process.cwd(),{duration:b-a,timeline_duration:len,fps,audio:audio||undefined});
+  stageAssert({duration:b-a,timeline_duration:len,fps,timeline_range:[a,b],audio:audio||undefined});
   const out = args.out || 'out/clip.mp4'; mkdirSync(dirname(out), { recursive: true });
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
     ...(audio ? ['-ss', String(a), '-t', String(b - a), '-i', audio, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),
