@@ -17,3 +17,5 @@ Review shot contact sheets, strips for important actions/cuts and relevant full-
 For an “odd” moment, inspect scale, hierarchy, ground contact, occlusion, timing and camera before polish. Fix common rig bugs once. Keep accepted work and re-render only affected ranges plus adjacent joins.
 
 Use independent agents only when authorized by the user or governing workflow. Assign distinct files and inspect overlapping layers before integration.
+
+Apply the user-stage-review reference linked from SKILL.md: direction acceptance permits design only. Present complete-scope script and actual design frames and wait; then present the pilot and wait; for full MVs present a whole-scope rough animatic and wait before fine production. Existing exact decisions can be reused; no agent self-review supplies user acceptance.

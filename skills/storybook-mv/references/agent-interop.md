@@ -31,7 +31,7 @@ Check the destination's tools. Planning needs reference-reading and conversation
 
 Provide these as files, not assumptions about inherited memory:
 - `brief.json`: goal, style/asset/output choices, open questions and authorization/phase.
-- Schema 4 content/song-reading records and actual user confirmation/scope evidence. Missing legacy fields are pending, not implicitly accepted. A new agent must preserve the exact accepted reading/content and cannot broaden prototype duration to a whole song.
+- Schema 5 content/song-reading records plus the actual design/script, pilot and animatic packages and real stage-specific user approvals/limited waivers and actual user confirmation/scope evidence. Missing legacy fields are pending, not implicitly accepted. A new agent must preserve the exact accepted reading/content and cannot broaden prototype duration to a whole song.
 - `DECISIONS.md`: confirmed choices, proposed assumptions and explicit revisions.
 - `PROPOSAL.md`: intended film, representative moments, proposed backend, tradeoffs and staged deliverables.
 - Actual input paths; current timeline/cues/code/review evidence if production has begun.
@@ -54,3 +54,5 @@ If a team is authorized, split file ownership and keep a coordinator for shared 
 Paths describe the respective local products, not a claim that another product reads ChatGPT's private skill store.
 
 For 3.2 transfer the small bound user-confirmation record, canonical/display lyric documents, checked primary-source snapshots, selected audio/font files and hashes, current pilot receipt and actual review artifacts. Preserve private inputs in the project; the generic skill export omits them. The recipient also needs Python 3 for the unified render-entry contract.
+
+A receiving agent resumes the earliest missing/affected review stage. It must present readable scripts, rendered images and playable clips to the user before claiming acceptance. Overall full-song scope, content acceptance and a prototype-pass technical receipt do not replace later user decisions. Other backend skills cannot bypass the director phase; apply the shared operation/dimensions/fps entry check.

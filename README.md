@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.2.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.3.0**。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -8,7 +8,7 @@
 
 把本仓库地址和下面的指令一起发给编程 agent：
 
-> 请获取这个仓库，先读取 `skills/storybook-mv/SKILL.md`，检查完整性后，将 `skills/storybook-mv/` 完整目录安装到当前工具支持的 Skills 目录，保留 scripts、references、assets 和许可证。若当前工具不支持 Skills 自动发现，则保留在项目中，并在开展相关任务前读取 SKILL.md。先完成安装，选定制作路线后再检查和安装对应依赖。使用时先复用已确认的信息，通过每轮 1—3 个关键问题确定需求，信息充分后给出具体方案，按用户已授权的范围制作。
+> 请获取这个仓库，先读取 `skills/storybook-mv/SKILL.md`，检查完整性后，将 `skills/storybook-mv/` 完整目录安装到当前工具支持的 Skills 目录，保留 scripts、references、assets 和许可证。若当前工具不支持 Skills 自动发现，则保留在项目中，并在开展相关任务前读取 SKILL.md。先完成安装，选定制作路线后再检查和安装对应依赖。使用时先复用已确认的信息，通过每轮 1—3 个关键问题确定需求，方向明确后只进入设计；先展示完整脚本与实际设计图，等待验收，再依次展示限定样片和全曲粗剪，各阶段经使用者确认后才进入下一步。AI 自检不能替代使用者验收。
 
 不要只下载 `SKILL.md`；脚本、参考和素材目录都是技能的一部分。目标目录已经存在时，先比较版本并保留已有修改。
 
@@ -29,12 +29,28 @@
 
 制作还须有明确范围：同意短样片不能自动扩大成全曲。脚本会检查内容确认记录、所选歌曲理解和时长上限；旧项目缺少确认记录时不会自动放行。记录必须来自真实用户回复，不能为了通过检查自行填成“已确认”。
 
-## 3.2 的执行检查
+## 3.3 的默认运行流程
+
+**方向确认只放行设计，AI 自检通过不等于使用者验收通过。**
+
+| 阶段 | 必须展示的内容 | 确认后放行 |
+|---|---|---|
+| 提问与歌曲理解 | 依据歌词/录音的理解、具体内容方向与限制 | 设计与脚本 |
+| 设计与脚本 | 完整目标范围的分镜、实际设计帧、字幕与转场示意、明确的样片区间 | 限定样片 |
+| 样片 | 实际可播放片段、关键动作/效果、转场与同步，以及已知不足 | 全曲粗剪 |
+| 全曲粗剪 | 简化画面配整首歌，检查重复、副歌变化、节奏、发展与结尾 | 精细制作 |
+| 精细制作 | 经过实际导出检查的成片、源码与局限 | 交付并局部修订 |
+
+每次展示后应结束当前轮次并等待回复。“继续”只适用于当前已展示的稿件和下一阶段；先前的完整 MV 目标不能接受尚未出现的稿件。每阶段记录绑定实际文件、版本和真实回复。仅在使用者明确指定时允许有限地跳过某个验收，仍须完成和检查对应工作。
+
+制作入口增加独立设计阶段（只允许静态图）、获准样片区间检查、全曲粗剪范围与低成本规格检查，以及旧项目/跨 agent 的阶段恢复。正常修错无需重问创意方向；实质改动回到受影响的验收点。详细规则见 [逐阶段验收](skills/storybook-mv/references/user-stage-review.md)。
+
+## 保留的输入与执行检查
 
 - 歌词解读绑定实际歌词文件、可追溯行号和来源快照；作者本意需有已检查的原始来源。
 - 内容确认绑定真实用户回复和方案版本；规划状态、缺失音频、错误音轨与过期记录会拦截制作。
 - Python 与 JavaScript 制作入口共用同一套校验，修复数值表示导致的确认误判和非横屏画幅错误。
-- 整曲扩展前检查实际样片与评审回执；完整字幕检查漏句、重复、顺序、文本、复核状态和所选中文字体的实际字形覆盖。
+- 整曲精细制作前同时检查实际样片的技术记录，以及设计、样片和全曲粗剪的使用者验收；完整字幕检查漏句、重复、顺序、文本、复核状态和所选中文字体的实际字形覆盖。
 - 原生 Canvas 支持时间范围导出、校验后的断点续渲染、实测耗时/缓存估算与预算上限。
 
 这些检查不能认证伪造的用户回复、代替理解歌词或保证审美。具体协议见 [执行检查](skills/storybook-mv/references/execution-gates.md)、[局部渲染](skills/storybook-mv/references/native-incremental.md) 和 [能力状态](skills/storybook-mv/assets/capability-matrix.json)。相关记录由 agent 根据实际对话和文件填写，无需让使用者回答哈希或 JSON 问题。
@@ -64,7 +80,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 ## 制作依赖
 
-规划阶段不需要安装所有渲染工具。制作入口使用 Python 3 的统一校验；JavaScript 渲染项目也需要 Python，可用 `MV_PYTHON` 指定解释器。先确定方案和一个主要引擎，再按需准备依赖：
+规划阶段不需要安装所有渲染工具。制作入口使用 Python 3 的统一校验，使用者项目的实际设计图验证还需要 Pillow（见 `scripts/requirements-media.txt`）；JavaScript 渲染项目也需要 Python，可用 `MV_PYTHON` 指定解释器。先确定方案和一个主要引擎，再按需准备依赖：
 
 - `canvas2d`：内置空白 Canvas2D 项目，可选择浏览器或可选的 Node Canvas 运行方式。
 - `painted-p5`：内置 p5.js / p5.brush 模板，需要对应包、Chrome、FFmpeg 等依赖。
@@ -80,7 +96,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 版本 3.0.0 增加四种可执行画法、原创完整 30 秒示例、成片与音轨检查工具，以及随仓库分发的回归测试。所有示例都使用原创代码、测试文字和程序合成音乐，不包含个人照片或原歌曲音频。
 
-现有验证主要使用 CPU Canvas2D。浏览器、p5/WebGL、任意完整歌曲及艺术效果需要按实际项目分别验证；3.2 增加了所选中文字体覆盖及原创中文字幕的局部验证；不能把测试通过当作审美保证。3.2 新增验证见 [3.2 验证记录](skills/storybook-mv/assets/verification-v32.json)。早期示例和实测范围见 [3.0 验证记录](skills/storybook-mv/assets/style-packs/verification.json)，旧版受控研究见 [2.0 记录](skills/storybook-mv/assets/studies/verification.json)。
+现有验证主要使用 CPU Canvas2D。浏览器、p5/WebGL、任意完整歌曲及艺术效果需要按实际项目分别验证；3.2 增加了所选中文字体覆盖及原创中文字幕的局部验证；不能把测试通过当作审美保证。3.3 阶段检查、实际原生制作链和独立 agent 试用见 [3.3 验证记录](skills/storybook-mv/assets/verification-v33.json)。浏览器模板仅新增验证 FFmpeg 编码分支，尚未验证 Chrome/p5 渲染。3.2 的历史验证见 [3.2 验证记录](skills/storybook-mv/assets/verification-v32.json)。早期示例和实测范围见 [3.0 验证记录](skills/storybook-mv/assets/style-packs/verification.json)，旧版受控研究见 [2.0 记录](skills/storybook-mv/assets/studies/verification.json)。
 
 ## 测试和示例
 
@@ -89,7 +105,7 @@ python3 -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
 python3 -m unittest discover -s skills/storybook-mv/tests -v
 ```
 
-媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 78 项回归测试（包含原生渲染条件下的确认与拦截检查）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。仓库自动检查会运行测试和选定的原生渲染探针。
+媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 110 项回归测试（包含原生渲染条件下的确认与拦截检查）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。仓库自动检查会运行测试和选定的原生渲染探针。
 
 `tests/player_browser.mjs` 提供可选的真实浏览器交互检查，需要 Playwright 与匹配的 Chromium；当前环境未完成该项验证，不能用脚本语法通过替代。
 
@@ -105,7 +121,7 @@ python3 skills/storybook-mv/scripts/build_demo.py ./original-mv --kind film --st
 
 ## 项目交接
 
-交给另一个 agent 时，除技能目录外，还需提供项目的 `brief.json`、`DECISIONS.md`、`PROPOSAL.md`，以及已有的视觉规范、分镜、评审、源码和获准转移的素材。注明当前阶段、已锁定的选择和交付要求。
+交给另一个 agent 时，除技能目录外，还需提供项目的 `brief.json`、`DECISIONS.md`、`PROPOSAL.md`，以及已有的视觉规范、分镜、评审、源码和获准转移的素材。注明当前阶段、已展示的稿件版本、真实使用者验收/有限豁免、待修改事项和交付要求，不能把旧方向确认当作后续审片通过。
 
 此通用发行目录不包含个人歌曲项目的角色设定、私人照片、歌曲音频、账号凭据或浏览器状态。
 

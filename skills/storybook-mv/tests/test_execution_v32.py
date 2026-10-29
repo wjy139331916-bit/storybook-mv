@@ -233,6 +233,12 @@ class NativeExecutionTests(unittest.TestCase):
         review={'scope':'prototype','reviewer':'synthetic validator fixture, not a real aesthetic acceptance','target':{'path':'out/pilot/clip.mp4','sha256':sha(p/'out/pilot/clip.mp4'),'input_digest':report['input_digest']},'checks':[{'id':key,'status':'pass','notes':'Synthetic record validates the workflow only','evidence':['out/pilot/clip.mp4']} for key in spec['required_checks']],'issues':[]};(p/'review.json').write_text(json.dumps(review))
         (p/'runtime-report.json').write_text(json.dumps({'status':'passed','engine':'canvas2d','runtime_backend':'node-canvas','encoded':report['encoded'],'artifact':{'path':'out/pilot/clip.mp4','sha256':sha(p/'out/pilot/clip.mp4')}}))
         from pilot_gate import promote
-        promote(p);new=C.load(p/'brief.json');new['phase']='full';(p/'brief.json').write_text(json.dumps(new))
+        promote(p);new=C.load(p/'brief.json')
+        from workflow_fixtures import video_stage
+        video_stage(new,p,'prototype','out/pilot/clip.mp4','out/pilot/render-report.json')
+        new['phase']='animatic';(p/'brief.json').write_text(json.dumps(new))
+        r=self.render(p,'--out=out/rough');self.assertEqual(r.returncode,0,r.stderr)
+        video_stage(new,p,'animatic','out/rough/clip.mp4','out/rough/render-report.json')
+        new['phase']='full';(p/'brief.json').write_text(json.dumps(new))
         r=self.render(p,'--out=out/full');self.assertEqual(r.returncode,0,r.stderr)
         full=C.load(p/'out/full/render-report.json');self.assertTrue(full['encoded']['audio']);self.assertEqual(full['audio']['sha256'],sha(audio));self.assertEqual(full['project_acceptance'],'not_assessed')

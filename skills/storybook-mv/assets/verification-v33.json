@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "toolkit_version": "3.3.0",
+  "date": "2026-10-29",
+  "brief_schema": 5,
+  "scope": "User-stage artifact contracts and native/FFmpeg-only execution. Does not authenticate user replies, judge their semantics, certify aesthetics or verify a full real sung MV.",
+  "regression": {
+    "command": "python3 -m unittest discover -s tests -q",
+    "tests": 110,
+    "passed": 110,
+    "skipped": 0,
+    "canvas_module_version": "0.1.100",
+    "cjk_font": "Noto Sans SC Regular (external, not bundled)"
+  },
+  "executed_checks": [
+    "Direction acceptance permits native static design frames; video export refuses before output creation.",
+    "Missing actual design image/full-scope script, wrong artifact/revision, internal-only pilot review, unaccepted animatic and reused earlier acceptance messages block advancement.",
+    "Native positive pipeline encodes pilot, rough animatic and full output using the selected original test audio, with separate synthetic user-stage records.",
+    "Whole-scope authorization cannot substitute for the pilot interval in the accepted design package; actual [2,4] works and wrong/whole intervals refuse.",
+    "Both browser-template FFmpeg-only encode branches exercised without launching a browser: actual global-index JPEGs encode with nonzero frame/audio offsets; wrong indices refuse.",
+    "Project-local contract CLI initializes neutral templates without treating the project as an installed skill.",
+    "Preflight reports the real user-stage Pillow dependency separately from optional diagnostics."
+  ],
+  "independent_use": {
+    "request": "12-second silent all-code geometric film; user supplies an exact direction and says continue",
+    "result": "Full 12-second script and six actual 1920x1080 Canvas design frames; no video; design acceptance pending and prototype entry blocked",
+    "raw_task_and_outputs_bundled": false,
+    "reviewed_board_sha256": "029f9954c37fbca11828fef9dc6865f7bca6d00ac27eb6dc1a674eeb4312c4a6",
+    "design_package_sha256": "0c4339e7b2bcc7fef7b69e1f7d2f72345d282ba248e1c7f3360adeff88d28b70",
+    "snapshot_limit": "Forward task ran during contract refinement. Root inspected its actual board. Later browser encode and project-local CLI corrections were verified by current regression cases; original images are not relabelled as new renders.",
+    "final_source_replay": {
+      "static_frames": 6,
+      "all_original_frame_hashes_match": true,
+      "render_report_sha256": "e1b7331e3f7b40f2cd58b3811a5c891454a1827ce8759f0a373648f49ad004ca",
+      "scope": "Root rerendered the unchanged design source with final native renderer and current gate helpers; no motion/video."
+    }
+  },
+  "independent_contract_review": {
+    "result": "Read-only reviewer found pending-design self-dependency, missing browser dimensions, missing recording for animatic, legitimate limited-waiver reuse, missing pilot bound and encode interval defects. Corrected and covered by regressions.",
+    "browser_runtime_launched": false
+  },
+  "unverified": [
+    "Actual Chrome/p5/WebGL playback/rendering",
+    "Windows and arbitrary other agent hosts",
+    "Full real-song singing sync",
+    "General complex acting and artistic acceptance"
+  ],
+  "source_sha256": {
+    "SKILL.md": "f62459e2cd4f5a04b951c792cdc80c841287f7ed1b8c0be9af1b7899d5814c7e",
+    "scripts/workflow_gate.py": "6854d5e7a05e12b05becd3c4595dfc9c66d5a9e0b0fbfbf9283a6ce17f17a5d9",
+    "scripts/check_brief.py": "2be2e7dbb52386ec45efd866969ae35da9d8527bd02a68aad14cc0b64ef94722",
+    "scripts/scaffold.py": "8a27868bba3313619af4b1936391be3cf734483963b97daa0de9e3d8f51f64e4",
+    "scripts/project_contracts.py": "99397f99bceb2b3d92137a4bbc9cf986c0b0ea6e3f7d63b2376b8410f74dca2c",
+    "scripts/input_contracts.py": "fe6940f1350b9cee026a5a4a47aa62647b84a8ff457f8a06e6c3331c9a928bf6",
+    "scripts/render_canvas.mjs": "6b661e9ab861a371ec2df4ad10c81fd0bd22ff78967811a8b91d14e798ab81ad",
+    "assets/canvas-template/render.mjs": "98cb79d8d89a9808ffca1c4c345ddba8f90d514a422f77eef7eaabbed29cd9c9",
+    "assets/painted-template/render.mjs": "98cb79d8d89a9808ffca1c4c345ddba8f90d514a422f77eef7eaabbed29cd9c9",
+    "tests/test_workflow_v33.py": "7f413b08b99a42d45a9ae8a35446ec26f791711d5668bb4a5389e0f822d4cbec",
+    "tests/workflow_fixtures.py": "e69f62e9b439a56775e6ce2e1f0c6b3e52553b64d9ea621fa4724715f3478df6",
+    "references/user-stage-review.md": "d9a800507312a5727c4a6517b0ce2ccdd90e989dc89b2fdeb78ff42cc9ae8795",
+    "scripts/preflight.py": "5d732e3ef9c30c61a9cac9263269dbfa92be69d94a95c51c37b47ac86e7fb736"
+  }
+}

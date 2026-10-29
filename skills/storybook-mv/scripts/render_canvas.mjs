@@ -14,7 +14,9 @@ const known=new Set(['help','project','out','canvas-module','stills-only','times
 for(const key of Object.keys(args))if(!known.has(key))throw Error('unsupported render option: '+key);
 if(args.help){console.log('node render_canvas.mjs --project=DIR --out=out/study [--canvas-module=/path/to/index.js] [--stills-only] [--times=0.5,3.6,4.8] [--audio=assets/test.wav] [--range=START:END] [--resume] [--estimate]');process.exit(0);}
 const project=path.resolve(args.project||'.'),out=path.resolve(project,args.out||'out/canvas-study');
-const brief=assertProduction(project,{audio:args.audio||undefined});
+const operation=args.estimate?'estimate':args['stills-only']?'stills':'video';
+const stillCount=args.times?String(args.times).split(',').length:3;
+const brief=assertProduction(project,{audio:args.audio||undefined,operation,still_count:stillCount});
 const require=createRequire(path.join(project,'package.json'));
 let canvasModule;
 try{canvasModule=require(args['canvas-module']?path.resolve(args['canvas-module']):'@napi-rs/canvas');}
@@ -25,7 +27,7 @@ const sha=b=>createHash('sha256').update(b).digest('hex');
 function inputs(){
   const files=[];
   function visit(p){if(!fs.existsSync(p))return;const st=fs.lstatSync(p);if(st.isSymbolicLink())throw Error('resolve input symlinks explicitly before a reproducible render');if(st.isDirectory()){for(const n of fs.readdirSync(p).sort())visit(path.join(p,n));}else if(st.isFile())files.push({path:path.relative(project,p).split(path.sep).join('/'),sha256:sha(fs.readFileSync(p))});}
-  for(const n of ['src','data','assets','visual-spec.json','package.json','package-lock.json','render_canvas.mjs','render.mjs','studio.html','production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py'])visit(path.join(project,n));
+  for(const n of ['src','data','assets','visual-spec.json','package.json','package-lock.json','render_canvas.mjs','render.mjs','studio.html','production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py','workflow_gate.py'])visit(path.join(project,n));
   files.sort((a,b)=>Buffer.compare(Buffer.from(a.path),Buffer.from(b.path)));
   return {files,digest:sha(files.map(f=>f.path+'\0'+f.sha256+'\n').join(''))};
 }
@@ -35,7 +37,7 @@ if(brief.lyrics?.font?.family)context.STORY_TEXT_STYLE={font:JSON.stringify(brie
 const entry=path.join(project,'src/render-entry.json');
 const scripts=fs.existsSync(entry)?JSON.parse(fs.readFileSync(entry,'utf8')).scripts:['src/config.js','src/scene.js','src/data/lyrics.js','src/lyrics-overlay.js'];
 for(const rel of scripts){const f=path.resolve(project,rel);if(!f.startsWith(project+path.sep))throw Error('render entry must stay inside project');vm.runInContext(fs.readFileSync(f,'utf8'),context,{filename:rel});}
-if(brief.execution?.context!=='tool-self-test'&&['full','full-lines'].includes(brief.lyrics?.mode)){
+if(brief.phase!=='design'&&brief.execution?.context!=='tool-self-test'&&['full','full-lines'].includes(brief.lyrics?.mode)){
   if(typeof context.overlayHook!=='function')throw Error('full-line subtitles require the actual overlay renderer');
   const cues=JSON.parse(fs.readFileSync(path.resolve(project,brief.lyrics.display_document.path),'utf8'));
   context.STORY_LYRICS=cues;context.STORY_LYRICS_MODE='full-lines';
@@ -47,9 +49,9 @@ if(bounds.length!==2||bounds.some(x=>!Number.isFinite(x))||bounds[0]<0||bounds[1
 const [rangeStart,rangeEnd]=bounds,startFrame=Math.round(rangeStart*fps),endFrame=Math.round(rangeEnd*fps),outputDuration=(endFrame-startFrame)/fps;
 if(Math.abs(startFrame/fps-rangeStart)>1e-6||Math.abs(endFrame/fps-rangeEnd)>1e-6)throw Error('range endpoints must be frame aligned');
 const audioPath=args.audio?path.resolve(project,args.audio):(brief.music?.audio?path.resolve(project,brief.music.audio):null);
-assertProduction(project,{duration:outputDuration,audio:audioPath||undefined,resolution:[width,height],fps,timeline_duration:duration});
+assertProduction(project,{duration:outputDuration,audio:audioPath||undefined,resolution:[width,height],fps,timeline_duration:duration,operation,still_count:stillCount,timeline_range:bounds});
 const selected=brief.output?.resolution;
-if(brief.execution?.context!=='tool-self-test'&&selected&&(selected[0]!==width||selected[1]!==height))throw Error('render config dimensions differ from the approved output');
+if(brief.phase!=='animatic'&&brief.execution?.context!=='tool-self-test'&&selected&&(selected[0]!==width||selected[1]!==height))throw Error('render config dimensions differ from the approved output');
 if(![width,height].every(n=>Number.isInteger(n)&&n>0&&n%2===0)||!Number.isFinite(duration)||duration<=0||!Number.isFinite(fps)||fps<=0)throw Error('invalid render dimensions/timing');
 const canvas=createCanvas(width,height);
 const frameAudit={metadata_frames:0,findings:[],samples:[],scope:'Declared text/action boxes, local actor poses and contact metadata from the actual drawing code. Undeclared content and semantic occlusion are not verified.'},poseStates=new Map(),issueRanges=new Map();
@@ -122,7 +124,7 @@ if(!args['stills-only']){
   const decode=spawnSync('ffmpeg',['-v','error','-i',clip,'-f','null','-'],{encoding:'utf8'});if(decode.status!==0)throw Error('decode check failed: '+decode.stderr);
 }
 let version='unknown';try{version=require(path.join(path.dirname(require.resolve(args['canvas-module']?path.resolve(args['canvas-module']):'@napi-rs/canvas')),'package.json')).version;}catch{}
-const report={schema_version:1,status:'passed',renderer:'node-canvas',runtime:{node:process.version,canvas:version,platform:os.platform(),arch:os.arch(),ffmpeg:spawnSync('ffmpeg',['-version'],{encoding:'utf8'}).stdout?.split('\n')[0]||null},width,height,fps,duration:outputDuration,timeline_duration:duration,range:bounds,frames,reused_frames:reused,project_acceptance:"not_assessed",input_digest:manifest.digest,source_manifest:manifest.files,determinism:deterministic,stills,audio,elapsed_seconds:(performance.now()-start)/1000,encoded:probe?{video:true,audio:probe.streams.some(s=>s.codec_type==='audio'),full_decode:true}:null,scope:'Actual CPU Canvas2D frames, reverse-seek equality and encoded-file checks; not browser/p5/WebGL compatibility, real-song sync or aesthetic acceptance.'};
+const report={schema_version:1,status:'passed',renderer:'node-canvas',runtime:{node:process.version,canvas:version,platform:os.platform(),arch:os.arch(),ffmpeg:spawnSync('ffmpeg',['-version'],{encoding:'utf8'}).stdout?.split('\n')[0]||null},width,height,fps,duration:outputDuration,timeline_duration:duration,range:bounds,frames,reused_frames:reused,project_acceptance:"not_assessed",production_stage:brief.phase,input_digest:manifest.digest,source_manifest:manifest.files,determinism:deterministic,stills,audio,elapsed_seconds:(performance.now()-start)/1000,encoded:probe?{video:true,audio:probe.streams.some(s=>s.codec_type==='audio'),full_decode:true}:null,scope:'Actual CPU Canvas2D frames, reverse-seek equality and encoded-file checks; not browser/p5/WebGL compatibility, real-song sync or aesthetic acceptance.'};
 if(args.resume&&clip){checkpoint.clip_sha256=sha(fs.readFileSync(clip));saveCheckpoint();}
 report.renderer_sha256=sha(fs.readFileSync(new URL(import.meta.url)));
 frameAudit.schema_version=1;frameAudit.coverage=frameAudit.metadata_frames?(frames?'all_encoded_frames_with_declared_metadata':'selected_stills'):'no_declared_metadata';frameAudit.target=clip?{path:path.relative(project,clip).split(path.sep).join('/'),sha256:sha(fs.readFileSync(clip)),input_digest:manifest.digest}:null;report.frame_audit={path:path.relative(project,path.join(out,'frame-audit.json')).split(path.sep).join('/'),coverage:frameAudit.coverage,findings:frameAudit.findings.length};fs.writeFileSync(path.join(out,'frame-audit.json'),JSON.stringify(frameAudit,null,2)+'\n');

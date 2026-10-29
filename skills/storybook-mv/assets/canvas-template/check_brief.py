@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 from fractions import Fraction
 from input_contracts import content_digest, reading_evidence_errors, confirmation_errors, media_errors, subtitle_errors, bound_file
+from workflow_gate import workflow_errors, pilot_plan
 
 
 def aspect_parts(value):
@@ -73,11 +74,15 @@ def production_gate(brief, purpose='prototype', duration=None, project=None, aud
             errors.append('isolated tool self-tests are limited to 60 seconds')
         return errors
     errors = song_reading_errors(brief, project)
-    if brief.get('request_mode') in ('plan-only','explore') or brief.get('phase') in (None,'discover','proposal','awaiting-confirmation'):
+    if (brief.get('request_mode') in ('plan-only','explore') and purpose!='design') or brief.get('phase') in (None,'discover','proposal','awaiting-confirmation'):
         errors.append('STAGE_BLOCKED: discovery/planning must not run production')
     if purpose == 'production' and brief.get('phase') not in ('full','repair','deliver'):
         errors.append('full production requires the explicit full/repair stage')
-    if purpose == 'prototype' and brief.get('phase') not in ('study','prototype','full','repair','deliver'):
+    if purpose == 'design' and brief.get('phase') != 'design':
+        errors.append('design work requires the explicit design stage')
+    if purpose == 'animatic' and brief.get('phase') != 'animatic':
+        errors.append('rough-cut work requires the explicit animatic stage')
+    if purpose == 'prototype' and brief.get('phase') not in ('study','prototype','animatic','full','repair','deliver'):
         errors.append('select the authorized study/prototype stage before rendering')
     content = brief.get('content') or {}
     for key in ('subject', 'core_idea'):
@@ -97,7 +102,7 @@ def production_gate(brief, purpose='prototype', duration=None, project=None, aud
     if execution.get('production_authorized') is not True:
         errors.append('production is not authorized')
     allowed = execution.get('authorized_scope')
-    if allowed not in ('study', 'prototype', 'full') or (purpose == 'production' and allowed != 'full'):
+    if allowed not in ('design', 'study', 'prototype', 'full') or (purpose in ('production','animatic') and allowed != 'full') or (purpose == 'prototype' and allowed == 'design'):
         errors.append('requested production exceeds the explicitly authorized scope')
     if not isinstance(execution.get('authorization_evidence'),str) or not execution['authorization_evidence'].strip():
         errors.append('record the user authorization for this production scope')
@@ -109,15 +114,22 @@ def production_gate(brief, purpose='prototype', duration=None, project=None, aud
     if purpose == 'production' and isinstance(moments,list) and len(moments)<3:
         errors.append('full video needs an established beginning, development and ending/loop behavior')
     if purpose == 'prototype':
-        pilot_cap = (brief.get('prototype') or {}).get('duration', cap)
+        plan=pilot_plan(brief,project)
+        pilot_cap=(plan['end']-plan['start']) if plan else ((brief.get('prototype') or {}).get('duration') if project is None else None)
+        if not isinstance(pilot_cap,(int,float)) or isinstance(pilot_cap,bool) or not math.isfinite(pilot_cap) or pilot_cap<=0:
+            errors.append('PILOT_PLAN_REQUIRED: prototype duration must be explicitly bounded in the user-accepted design package')
         if duration is not None and isinstance(pilot_cap,(int,float)) and duration > pilot_cap+.125:
+            errors.append('render exceeds the separately bounded prototype duration')
+        requested=(brief.get('prototype') or {}).get('duration')
+        if duration is not None and isinstance(requested,(int,float)) and duration>requested+.125:
             errors.append('render exceeds the separately bounded prototype duration')
     errors += confirmation_errors(brief, project)
     errors += media_errors(brief, project, purpose, audio)
-    errors += subtitle_errors(brief, project, purpose)
+    if purpose!='design':errors += subtitle_errors(brief, project, purpose)
     for key in ('font','glyph_review'):
         record=(brief.get('lyrics') or {}).get(key)
         if record is not None:bound_file(project,record,'selected text '+key,errors)
+    errors += workflow_errors(brief, project, purpose)
     return errors
 
 
@@ -174,17 +186,38 @@ def check(brief, project=None):
     return {'ready_to_propose': not missing, 'missing_for_proposal': missing, 'ready_for_prototype': not prototype, 'missing_for_prototype': prototype, 'ready_for_full_production': not production, 'missing_for_full_production': production, 'content_sha256': content_digest(brief), 'scope': 'Recorded content confirmation and scoped authorization plus structural checks. User evidence must be truthful; no aesthetic/runtime certification.'}
 
 
-def entry_errors(brief, project, purpose=None, duration=None, audio=None, resolution=None, fps=None, timeline_duration=None):
+def entry_errors(brief, project, purpose=None, duration=None, audio=None, resolution=None, fps=None, timeline_duration=None, operation=None, still_count=None, timeline_range=None):
     """One authority shared by the CLI and both JavaScript rendering adapters."""
-    purpose=purpose or ('production' if brief.get('phase') in ('full','repair','deliver') else 'prototype')
+    phase=brief.get('phase')
+    actual='production' if phase in ('full','repair','deliver') else ('design' if phase=='design' else ('animatic' if phase=='animatic' else 'prototype'))
+    purpose=purpose or actual
     result=check(brief,project)
     if (brief.get('execution') or {}).get('context')=='tool-self-test':
         return production_gate(brief,purpose,duration,project,audio)
     errors=list(result['missing_for_proposal'])+production_gate(brief,purpose,duration,project,audio)
+    if purpose!=actual:
+        errors.append('STAGE_MISMATCH: changing a command purpose cannot bypass the current phase')
+    if purpose=='prototype' and timeline_range is not None:
+        plan=pilot_plan(brief,project)
+        if not isinstance(timeline_range,list) or len(timeline_range)!=2 or not all(isinstance(x,(int,float)) and not isinstance(x,bool) and math.isfinite(x) for x in timeline_range) or not plan or not plan['start']-.001<=timeline_range[0]<timeline_range[1]<=plan['end']+.001:
+            errors.append('PILOT_INTERVAL: render must stay inside the user-accepted pilot interval')
+    if purpose=='design':
+        if operation not in ('scaffold','stills','estimate','check'):
+            errors.append('DESIGN_STILLS_ONLY: design approval is pending; no animation, frame sequence or video export')
+        if still_count is not None and (not isinstance(still_count,int) or isinstance(still_count,bool) or not 1<=still_count<=12):
+            errors.append('design preview is limited to 1..12 static frames per render')
     selected=brief.get('output') or {}
-    if resolution is not None and selected.get('resolution') is not None and resolution!=selected['resolution']:
+    if purpose=='animatic':
+        if resolution is not None and (len(resolution)!=2 or not all(isinstance(x,int) and x>0 for x in resolution) or max(resolution)>960):
+            errors.append('ANIMATIC_LIMIT: rough-cut dimensions must be positive and at most 960px')
+        elif resolution is not None:
+            ra,rb=aspect_parts(selected.get('aspect_ratio'))
+            if resolution[0]*rb!=resolution[1]*ra:errors.append('animatic must preserve the selected aspect ratio')
+        if fps is not None and (not isinstance(fps,(int,float)) or not math.isfinite(fps) or not 0<fps<=15):
+            errors.append('ANIMATIC_LIMIT: rough-cut frame rate must be at most 15fps')
+    if purpose!='animatic' and resolution is not None and selected.get('resolution') is not None and resolution!=selected['resolution']:
         errors.append('render dimensions differ from the approved output')
-    if fps is not None and selected.get('fps') is not None and fps!=selected['fps']:
+    if purpose!='animatic' and fps is not None and selected.get('fps') is not None and fps!=selected['fps']:
         errors.append('render fps differs from the approved output')
     if purpose=='production':
         from pilot_gate import pilot_errors
@@ -203,7 +236,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('brief', type=Path, nargs='?')
     p.add_argument('--bridge', choices=('digest','song','gate','entry'))
-    p.add_argument('--for', dest='purpose', choices=('proposal', 'prototype', 'production'), default='proposal')
+    p.add_argument('--for', dest='purpose', choices=('proposal', 'design', 'prototype', 'animatic', 'production'), default='proposal')
     p.add_argument('--content-digest', action='store_true', help='print current content digest; does NOT confirm content or grant authorization')
     a = p.parse_args()
     try:
@@ -212,7 +245,7 @@ def main():
             envelope=json.load(sys.stdin);data=envelope['brief'];o=envelope.get('options') or {}
             if a.bridge=='digest':result=content_digest(data)
             elif a.bridge=='song':result=song_reading_errors(data,o.get('project'))
-            elif a.bridge=='entry':result=entry_errors(data,o['project'],o.get('purpose'),o.get('duration'),o.get('audio'),o.get('resolution'),o.get('fps'),o.get('timeline_duration'))
+            elif a.bridge=='entry':result=entry_errors(data,o['project'],o.get('purpose'),o.get('duration'),o.get('audio'),o.get('resolution'),o.get('fps'),o.get('timeline_duration'),o.get('operation'),o.get('still_count'),o.get('timeline_range'))
             else:result=production_gate(data,o.get('purpose','prototype'),o.get('duration'),o.get('project'),o.get('audio'))
             print(json.dumps(result,ensure_ascii=False));return 0
         if a.brief is None:
@@ -225,13 +258,13 @@ def main():
             return 0
         result = check(data, a.brief.resolve().parent)
         if a.purpose!='proposal':
-            blocked=entry_errors(data,a.brief.resolve().parent,a.purpose)
-            k='prototype' if a.purpose=='prototype' else 'full_production'
+            blocked=entry_errors(data,a.brief.resolve().parent,a.purpose,operation='check')
+            k='full_production' if a.purpose=='production' else a.purpose
             result['ready_for_'+k]=not blocked;result['missing_for_'+k]=blocked
     except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
         p.error(str(exc))
     print(json.dumps(result, ensure_ascii=False, indent=2))
-    key = {'proposal':'ready_to_propose','prototype':'ready_for_prototype','production':'ready_for_full_production'}[a.purpose]
+    key = {'proposal':'ready_to_propose','design':'ready_for_design','prototype':'ready_for_prototype','animatic':'ready_for_animatic','production':'ready_for_full_production'}[a.purpose]
     return 0 if result[key] else 2
 
 

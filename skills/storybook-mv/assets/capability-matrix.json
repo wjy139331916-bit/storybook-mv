@@ -1,8 +1,14 @@
 {
   "schema_version": 1,
-  "toolkit_version": "3.2.0",
+  "toolkit_version": "3.3.0",
   "meaning": "Status describes named evidence and its limits, not universal compatibility or aesthetic acceptance.",
   "capabilities": [
+    {
+      "id": "artifact-bound-user-stage-reviews",
+      "status": "implemented",
+      "evidence": "scripts/workflow_gate.py; tests/test_workflow_v33.py; verification-v33.json",
+      "limits": "Separate actual design/script, sample and whole-scope rough-cut artifacts and recorded user decisions; cannot authenticate fabricated replies, infer their semantics or certify art. Native operation guards verified; browser UI/runtime remains destination-tested."
+    },
     {
       "id": "adaptive-content-discovery",
       "status": "implemented",
@@ -76,5 +82,5 @@
       "limits": "Complete-directory portability is tested; actual destination Python, renderer, fonts and tools must be exercised."
     }
   ],
-  "current_receipt": "verification-v32.json"
+  "current_receipt": "verification-v33.json"
 }

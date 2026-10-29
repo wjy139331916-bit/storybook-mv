@@ -41,3 +41,5 @@ A proposal is ready when the desired experience, visual language, content progre
 Do not continue questioning about every color/font/prop. Choose routine details as proposed implementation decisions. Do not produce the final execution prescription while major style/content constraints are unknown.
 
 Recap the concrete content and selected song reading, then wait for user acceptance when it is missing. Do not start asset creation, a pilot or full rendering while asking that question. Reuse genuine earlier accepted content and scope; generic production intent is not content acceptance. An approved short study cannot expand to a full song. Follow the hard content/song gates linked directly from SKILL.md.
+
+Apply the user-stage-review reference linked from SKILL.md: direction acceptance permits design only. Present complete-scope script and actual design frames and wait; then present the pilot and wait; for full MVs present a whole-scope rough animatic and wait before fine production. Existing exact decisions can be reused; no agent self-review supplies user acceptance.

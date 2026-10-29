@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "duration": null,
+  "duration_status": null,
+  "audio_sha256": null,
+  "sections": [],
+  "shots": [
+    {
+      "id": "s01",
+      "start": null,
+      "end": null,
+      "section_id": null,
+      "objective": null,
+      "visual": null,
+      "visible_change": null,
+      "lyric_treatment": null,
+      "lyric_ids": [],
+      "assets": [],
+      "transition": {"type": null, "window": null}
+    }
+  ]
+}

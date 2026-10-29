@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Initialize neutral production records, inspect recorded evidence, or plan bounded repairs."""
 import argparse
+import copy
 import hashlib
 import json
 import math
@@ -21,7 +22,7 @@ def digest(path):
 
 def fingerprint(project):
     files = []
-    for name in ('src', 'data', 'assets', 'visual-spec.json', 'package.json', 'package-lock.json', 'render_canvas.mjs', 'render.mjs', 'studio.html', 'production_gate.mjs', 'check_brief.py', 'input_contracts.py', 'pilot_gate.py', 'project_contracts.py'):
+    for name in ('src', 'data', 'assets', 'visual-spec.json', 'package.json', 'package-lock.json', 'render_canvas.mjs', 'render.mjs', 'studio.html', 'production_gate.mjs', 'check_brief.py', 'input_contracts.py', 'pilot_gate.py', 'project_contracts.py', 'workflow_gate.py'):
         p = project/name
         if p.is_symlink():
             raise ValueError('resolve input symlinks explicitly')
@@ -153,7 +154,14 @@ def inspect(project, stage):
     brief = load(project/'brief.json')
     spec = load(project/'visual-spec.json')
     base = check_brief(brief,project)
-    errors += base['missing_for_full_production' if stage == 'full' else 'missing_for_prototype']
+    if stage=='design':
+        # Inspect a draft without assuming it has already been accepted. This
+        # is a review, not an execution-phase mutation or grant of permission.
+        from check_brief import production_gate
+        draft=copy.deepcopy(brief);draft['phase']='design'
+        errors += base['missing_for_proposal']+production_gate(draft,'design',project=project)
+    else:
+        errors += base['missing_for_full_production' if stage == 'full' else 'missing_for_prototype']
     for key in ('revision', 'design.medium', 'design.shape_language', 'design.composition', 'design.motion'):
         if field(spec, key) in (None, '', []):
             errors.append('visual-spec missing '+key)
@@ -342,8 +350,10 @@ def main():
     a = p.parse_args()
     output_path = a.out.expanduser().resolve() if a.out else None
     project = a.project.expanduser().resolve()
-    root = Path(__file__).resolve().parents[1]
-    if project == root or root in project.parents:
+    script=Path(__file__).resolve()
+    local_project=(script.parent/'brief.json').is_file() and script.parent.name!='scripts'
+    root = script.parent if local_project else script.parents[1]
+    if not local_project and (project == root or root in project.parents):
         p.error('project records belong outside the installed skill')
     if not finite(a.margin) or a.margin < 0:
         p.error('margin must be nonnegative')

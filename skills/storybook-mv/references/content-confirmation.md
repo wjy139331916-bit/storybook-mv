@@ -34,7 +34,7 @@ python3 <skill>/scripts/check_brief.py <brief.json> --content-digest
 
 Copy that value into `content_confirmation.content_sha256` only after reconciling the accepted content. Calculating a digest does not confirm anything. A material change to content, selected song/reading, progression, cast/relationship or lyric mode invalidates the previous digest; obtain acceptance of that change. Routine color/font/implementation changes need no new content interview when within accepted design constraints.
 
-Separately record `execution.production_authorized`, `authorized_scope` (`study`, `prototype`, `full`), `authorized_duration` and `authorization_evidence`. A prototype's bound is its authorized clip length, not the whole recording length. An earlier whole-song request can combine with later acceptance of that exact full-song content; a new redundant permission question is unnecessary. Acceptance of an explicitly limited prototype never expands to a whole song.
+Separately record `execution.production_authorized`, `authorized_scope` (`design`, `study`, `prototype`, `full`), `authorized_duration` and `authorization_evidence`. A prototype's bound is its authorized clip length, not the whole recording length. An earlier whole-song request and exact content acceptance establish the eventual goal and permit design. They never replace the separate acceptance of actual design/script, pilot and complete rough animatic. Follow user-stage-review.md; reuse the same actual artifact acceptance instead of asking it twice. Acceptance of an explicitly limited prototype never expands to a whole song.
 
 ```bash
 python3 <skill>/scripts/check_brief.py <brief.json> --for prototype
@@ -51,6 +51,6 @@ For old projects without the new fields, recover actual accepted content from th
 
 ## Failure to prevent
 
-User answers: song name, full song, warm 16:9. Incorrect next action: invent two lovers, scaffold 240 seconds and render. Correct next action: ask what the film should show and which evidenced song reading to use; explore the progression, recap the chosen content, wait for confirmation, then enter the authorized next stage.
+User answers: song name, full song, warm 16:9. Incorrect next action: invent two lovers, scaffold 240 seconds and render. Correct next action: ask what the film should show and which evidenced song reading to use; explore the progression, recap the chosen content, wait for confirmation, then enter design only; wait for the subsequent artifact-specific user reviews.
 
-Schema 4 also requires a hash-bound user-reply/recap record at execution, and binds actual canonical lyric/audio bytes. Follow execution-gates.md for format and legacy migration; a format conversion cannot supply missing acceptance.
+Schema 5 retains the schema-4 requirement for a hash-bound user-reply/recap record at execution, and binds actual canonical lyric/audio bytes. Follow execution-gates.md for format and legacy migration; a format conversion cannot supply missing acceptance.

@@ -1,0 +1,12 @@
+{
+  "origin": "user-message",
+  "message_id": null,
+  "user_reply": null,
+  "presented_message_id": null,
+  "stage": null,
+  "revision": null,
+  "content_sha256": null,
+  "package_sha256": null,
+  "decision": "pending",
+  "next_stage": null
+}

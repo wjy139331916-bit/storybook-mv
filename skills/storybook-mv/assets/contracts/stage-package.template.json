@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "stage": "design",
+  "revision": null,
+  "content_sha256": null,
+  "design_sha256": null,
+  "target_duration": null,
+  "artifacts": [],
+  "pilot": {
+    "start": null,
+    "end": null,
+    "objectives": null
+  }
+}

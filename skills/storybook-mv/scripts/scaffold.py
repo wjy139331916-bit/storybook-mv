@@ -22,6 +22,7 @@ def main():
     p.add_argument('--height', type=int)
     p.add_argument('--install', action='store_true')
     p.add_argument('--tool-self-test', action='store_true', help='isolated toolkit verification only; never a bypass for a requested user MV')
+    p.add_argument('--phase', choices=('design','prototype'), help='design creates only a static-design workspace; default preserves the brief stage')
     a = p.parse_args()
     root = Path(__file__).resolve().parents[1]
     try:
@@ -38,7 +39,11 @@ def main():
     else:
         if not a.brief:
             p.error('confirmed user content and scoped authorization are required: provide --brief; three basic answers are not production approval')
-        blocked = entry_errors(brief, a.brief.resolve().parent, 'prototype', a.duration)
+        selected_phase=a.phase or brief.get('phase')
+        if selected_phase not in ('design','study','prototype'):
+            p.error('scaffold only design/prototype work; preserve and continue later project stages')
+        brief['phase']=selected_phase
+        blocked = entry_errors(brief, a.brief.resolve().parent, 'design' if selected_phase=='design' else 'prototype', a.duration, operation='scaffold')
         if blocked:
             p.error('Production blocked: '+'; '.join(blocked))
     for section in ('execution', 'output', 'style', 'lyrics'):
@@ -83,8 +88,9 @@ def main():
         shutil.copy2(root / 'scripts/render_canvas.mjs', target / 'render_canvas.mjs')
     for name in ('assets', 'data', 'out/check', 'src/data'):
         (target / name).mkdir(parents=True, exist_ok=True)
+    shutil.copytree(root/'assets/contracts',target/'assets/contracts',dirs_exist_ok=True)
     brief = copy.deepcopy(brief)
-    brief.update(project=target.name, phase='prototype')
+    brief.update(project=target.name, phase='prototype' if a.tool_self_test else selected_phase)
     brief['execution'] = dict(brief.get('execution') or {})
     brief['output'] = dict(brief.get('output') or {})
     brief.setdefault('execution', {}).update(engine=engine, template_status='bundled')
@@ -97,9 +103,11 @@ def main():
     (target / 'brief.json').write_text(json.dumps(brief, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     config = {'duration': a.duration, 'width': width, 'height': height, 'fps': a.fps, 'bpm': 120, 'offset': 0, 'boil': 0, 'prototype': True, 'bpmMeasured': False}
     (target / 'src/config.js').write_text('// Prototype dimensions/timing are not a verified song plan.\nconst PROJECT = ' + json.dumps(config) + ';\nglobalThis.STORY_LYRICS_MODE = ' + json.dumps((brief.get('lyrics') or {}).get('mode') or 'unset') + ';\n', encoding='utf-8')
-    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py'):
+    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py','workflow_gate.py'):
         shutil.copy2(root/'scripts'/name,target/name)
     if not a.tool_self_test:
+        from workflow_gate import relocate
+        relocate(brief,a.brief.resolve().parent,target)
         # Relocate only explicitly referenced, digest-checked inputs; preserve
         # source attribution strings and content hashes across project handoff.
         base=a.brief.resolve().parent

@@ -395,5 +395,10 @@
     "Full real-song Chinese singing and relationship-story acceptance are not verified.",
     "Complex realistic/multiview character acting and arbitrary Chinese word-to-object morphs remain project-specific.",
     "Browser/p5/WebGL/Windows need destination execution; earlier local-player policy rejection remains unverified, no workaround attempted."
-  ]
+  ],
+  "historical_source": {
+    "commit": "d99be159f0cdd421d1e352ca1efb64a2a62f8705",
+    "repository": "https://github.com/wjy139331916-bit/storybook-mv",
+    "note": "Original 3.2 observations and artifacts; not a rerun against 3.3 source."
+  }
 }

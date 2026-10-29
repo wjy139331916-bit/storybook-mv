@@ -2,7 +2,7 @@
 
 Create records in the project after the brief is useful; do not force a long technical form into the interview.
 
-Before user-video production, the schema-4 content/song-understanding gates and scoped user authorization must be satisfied. A stored production boolean or a renderer passing its self-test is insufficient. `check --stage prototype|full` also checks the appropriate scope; an isolated tool self-test never passes a full commissioned-video contract. Recover real earlier acceptance during migration, or ask for the missing content confirmation.
+Before each user-video stage, follow user-stage-review.md and its actual artifact/user decision checks; the schema-5 content/song-understanding gates and scoped user authorization must be satisfied. A stored production boolean or a renderer passing its self-test is insufficient. `check --stage prototype|full` also checks the appropriate scope; an isolated tool self-test never passes a full commissioned-video contract. Recover real earlier acceptance during migration, or ask for the missing content confirmation.
 
 ```bash
 python3 <skill-dir>/scripts/project_contracts.py init --project <project-dir>
@@ -16,7 +16,7 @@ Record a revision, draft/locked status, medium, selected palette or color rule, 
 
 For characters, add stable cast IDs, distinguishing silhouettes/features/costumes, the selected proportion, model-sheet evidence and reusable asset IDs. For typography, abstract or spatial work use the corresponding type/grid/material/behavior rules instead; `characters_required:false` needs no cast. Add only relevant `required_checks`, e.g. `contact` for a prop transfer, `pixel_grid` for pixel work, or `glyphs` for CJK. Preserve font licenses; use approved local fonts and inspect actual glyphs.
 
-Add rendered `evidence` entries `{path,sha256}` relative to the project. A source illustration or prompt alone is not proof of the selected renderer. Keep `brief_sha256` current after reconciling changes; do not silently relock a changed taste decision. Use `status:"locked"` for the established production design within existing authorization; this does not require another approval question when the user has already authorized that design.
+Add rendered `evidence` entries `{path,sha256}` relative to the project. A source illustration or prompt alone is not proof of the selected renderer. Keep `brief_sha256` current after reconciling changes; do not silently relock a changed taste decision. Use `status:"locked"` for the established production design within existing authorization; reuse an actual acceptance of this same presented design/script package; a direction acceptance or an agent-written locked flag is not sufficient.
 
 ## Shot/music map
 
@@ -38,4 +38,4 @@ python3 <skill-dir>/scripts/project_contracts.py check --project <project-dir> -
 
 These check structure and the freshness of recorded evidence. They cannot evaluate artistic quality. Missing/unreviewed fields do not pass. For legacy projects migrate incrementally, preserving code and accepted work; do not recreate or overwrite the project to get the new records.
 
-For the schema-4 file/reply records and the source-bound `promote` checkpoint, follow the execution-gates reference linked directly from SKILL.md. Default stage changes never grant user approval.
+For the schema-5 file/reply records and the source-bound `promote` checkpoint, follow the execution-gates reference linked directly from SKILL.md. Default stage changes never grant user approval.
