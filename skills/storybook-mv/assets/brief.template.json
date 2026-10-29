@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "project": null,
   "request_mode": "plan-first",
   "phase": "discover",
@@ -93,5 +93,11 @@
     "selected_direction": null,
     "user_selection_evidence": null,
     "lyrics_document": null
+  },
+  "workflow": {
+    "schema_version": 1,
+    "policy": "user-stage-review",
+    "packages": {},
+    "approvals": {}
   }
 }
