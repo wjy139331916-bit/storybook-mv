@@ -126,9 +126,9 @@ python3 -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
 python3 -m unittest discover -s skills/storybook-mv/tests -v
 ```
 
-媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 135 项回归测试，零跳过（包含所选原生适配器和中文字体）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。
+媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 139 项回归测试，零跳过（包含所选原生适配器和中文字体）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。
 
-仓库新增独立的 Ubuntu Chromium 审片和 Windows 原生 Canvas 任务，实际是否通过以 Actions 的具体运行结果为准。Windows 字体可用性单独检查；不能从 Linux 的结果推断 Windows 的中文字体或任意宿主均兼容。
+仓库新增独立的 Ubuntu Chromium 审片和 Windows 原生 Canvas 任务，实际是否通过以 Actions 的具体运行结果为准。Windows 检查实际发现了临时目录别名、默认编码和 AAC 起点处理问题，已加入修复与回归，并校验真实检出目录的完整性。Windows 字体可用性单独检查；不能从 Linux 的结果推断 Windows 的中文字体或任意宿主均兼容。
 
 运行新浏览器探针：选择 `playwright@1.51.1` 和匹配 Chromium，以 `MV_PLAYWRIGHT_MODULE` 指向模块，再运行 `node skills/storybook-mv/tests/browser_smoke.mjs <空输出目录>`。它验证实际加载、播放、定位和反馈导入，不以视频标签存在代替播放。
 
