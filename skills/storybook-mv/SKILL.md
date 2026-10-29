@@ -43,6 +43,8 @@ Read [execution evidence and stage gates](references/execution-gates.md) before 
 
 For full expansion require the representative technical prototype receipt AND the separate user approvals of design/script, sample and complete rough animatic. Inspect project-specific acting/story/meaning/text/glyph criteria and retain unresolved artistic defects. Full-line captions require complete canonical line coverage and reviewed timing; Chinese full captions require the selected font's actual glyph check. These records support review rather than certify taste. Check [capability status](assets/capability-matrix.json) before claiming an engine or real-song result has been verified.
 
+Read [review workspace and handoff](references/review-workspace.md) when presenting or resuming work. Use its shared command to bind actual artifacts, create one accessible script/image/video review page, and derive `plan/STATUS.md` from the current evidence. Show the result through the host's accessible image/video/file views; a local filename alone is not a presentation. Keep routine records out of the user's questions. The helper never interprets a user reply or creates consent; record acceptance only after reading the real reply. Keep the existing stops, not extra interviews.
+
 ## Choose the mode and recover decisions
 
 Read the current request, provided references, accepted decisions and project files. Reuse `brief.json`, `DECISIONS.md`, `PROPOSAL.md` and the latest render when available. Do not re-interview an already specified project or import another project's preferences.
@@ -149,6 +151,8 @@ python3 <skill-dir>/scripts/project_contracts.py repair --project <project-dir> 
 ```
 
 Recorded review checks do not automatically judge beauty, natural motion or story. A reviewing agent must inspect the evidence before recording a pass. Keep user acceptance separate and retain unresolved limitations.
+
+Use playable clips or source-bound consecutive strips and inspected time ranges for motion, acting, contact and transitions; one still cannot substantiate a temporal claim. Do not mark selected mandatory checks `not_applicable`. Review a deliberate hold as a deliberate hold. Compare actual production frames with the accepted design at the same content/time, explaining deliberate changes without a numerical beauty score. Read [representative creative validation](references/creative-validation.md) for scoped benchmark tasks, portable runtime checks and the distinction between original probes and a finished real sung MV.
 
 Read [scoped lessons, cost and reproducible validation](references/learning-and-validation.md) when a repair reveals reusable knowledge or the skill itself changes. Keep lessons tied to evidence and applicability; never let them override user decisions. Run bundled regression tests and the selected destination's real render test, preserving the distinction between technical integrity and artistic success.
 
