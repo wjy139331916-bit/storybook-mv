@@ -148,8 +148,8 @@
     },
     {
       "path": "assets/icon.svg",
-      "bytes": 1210,
-      "sha256": "49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee"
+      "bytes": 667,
+      "sha256": "9be88f8dd4c5e658961515c71389eafd45142ffa68bcae58e8dcff57d178ed91"
     },
     {
       "path": "assets/modules/acting.js",
@@ -558,8 +558,8 @@
     },
     {
       "path": "assets/verification-v33.json",
-      "bytes": 4365,
-      "sha256": "253b1167051081076e3549e6aa2d5b53fa83ae92c8eec21e188938f35e94b317"
+      "bytes": 4562,
+      "sha256": "55ca417072d0e9e450e27b5b69cc9510fe0e2938a4c3b7f0701af357f6198833"
     },
     {
       "path": "references/agent-interop.md",
@@ -648,8 +648,8 @@
     },
     {
       "path": "references/runtime-portability.md",
-      "bytes": 3637,
-      "sha256": "ef49abc945a2af7bf20d8b36f25a150bf5218f77b088d9d7e420c4ffab627cec"
+      "bytes": 3949,
+      "sha256": "32e6d20b047cbbfc37a7a261a716d396b150a340c9df0cf66aab8281732ca292"
     },
     {
       "path": "references/song-understanding.md",
@@ -678,8 +678,8 @@
     },
     {
       "path": "references/user-stage-review.md",
-      "bytes": 12880,
-      "sha256": "66f6c2cb8457cfe7731ffd0d1eecca0709b1c5dff5518952ef261ca79b081e28"
+      "bytes": 13037,
+      "sha256": "d9a800507312a5727c4a6517b0ce2ccdd90e989dc89b2fdeb78ff42cc9ae8795"
     },
     {
       "path": "references/visual-studies.md",
@@ -768,8 +768,8 @@
     },
     {
       "path": "scripts/preflight.py",
-      "bytes": 6537,
-      "sha256": "33ed465b6fc2b02aae00029e2cd6b92ac9d5a420c0048cac428f3f033a81a2f7"
+      "bytes": 7005,
+      "sha256": "5d732e3ef9c30c61a9cac9263269dbfa92be69d94a95c51c37b47ac86e7fb736"
     },
     {
       "path": "scripts/prepare_lyrics.py",
