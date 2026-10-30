@@ -149,7 +149,7 @@ class PixelWorkbenchTests(unittest.TestCase):
     def test_browser_document_is_offline_and_script_injection_is_escaped(self):
         d = W.seed(); d['name'] = '</script><script>window.injection=true</script>'
         W.build(d, self.path / 'static', 'design')
-        html = (self.path / 'static/workbench.html').read_text()
+        html = (self.path / 'static/workbench.html').read_text(encoding='utf-8')
         self.assertNotIn('</script><script>window.injection', html)
         self.assertIn("connect-src 'none'", html)
         self.assertNotIn('src="http', html)

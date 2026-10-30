@@ -92,6 +92,17 @@ class RemotionTests(unittest.TestCase):
         r=subprocess.run(['node','render.mjs','--clip'],cwd=p,capture_output=True,text=True)
         self.assertNotEqual(r.returncode,0);self.assertIn('Remotion dependencies are missing',r.stderr);self.assertIn('npm ci',r.stderr)
 
+    def test_actual_nonzero_fixture_passes_shared_gate_before_browser_loading(self):
+        from remotion_smoke import prepare_project
+        from check_brief import entry_errors
+        project,audio=prepare_project(self.p/'nonzero')
+        brief=json.loads((project/'brief.json').read_text(encoding='utf-8'))
+        self.assertEqual(brief['prototype']['duration'],2)
+        errors=entry_errors(brief,project,'prototype',2,resolution=[640,360],fps=30,timeline_duration=4,operation='video',timeline_range=[2,4])
+        self.assertEqual(errors,[])
+        outside=entry_errors(brief,project,'prototype',2,resolution=[640,360],fps=30,timeline_duration=4,operation='video',timeline_range=[0,2])
+        self.assertTrue(any('pilot' in e for e in outside),outside)
+
 
 class AssetTests(unittest.TestCase):
     def setUp(self):self.folder=tempfile.TemporaryDirectory(prefix='mv-asset-v35-');self.p=Path(self.folder.name)

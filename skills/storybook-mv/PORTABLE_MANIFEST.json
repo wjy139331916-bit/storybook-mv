@@ -774,7 +774,7 @@
     {
       "path": "assets/verification-v35.json",
       "bytes": 14357,
-      "sha256": "92d87c83da6aad4de72621c0fdbe538c1376d17cc45e75bba6d38dcb319dc24c"
+      "sha256": "7439ec2034344c43a77c11828892c1d6489d24a8d3c9d7df3625ecaff9c862bd"
     },
     {
       "path": "references/agent-interop.md",
@@ -1113,8 +1113,8 @@
     },
     {
       "path": "tests/remotion_smoke.py",
-      "bytes": 3762,
-      "sha256": "8770e253dbdb671b0575149db9c4d048b7368d06522079a0224634de5508ae55"
+      "bytes": 4549,
+      "sha256": "b54dd60161ebb1e911b2b36310a6ea632c8b7f0c31b190ea390dd357f057f3f6"
     },
     {
       "path": "tests/render_smoke.py",
@@ -1143,8 +1143,8 @@
     },
     {
       "path": "tests/test_pixel_workbench.py",
-      "bytes": 9397,
-      "sha256": "bc7052dfba08b660ed2fe3664c96ce63cf88bede2bb31693b337d9b45be0ed21"
+      "bytes": 9413,
+      "sha256": "f0bd2af1546bb2f44afaa861e9608cb3b035a11216f46d18431e311d329ae674"
     },
     {
       "path": "tests/test_review_v34.py",
@@ -1153,8 +1153,8 @@
     },
     {
       "path": "tests/test_runtime_v35.py",
-      "bytes": 9519,
-      "sha256": "e9411930342a1a07a81ca787b23188ba3d77be451df4a8eb53d32e58f0f120bc"
+      "bytes": 10286,
+      "sha256": "0fb7afbc31676afdac74da350f9bda6d2c3e12cbab98dd438de74a2446a03b76"
     },
     {
       "path": "tests/test_workflow_v33.py",

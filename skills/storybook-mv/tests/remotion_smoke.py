@@ -15,26 +15,36 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'scripts'),str(ROOT/'tests')]
 from test_content_gate import agreed_fixture,bind_confirmation
 from workflow_fixtures import approval
-from input_contracts import sha
+from input_contracts import sha,content_digest
 from runtime_smoke import pulses
+
+
+def prepare_project(out,deps_from=None):
+    """Build the real bounded fixture before requiring a browser/rendering host."""
+    out=Path(out).expanduser().resolve()
+    if out.exists():raise ValueError('choose a new isolated output directory')
+    out.mkdir(parents=True);audio=out/'original.wav';pulses(audio)
+    with wave.open(str(audio),'rb') as f:params=f.getparams();data=f.readframes(f.getnframes())
+    with wave.open(str(audio),'wb') as f:f.setparams(params);f.writeframes(data+data)
+    brief=agreed_fixture();brief['phase']='prototype';brief['execution'].update(engine='remotion',runtime='browser',authorized_scope='full',authorized_duration=4,authorization_evidence='Synthetic fixture requests a four-second original timeline and a two-second pilot at [2,4]; not real user consent')
+    brief['prototype']['duration']=2;brief['output'].update(resolution=[640,360],fps=30)
+    brief['music'].update(source='provided',kind='instrumental',scope='four-second original soundtrack with a bounded two-second pilot',audio='original.wav',audio_sha256=sha(audio),duration=4)
+    brief['content_confirmation']['content_sha256']=content_digest(brief)
+    bind_confirmation(brief,out)
+    pkg=brief['workflow']['packages']['design'];file=out/pkg['path'];obj=json.loads(file.read_text());obj['pilot'].update(start=2,end=4);file.write_text(json.dumps(obj));pkg['sha256']=sha(file);approval(brief,out,'design')
+    file=out/'brief.json';file.write_text(json.dumps(brief))
+    project=out/'project';prepared=subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(project),'--engine','remotion','--brief',str(file),'--duration','2','--width','640','--height','360','--fps','30'],capture_output=True,text=True,encoding='utf-8')
+    if prepared.returncode:raise RuntimeError('Nonzero Remotion fixture could not be prepared: '+prepared.stderr)
+    if deps_from is not None:(project/'node_modules').symlink_to(Path(deps_from).resolve(),target_is_directory=True)
+    source=project/'src/index.jsx';source.write_text(source.read_text().replace('{probe?<div','{true?<div'))
+    return project,audio
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('output',type=Path);p.add_argument('--deps-from',type=Path,required=True);p.add_argument('--chrome',type=Path);a=p.parse_args()
     out=a.output.expanduser().resolve()
-    if out.exists():p.error('choose a new isolated output directory')
-    out.mkdir(parents=True);audio=out/'original.wav';pulses(audio)
-    with wave.open(str(audio),'rb') as f:params=f.getparams();data=f.readframes(f.getnframes())
-    with wave.open(str(audio),'wb') as f:f.setparams(params);f.writeframes(data+data)
-    brief=agreed_fixture();brief['phase']='prototype';brief['execution'].update(engine='remotion',runtime='browser',authorized_scope='full',authorized_duration=4)
-    brief['prototype']['duration']=2;brief['output'].update(resolution=[640,360],fps=30)
-    brief['music'].update(source='provided',kind='instrumental',audio='original.wav',audio_sha256=sha(audio),duration=4)
-    bind_confirmation(brief,out)
-    pkg=brief['workflow']['packages']['design'];file=out/pkg['path'];obj=json.loads(file.read_text());obj['pilot'].update(start=2,end=4);file.write_text(json.dumps(obj));pkg['sha256']=sha(file);approval(brief,out,'design')
-    file=out/'brief.json';file.write_text(json.dumps(brief))
-    project=out/'project';subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(project),'--engine','remotion','--brief',str(file),'--duration','4','--width','640','--height','360','--fps','30'],check=True,capture_output=True)
-    (project/'node_modules').symlink_to(a.deps_from.resolve(),target_is_directory=True)
-    source=project/'src/index.jsx';source.write_text(source.read_text().replace('{probe?<div','{true?<div'))
+    try:project,audio=prepare_project(out,a.deps_from)
+    except (ValueError,RuntimeError) as exc:p.error(str(exc))
     cmd=['node','render.mjs','--clip','--out=out/nonzero/clip.mp4']+(['--chrome='+str(a.chrome.resolve())] if a.chrome else [])
     result=subprocess.run(cmd,cwd=project,capture_output=True,text=True)
     if result.returncode:raise RuntimeError(result.stderr)

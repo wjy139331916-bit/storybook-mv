@@ -2,7 +2,7 @@
   "toolkit_version": "3.5.0",
   "checked_at": "2026-10-30",
   "regressions": {
-    "passed": 174,
+    "passed": 175,
     "skipped": 0,
     "scope": "Selected native Canvas and actual local CJK font; tests do not certify art."
   },
