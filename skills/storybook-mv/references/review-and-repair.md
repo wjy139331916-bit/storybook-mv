@@ -2,6 +2,8 @@
 
 Review actual output at the relevant scale. Use full frames for composition, consecutive strips/playable clips for motion, full-resolution crops for contact/text, and the encoded file for delivery. A named reviewing agent may record visual judgments; do not mark checks observed if it only read code. User taste acceptance remains distinct from technical and artistic observations.
 
+Use the selected reproducible baseline and prior revision for a matched visual comparison. Apply art-direction.md: turn broad dissatisfaction into observable defects, focus an ordinary round on the three most consequential issues while retaining the full backlog, and record before/after evidence plus still-unresolved findings. Keep the asset design and taste history project-specific; AI agreement or a successful test run cannot supply user acceptance.
+
 In `review.json`, record scope (`prototype`/`full`), reviewer and target `{path,sha256,input_digest}`. Get the current source/design digest with `project_contracts.py fingerprint --project <project>`. Match it to the render receipt; copying a new digest onto an old render is not a repair. Inspect source changes and render affected ranges before renewing the review.
 
 Record checks as `{id,status,notes,evidence}` with status `pass`, `fail`, `unreviewed` or `not_applicable`. Explain non-applicability. Always review composition, style, motion, continuity and music as relevant; text is required when visible lyrics are selected. Add contact, pixel grid, glyphs, materials or another project-specific criterion. A purposeful hold can pass motion review if it supports the chosen language; do not require idle motion everywhere. No arbitrary numerical aesthetic score is a pass criterion.

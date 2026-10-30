@@ -1,0 +1,70 @@
+{
+  "toolkit_version": "3.6.1",
+  "checked_at": "2026-10-30",
+  "change_scope": "Art-direction behavior, optional project-local working notes and compatibility regression; renderer implementations unchanged.",
+  "local_regressions": {
+    "ran": 207,
+    "passed": 207,
+    "skipped": 0,
+    "selected_native_canvas": "0.1.100",
+    "selected_cjk_font": true
+  },
+  "checks": {
+    "skill_structure": "passed",
+    "modified_document_relative_links": 37,
+    "contract_template_json": "passed",
+    "existing_visual_spec_template_preserved": true
+  },
+  "new_regression": "Appending plan/art-direction.json history preserves the bound visual specification and valid render identity; an actual visual-spec change remains detectable.",
+  "behavioral_use": {
+    "status": "passed_scoped_static_use",
+    "scope": "Independent original eight-second, no-character all-code design task; no actual user taste approval, animation or real-song quality is certified.",
+    "render_runtime": {
+      "node": "v24.22.1",
+      "native_canvas": "0.1.100",
+      "resolution": [
+        1280,
+        720
+      ]
+    },
+    "guide_sha256": "24399a9895f6592571d85ff168dba8929d6293773f4f75cc209f89e81002aacc",
+    "template_sha256": "13f9a971ab3d8a8f45ac3596b6ee92879c5757181eadebf596dd67135574dd59",
+    "drawing_source_sha256": "1370a263dea6358d72d876ad5ca53732e9f08b69066377cc7b94bb20cc8ede97",
+    "frames": [
+      {
+        "id": "frame-00.png",
+        "sha256": "d4029c601f439c4333be3b628c0bc16179222ce85f0f203ed6dcbe91ecb6f715",
+        "replay_equal": true
+      },
+      {
+        "id": "frame-01.png",
+        "sha256": "370b676dd6683f7626f14c0481a514de80a37946227c3cbc0966a81aa787f20c",
+        "replay_equal": true
+      },
+      {
+        "id": "frame-02.png",
+        "sha256": "cd2241cedb2ff25753be4ca0a19a944f0bfd35e1a679f0eeda49c245cbff8dfa",
+        "replay_equal": true
+      }
+    ],
+    "records": {
+      "references": 2,
+      "baselines": 3,
+      "assets": 4,
+      "visual_sequence": 3,
+      "review_rounds": 1,
+      "taste_notes": 1
+    },
+    "phase": "design",
+    "user_approvals": 0,
+    "video_outputs": 0,
+    "checked": "Parent inspected actual overview and reran the supplied command; all three PNGs match byte-for-byte. Working notes, full [0,2],[2,5],[5,8] script and hash-bound draft design presentation are present."
+  },
+  "prior_runtime_evidence": "verification-v36.json",
+  "limits": [
+    "These instructions organize references, actual baselines, asset reuse, visual sequence and concrete revision; they do not train the model or automate taste.",
+    "The optional working record is not mechanically interpreted as user consent or a full art-direction gate.",
+    "Actual sources, design packages and artifact-bound approvals remain authoritative.",
+    "No new real sung MV, natural acting, Android destination or arbitrary-host quality is verified by this patch."
+  ]
+}

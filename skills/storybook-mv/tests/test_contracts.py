@@ -89,6 +89,18 @@ class ToolkitTests(unittest.TestCase):
     def test_valid_review_record(self):
         r=self.check(self.fixture());self.assertTrue(r['ok'],r)
 
+    def test_art_review_history_preserves_bound_design_and_render_identity(self):
+        p=self.fixture();before=(p/'visual-spec.json').read_bytes();identity=C.fingerprint(p)
+        notes=C.load(ROOT/'assets/contracts/art-direction.template.json')
+        notes['taste_notes']=[{'scope':'synthetic-project-only','source_statement':'Synthetic preference observation, no approval','observation':'keep the existing quiet palette'}]
+        notes['review_rounds']=[{'revision':'test-1','focus_issue_ids':[],'observation':'Synthetic bookkeeping only; drawing is unchanged'}]
+        (p/'plan/art-direction.json').write_text(json.dumps(notes),encoding='utf-8')
+        self.assertEqual((p/'visual-spec.json').read_bytes(),before)
+        self.assertEqual(C.fingerprint(p),identity);self.assertTrue(self.check(p)['ok'])
+        self.edit(p,'visual-spec.json',lambda x:x['design'].update(shape_language='changed visible design'))
+        self.assertNotEqual(C.fingerprint(p),identity)
+        self.assertTrue(any('source/design changed' in x for x in self.check(p)['errors']))
+
     def test_source_change_invalidates_record(self):
         p=self.fixture();(p/'src/scene.js').write_text('changed', encoding='utf-8')
         self.assertTrue(any('source/design changed' in x for x in self.check(p)['errors']))

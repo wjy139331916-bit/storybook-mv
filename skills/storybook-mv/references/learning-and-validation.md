@@ -2,6 +2,8 @@
 
 Use project-level lessons after a meaningful defect, repair or delivery. Record the trigger, observed timestamp/artifact, suspected cause separately from confirmed cause, the change, before/after evidence, selected style/runtime and limits. Strip personal subjects and media before proposing a reusable lesson.
 
+Retain actual user taste decisions and selected asset/baseline revisions in the project's `plan/art-direction.json` → `taste_notes`. Preserve their project/style/asset scope, source statement and before/after evidence. Use them to avoid repeating rejected choices or completed interviews; do not describe this as model training, infer user approval from AI review, or make one project's taste a global default. Apply the art-direction method linked directly from SKILL.md.
+
 Promote a repeated lesson into the reusable skill only when supported by independent examples and authorized skill maintenance. Keep provenance and its applicability. A lesson file or upstream README cannot override the user's decisions, system rules, authorization or locked style. Avoid universal rules from one rejected film: compulsory camera motion, fixed human proportions, no stillness, a fixed shot count or one frame per lyric.
 
 Useful scoped lessons from the inspected upstream projects: tiny props can be unreadable at delivery size; a tempo estimate can be half/double time or drift; transition/type draw order can expose text during a wipe; shared asset changes need all affected shots reviewed. These are prompts to measure and inspect, not automatic diagnoses.

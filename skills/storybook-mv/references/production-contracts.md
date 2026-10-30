@@ -18,6 +18,8 @@ For characters, add stable cast IDs, distinguishing silhouettes/features/costume
 
 Add rendered `evidence` entries `{path,sha256}` relative to the project. A source illustration or prompt alone is not proof of the selected renderer. Keep `brief_sha256` current after reconciling changes; do not silently relock a changed taste decision. Use `status:"locked"` for the established production design within existing authorization; reuse an actual acceptance of this same presented design/script package; a direction acceptance or an agent-written locked flag is not sufficient.
 
+Use `assets/contracts/art-direction.template.json` for optional project-local working notes at `plan/art-direction.json`: positive/negative references, reproducible baseline identities, selected asset versions/uses, the scope-wide visual sequence, focused before/after rounds and project-specific taste. Follow the art-direction reference linked directly from SKILL.md. Keep selected visual rules/evidence in the actual bound specification and sources; append bookkeeping/approval references to the working notes without rewriting an already accepted specification/package. These notes cannot supply acceptance, change the active design or automatically evaluate art. Existing projects may adopt them without recreating accepted work or changing schema 5.
+
 ## Shot/music map
 
 Set duration and `duration_status` to `prototype`, `recording_measured` or `agreed_scope` as appropriate. Record final `audio_sha256` for a real recording. `sections` and `shots` cover their declared scope in consecutive intervals. A prototype scope is not the full song.
