@@ -1,8 +1,14 @@
 {
   "schema_version": 1,
-  "toolkit_version": "3.5.0",
+  "toolkit_version": "3.6.0",
   "meaning": "Status describes named evidence and its limits, not universal compatibility or aesthetic acceptance.",
   "capabilities": [
+    {
+      "id": "seven-module-director-workbench",
+      "status": "verified_scoped",
+      "evidence": "scripts/director_workbench.py; assets/director-workbench; tests/test_director_v36.py; tests/director_browser.mjs; tests/director_render.py; assets/verification-v36.json",
+      "limits": "Original Linux editor save/reopen, shared data, actual Canvas2D and Remotion [2,4] source interval/audio, source-bound reviews and selected-host adapters. No automatic natural acting, real sung alignment, Android or arbitrary-host certification."
+    },
     {
       "id": "offline-pixel-workbench",
       "status": "verified_scoped",
@@ -130,5 +136,5 @@
       "limits": "Complete-directory portability is tested; actual destination Python, renderer, fonts and tools must be exercised."
     }
   ],
-  "current_receipt": "verification-v35.json"
+  "current_receipt": "verification-v36.json"
 }

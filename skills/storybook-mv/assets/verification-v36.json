@@ -1,0 +1,290 @@
+{
+  "toolkit_version": "3.6.0",
+  "checked_at": "2026-10-30",
+  "regressions": {
+    "passed": 206,
+    "skipped": 0,
+    "scope": "Actual selected native Canvas and CJK font; original fixtures only. No aesthetic or user approval."
+  },
+  "director_browser": {
+    "status": "passed",
+    "runtime": "Chromium 134.0.6998.35",
+    "platform": "linux",
+    "arch": "x64",
+    "modules": [
+      "acting",
+      "scene",
+      "lyrics",
+      "storyboard",
+      "transition",
+      "assets",
+      "review"
+    ],
+    "master_bound_codec_preview": true,
+    "model_sha256": "ccf3e3cae180b55c2ef084e37831eda4493d8cc7c767916cbab61aca6f8aa274",
+    "checks": [
+      "acting key/curve controls",
+      "scene pointer drag and camera key",
+      "actual LRC import and explicit word split",
+      "storyboard reorder preserving full duration",
+      "paired transition anchor selection",
+      "shared asset usage and color propagation",
+      "pixel model import into scene",
+      "bound video comparison and relative-time feedback",
+      "repair range handles without master overwrite",
+      "browser JSON save/import and CLI rebuild",
+      "JSON cannot elevate design stage",
+      "bounded action playback changes pixels",
+      "seven-module portrait layout",
+      "zero external requests",
+      "stacked lyric import labels",
+      "project-bound source start is fixed",
+      "original-master feedback preserves clip-relative time"
+    ],
+    "scope": "Original isolated editor and actual local video feedback; no user approval, natural acting or Android destination certification."
+  },
+  "director_native": {
+    "status": "passed",
+    "engine": "canvas2d",
+    "source_range": [
+      2,
+      4
+    ],
+    "encoded_pulse_offsets": [
+      0.5,
+      1.5
+    ],
+    "model_sha256": "eaf4d2f2d70529cf77e941e74e05e3380996f9a4e248c72630a20bec9fca42e2",
+    "video_sha256": "7552210e5daf016d6800b50cd8d714853ff7dc74d54c585cedf26e5cdf0c70b4",
+    "runtime": {
+      "node": "v24.22.1",
+      "canvas": "0.1.100",
+      "platform": "linux",
+      "arch": "x64",
+      "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+    },
+    "encoded_full_decode": true,
+    "decoded_frame_hashes": [
+      "6771299a0800072b86fd4de12dff18fbe9f7056211d43d31592ca205324abc1f",
+      "0cfb94b1270583c4ee16052edd6791c8836cca18663cc312868dde4b34ecf4b6"
+    ],
+    "user_approvals_written": false,
+    "scope": "Original synthetic director scene via selected actual host; not a user MV, natural acting, real singing or all-platform certification."
+  },
+  "independent_use": {
+    "status": "passed",
+    "browser": "Chromium 134.0.6998.35",
+    "platform": "linux",
+    "architecture": "x64",
+    "original_model_sha256": "04d0d8a78720d842d27ea35e4c39469223cb12d41b13ccc1f291395f7bdec494",
+    "final_model_sha256": "552cdb3cd28ded82e55939d2d4743998320d83a9e6964a6725ade8312eb9a293",
+    "changes": {
+      "pose": {
+        "time": 0.8,
+        "headTilt": 16,
+        "lookX": 0.85,
+        "handX": 1.1,
+        "handY": -2.7
+      },
+      "lead_x": [
+        0.3,
+        0.33956071126862136
+      ],
+      "camera_keys": [
+        {
+          "time": 0.8,
+          "zoom": 1.06
+        }
+      ],
+      "cues": [
+        {
+          "id": "cue-1",
+          "text": "信封把微光收进掌心",
+          "start": 0.3,
+          "end": 2.1,
+          "words": [],
+          "timing_status": "unverified"
+        },
+        {
+          "id": "cue-2",
+          "text": "我将未寄的晨色轻轻展开",
+          "start": 2.55,
+          "end": 5.65,
+          "words": [],
+          "timing_status": "unverified"
+        }
+      ],
+      "transition": [
+        {
+          "type": "crossfade",
+          "duration": 0.4
+        },
+        {
+          "type": "wipe",
+          "duration": 0.5
+        }
+      ]
+    },
+    "roundtrip": {
+      "save_rebuild_reopen_import": true,
+      "further_edit_saved": true,
+      "final_reopen": true
+    },
+    "observations": [
+      "Initial static workbench: tool-test, self_test true, motion false, range [0,6], Play disabled.",
+      "Browser Save JSON, CLI rebuild, browser reopen and JSON import preserved pose, composition, two Chinese lyric drafts and wipe. A further head-tilt edit 14→16 was saved after reopening.",
+      "Chromium playback advanced from 0.45s to 0.779s and changed canvas pixels; playback at 5.96s wrapped to 0.033s within [0,6].",
+      "Both final generated workbench reports remain acceptance:not_reviewed. No actual recording, sung onset verification or production MP4 was introduced."
+    ],
+    "limitations": [
+      "This is an original isolated tool exercise, not a user MV or a user approval.",
+      "The two original lyric lines have editable draft timings only; no recording or sung alignment exists.",
+      "The UI and browser playback were exercised; Canvas2D/Remotion production adapters, MP4 export, mobile browsers and natural acting were not verified.",
+      "The fixture contact interval is preserved. Contact distance warnings remain observations, not certified hand-letter contact."
+    ]
+  },
+  "forward_issue_resolution": {
+    "file_input_label_layout": "Stacked labels passed actual final Chromium regression; the original independent observation is retained."
+  },
+  "director_remotion": {
+    "status": "passed",
+    "engine": "remotion",
+    "source_range": [
+      2,
+      4
+    ],
+    "encoded_pulse_offsets": [
+      0.5,
+      1.5
+    ],
+    "model_sha256": "eaf4d2f2d70529cf77e941e74e05e3380996f9a4e248c72630a20bec9fca42e2",
+    "video_sha256": "ee40d4f0b59fdce0f5b9fd3c5466db0a3fd587d437b7437041c15e62d8747de5",
+    "runtime": {
+      "node": "v22.23.4",
+      "platform": "linux",
+      "arch": "x64",
+      "browser": "Chrome/156.0.8078.47",
+      "browser_revision": "@1d17a2e2ee147bb7d6ae2ab6abdb3a2510c17775",
+      "browser_protocol": "1.3",
+      "browserExecutable": "/opt/google/chrome/google-chrome",
+      "versions": {
+        "remotion": "4.0.539",
+        "@remotion/renderer": "4.0.539",
+        "@remotion/bundler": "4.0.539",
+        "@remotion/cli": "4.0.539",
+        "react": "19.0.0",
+        "react-dom": "19.0.0"
+      },
+      "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+    },
+    "encoded_full_decode": true,
+    "decoded_frame_hashes": [
+      "64ce47a237e6ad6bb59e7c3765a893857b25b1125c9904ecd1e611eaa03d7bb9",
+      "e50b1232f33aa96924410826adae114774a9730df8d7b120b6758fc766239ccb"
+    ],
+    "user_approvals_written": false,
+    "scope": "Original synthetic director scene via selected actual host; not a user MV, natural acting, real singing or all-platform certification."
+  },
+  "prior_verification": "verification-v35.json",
+  "limits": [
+    "Parameterized original rigs and geometric contacts are construction aids, not natural acting.",
+    "Original timed lyric examples do not prove real sung-word alignment.",
+    "Linux browser portrait simulation is not Android execution.",
+    "Canvas2D and Remotion adapters preserve the selected host; arbitrary p5/3D/custom artwork needs an explicit adapter.",
+    "All workbench exports are drafts; actual project approvals remain separate."
+  ],
+  "compatibility_fix": {
+    "observed": "First Windows CI found unresolved temporary-directory short aliases treated as outside the project.",
+    "change": "Resolve project roots and selected paths before containment checks; retain explicit rejection of outside files.",
+    "local_followup": "206 local regressions passed with zero skips; the updated actual Windows CI also passed."
+  },
+  "normal_host_selected_adapters": {
+    "status": "passed",
+    "tested_revision": "f36432e807558e3695c1743460d6f05933d20133",
+    "run_url": "https://github.com/wjy139331916-bit/storybook-mv/actions/runs/40995674735",
+    "artifact_id": 12950844693,
+    "artifact_sha256": "09558c5ec59a0c128ea0ab563c33f46a5de900896a35ff62966805f7d0cc11ab",
+    "downloaded_archive_hash_verified": true,
+    "downloaded_native_and_remotion_full_decode": true,
+    "native": {
+      "status": "passed",
+      "engine": "canvas2d",
+      "source_range": [
+        2,
+        4
+      ],
+      "encoded_pulse_offsets": [
+        0.5,
+        1.5
+      ],
+      "model_sha256": "eaf4d2f2d70529cf77e941e74e05e3380996f9a4e248c72630a20bec9fca42e2",
+      "video_sha256": "513dfb1e5374bcf63ada0e552c44ead0e39c9695b5a7ca8577909413015b1880",
+      "runtime": {
+        "node": "v22.23.4",
+        "canvas": "0.1.100",
+        "platform": "linux",
+        "arch": "x64",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "encoded_full_decode": true,
+      "decoded_frame_hashes": [
+        "3e8007f6daaa24262d52fcc58551e800cd487730e7be327d6088d1639db7da67",
+        "87470b1e0e601ae0619eaf179b922cf1fc1e640470e8a95cb7bbbf31acecbac5"
+      ],
+      "user_approvals_written": false,
+      "scope": "Original synthetic director scene via selected actual host; not a user MV, natural acting, real singing or all-platform certification."
+    },
+    "browser": {
+      "status": "passed",
+      "runtime": "Chromium 156.0.8078.47",
+      "platform": "linux",
+      "arch": "x64",
+      "modules": [
+        "acting",
+        "scene",
+        "lyrics",
+        "storyboard",
+        "transition",
+        "assets",
+        "review"
+      ],
+      "master_bound_codec_preview": true,
+      "model_sha256": "d97945363cdf09a836e996917f6d75f94ae4a3516795a173d96b810277099773",
+      "checks": [
+        "acting key/curve controls",
+        "scene pointer drag and camera key",
+        "actual LRC import and explicit word split",
+        "storyboard reorder preserving full duration",
+        "paired transition anchor selection",
+        "shared asset usage and color propagation",
+        "pixel model import into scene",
+        "bound video comparison and relative-time feedback",
+        "repair range handles without master overwrite",
+        "browser JSON save/import and CLI rebuild",
+        "JSON cannot elevate design stage",
+        "bounded action playback changes pixels",
+        "seven-module portrait layout",
+        "zero external requests"
+      ],
+      "scope": "Original isolated editor and actual local video feedback; no user approval, natural acting or Android destination certification."
+    },
+    "scope": "Actual Linux standard Chrome, native Canvas and Remotion render evidence for the named revision; subsequent source-time UI and Windows-alias fixes have separately named checks."
+  },
+  "normal_host_checks": {
+    "status": "passed",
+    "tested_revision": "ce11d405a23dcf916555aa1392f2b38f65dc200f",
+    "run_url": "https://github.com/wjy139331916-bit/storybook-mv/actions/runs/40996227335",
+    "checks": {
+      "integrity-and-media": "passed",
+      "native-render": "passed",
+      "chromium-review": "passed",
+      "windows-native": {
+        "status": "passed",
+        "tests_ran": 206,
+        "skipped": 3,
+        "scope": "Actual Windows contract/native destination. Optional CJK font tests skipped; no Windows browser or Android certification."
+      }
+    },
+    "selected_adapter_evidence": "normal_host_selected_adapters records its separate exact revision, artifact digest and downloaded native/Remotion decode."
+  }
+}

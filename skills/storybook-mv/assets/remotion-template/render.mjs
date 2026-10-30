@@ -21,7 +21,7 @@ const hash=f=>createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 const config=JSON.parse(fs.readFileSync('src/project.json','utf8')),isTest=brief.execution.context==='tool-self-test';
 if(args.fps)config.fps=Number(args.fps);
 let audio=args.audio||brief.music?.audio||null;
-if(audio){const p=spawnSync('ffprobe',['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',audio],{encoding:'utf8'});if(p.status!==0)throw Error('Selected audio cannot be measured');if(!isTest)config.duration=Number(p.stdout);}
+if(audio){const p=spawnSync('ffprobe',['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',audio],{encoding:'utf8'});if(p.status!==0)throw Error('Selected audio cannot be measured');if(!isTest)config.duration=Math.ceil(Number(p.stdout)*config.fps-1e-7)/config.fps;}
 if(brief.phase==='animatic'&&config.fidelity!=='rough')throw Error('Set up a genuinely simplified rough scene; dimensions alone do not create an animatic');
 let bounds=[0,config.duration];
 if(brief.phase==='prototype'&&!isTest){const p=brief.workflow.packages.design;const pilot=JSON.parse(fs.readFileSync(p.path,'utf8')).pilot;bounds=[pilot.start,pilot.end];}

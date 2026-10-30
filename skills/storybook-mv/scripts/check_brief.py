@@ -192,9 +192,13 @@ def entry_errors(brief, project, purpose=None, duration=None, audio=None, resolu
     actual='production' if phase in ('full','repair','deliver') else ('design' if phase=='design' else ('animatic' if phase=='animatic' else 'prototype'))
     purpose=purpose or actual
     result=check(brief,project)
+    director_errors=[]
+    if project is not None and (Path(project)/'director-active.json').exists():
+        from director_contract import check_active
+        director_errors=check_active(project,brief)
     if (brief.get('execution') or {}).get('context')=='tool-self-test':
-        return production_gate(brief,purpose,duration,project,audio)
-    errors=list(result['missing_for_proposal'])+production_gate(brief,purpose,duration,project,audio)
+        return production_gate(brief,purpose,duration,project,audio)+director_errors
+    errors=list(result['missing_for_proposal'])+production_gate(brief,purpose,duration,project,audio)+director_errors
     if purpose!=actual:
         errors.append('STAGE_MISMATCH: changing a command purpose cannot bypass the current phase')
     if purpose=='prototype' and timeline_range is not None:
