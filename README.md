@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.6.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.6.0**。最新变化见 [3.6 更新内容](#36-更新内容)。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -45,6 +45,48 @@
 
 制作入口增加独立设计阶段（只允许静态图）、获准样片区间检查、全曲粗剪范围与低成本规格检查，以及旧项目/跨 agent 的阶段恢复。正常修错无需重问创意方向；实质改动回到受影响的验收点。详细规则见 [逐阶段验收](skills/storybook-mv/references/user-stage-review.md)。
 
+## 3.6 更新内容
+
+发布日期：**2026-10-30**。本版把七类制作工具整合成一个离线中文导演工作台，共用角色、场景、镜头和歌词数据，支持保存后重新打开并继续编辑。
+
+| 新增模块 | 已实现的操作 |
+|---|---|
+| 动作与表演 | 调整视线、头部、重心和手脚目标，编辑关键姿态及衔接方式，设置简单脚底固定和接触区间，查看接触距离 |
+| 场景与镜头 | 拖动图层构图，管理前后层级、位置、缩放和旋转，复用或复制场景，编辑摄影机平移与缩放关键帧 |
+| 歌词时间轴 | 载入所选录音及波形，导入 LRC / SRT / JSON，拖动与调整歌词行时间，手动分割词段并导出时间草稿 |
+| 分镜粗剪 | 拆分、重排镜头和调整相邻镜头时长，保持完整目标时长，在获准阶段查看简化动态预览 |
+| 转场 | 并排查看 A/B 实际画面，调整切换、叠化、擦除及两点位置匹配转场 |
+| 素材与风格 | 编辑共享角色、形状、文字与配色，导入已有像素角色数据，复制、替换、导出素材并查询受影响的镜头 |
+| 审片与局部修复 | 绑定实际视频版本，对照播放、记录时间点意见，导出片段相对时间批注及带相邻余量的局部修复计划 |
+
+### 保存、接回制作与修复
+
+- 工作台 JSON 支持保存、重新载入和继续修改；保留原有像素工作台，像素角色可导入统一场景。
+- 新修订可接回选定的 **Canvas2D 或 Remotion** 项目，复用同一份绘制核心；采用前备份原有入口和辅助文件，写入失败时回滚。
+- 核对工作台基线、当前项目源文件及已展示设计源，防止旧编辑覆盖新内容；保存或导入数据不会提升制作阶段或生成用户验收。
+- 审片意见绑定原视频校验值和全局片段范围；兼容 WebM 预览仍指向原始 MP4，导出意见时保留正确的片段相对时间。
+- 修复 Windows 临时目录短名称造成的路径误判；统一解析项目路径，同时继续拒绝越出项目目录的文件。
+- 修正歌词导入区标签被挤成竖排，以及输入提交与界面刷新可能丢失编辑的问题。
+
+创建项目的静态设计工作台：
+
+```bash
+python3 skills/storybook-mv/scripts/director_workbench.py init --project <项目目录> --out plan/director-design-r1
+```
+
+打开生成的工作台并保存编辑后的 JSON；后续采用、渲染和设计 → 样片 → 全曲粗剪 → 成片验收流程见 [导演工作台说明](skills/storybook-mv/references/director-workbench.md)。
+
+### 已完成的验证
+
+- 本地 **206 项回归检查通过，零跳过**；更新后的 Windows 检查运行 206 项，其中 3 项因缺少可选字体而跳过。
+- 真实浏览器操作覆盖七模块编辑、保存与重新打开、受限动态播放、窄屏布局和绑定原片的时间点反馈；另完成独立的原创六秒工作台使用验证。
+- Canvas2D 与 Remotion 均实际导出全局 **第 2–4 秒**的视频，完成完整解码，并核对原创合成音轨在片段内 **0.5 / 1.5 秒**的信号位置；下载后的 CI 文件和视频也完成校验。
+- [3.6 更新已合并，五项 GitHub 检查均已通过](https://github.com/wjy139331916-bit/storybook-mv/pull/6)。具体测试版本、运行环境、文件校验值和范围见 [3.6 验证记录](skills/storybook-mv/assets/verification-v36.json)。
+
+### 仍有的边界
+
+内置构造角色用于搭建动作，复杂人物表演仍为 **partial**，需要逐镜调校。歌词时间与手动词段是草稿，真实演唱同步须听辨复核。其他绘画、3D 或自定义引擎需要各自适配器；窄屏浏览器模拟不代表 Android 真机已验证。工具检查与原创示例均不能替代使用者对实际作品的验收。
+
 ## 3.5：像素角色工作台与所选制作路线
 
 - 可离线编辑像素角色部件、调色板、姿势与脚底/持物基准；导出可编辑数据及静态设计图，设计验收后才开放动作播放与精灵图。
@@ -52,7 +94,7 @@
 - 记录所选 Python、关键包、平台、架构、浏览器和编码器版本；六秒中文探针核对真实字形与导出视频中的描色变化。
 - 增加真实 p5.brush 软件渲染探针、浏览器采样估算、原创叙事信息卡、中文位图字图集导出及绑定实际镜头的表演计划。
 - Remotion 从指导路线升级为可选可执行模板，所有制作入口继续服从现有分阶段验收。已在标准 Ubuntu 宿主完成实际 MP4 导出、完整解码、非零 [2,4] 片段与合成音轨检查；具体版本和证据见验证记录。本地沙箱仍可能限制其网卡信息/回环访问。
-- 当前本地 175 项回归测试通过，零跳过。真实 Linux 浏览器编辑、中文和原生/软件渲染的范围见 [3.5 验证记录](skills/storybook-mv/assets/verification-v35.json)，不代表 Android 或复杂人物表演已验收。
+- 3.5 发布时的本地 175 项回归测试通过，零跳过。真实 Linux 浏览器编辑、中文和原生/软件渲染的范围见 [3.5 验证记录](skills/storybook-mv/assets/verification-v35.json)，不代表 Android 或复杂人物表演已验收。
 
 像素工具无需单独安装桌面绘图软件：
 
@@ -104,20 +146,6 @@ python3 skills/storybook-mv/scripts/pixel_workbench.py init --project <项目目
 - 时间点问题记录、样片检查、共享素材修复范围和定点返工。
 - 完整目录导出、文件校验和可播放的 Canvas2D 运行自检。
 
-## 七模块导演工作台
-
-3.6 把动作与接触、场景与摄影机、歌词时间轴、分镜编排、转场、素材与风格、审片返工整合到一个离线工作台。共享同一份 JSON，支持保存后重新载入；修改后可接回选定的 Canvas2D 或 Remotion 项目。
-
-```bash
-python3 skills/storybook-mv/scripts/director_workbench.py init --project <项目> --out plan/director-design-r1
-```
-
-工作台导出的是草稿；设计源文件、真实视频哈希和阶段验收继续沿用原有流程。内置构造角色只用于搭建动作，复杂人物表演仍为 partial；逐词时间需要实际听辨，不能按字数当作演唱同步。其他绘画/3D/自定义引擎需要各自适配器。手机窄屏已在桌面浏览器模拟，尚未证明 Android 真机兼容。
-
-已在原生 Canvas 与标准 Chrome/Remotion 中实际导出第 2–4 秒视频，完整解码并核对原创合成音轨的时间位置；这不代表真实歌曲的演唱同步已验收。
-
-命令和实际边界见 [导演工作台说明](skills/storybook-mv/references/director-workbench.md) 与 [3.6 验证记录](skills/storybook-mv/assets/verification-v36.json)。
-
 ## 完整性检查
 
 下载后在仓库目录运行：
@@ -149,7 +177,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 3.4 已实际运行原生 Canvas 的三类原创机制，以及 Linux Chromium 134 的 Canvas2D 画面和离线审片播放、定位、反馈导出及导入。原视频保留，WebM 是同时间轴的兼容预览。它不等于 p5/WebGL、任意浏览器、完整演唱同步或艺术效果已通过。独立 agent 试用生成了完整 9 秒脚本、8 张静态设计图和状态卡，并停在 design，后续验收为空；最终代码重放的 8 张图均一致。详见 [3.4 验证记录](skills/storybook-mv/assets/verification-v34.json)。
 
-历史记录保持原版本与验证范围：[3.3](skills/storybook-mv/assets/verification-v33.json)、[3.2](skills/storybook-mv/assets/verification-v32.json)、[3.0](skills/storybook-mv/assets/style-packs/verification.json)、[2.0](skills/storybook-mv/assets/studies/verification.json)。不能把技术检查通过当作审美保证。
+历史记录保持原版本与验证范围：[3.5](skills/storybook-mv/assets/verification-v35.json)、[3.4](skills/storybook-mv/assets/verification-v34.json)、[3.3](skills/storybook-mv/assets/verification-v33.json)、[3.2](skills/storybook-mv/assets/verification-v32.json)、[3.0](skills/storybook-mv/assets/style-packs/verification.json)、[2.0](skills/storybook-mv/assets/studies/verification.json)。不能把技术检查通过当作审美保证。
 
 ## 测试和示例
 
