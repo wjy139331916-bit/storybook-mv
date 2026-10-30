@@ -1,8 +1,14 @@
 {
   "schema_version": 1,
-  "toolkit_version": "3.6.0",
+  "toolkit_version": "3.6.1",
   "meaning": "Status describes named evidence and its limits, not universal compatibility or aesthetic acceptance.",
   "capabilities": [
+    {
+      "id": "visible-art-direction-and-scoped-taste-history",
+      "status": "implemented",
+      "evidence": "references/art-direction.md; assets/contracts/art-direction.template.json; SKILL.md",
+      "limits": "Behavioral workflow for actual references, reproducible design baselines, asset reuse, whole-scope visual progression and observed repairs. No automated beauty scoring, model training, universal style or artistic guarantee; verification-v361.json records the scoped checks."
+    },
     {
       "id": "seven-module-director-workbench",
       "status": "verified_scoped",
@@ -136,5 +142,5 @@
       "limits": "Complete-directory portability is tested; actual destination Python, renderer, fonts and tools must be exercised."
     }
   ],
-  "current_receipt": "verification-v36.json"
+  "current_receipt": "verification-v361.json"
 }

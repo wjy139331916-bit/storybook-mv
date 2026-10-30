@@ -1,6 +1,6 @@
 {
   "name": "storybook-mv",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "entry": "SKILL.md",
   "personal_project_profile": false,
   "host_metadata": false,
@@ -13,8 +13,8 @@
     },
     {
       "path": "SKILL.md",
-      "bytes": 27355,
-      "sha256": "1ebc02659ff75c0c7fac6b16164290fe411c322dfe00f368a11ebb057398d312"
+      "bytes": 28810,
+      "sha256": "f92e2dddc23f7aeefce6490bef5156ca0183e29a196ffbeb743da3ae83098550"
     },
     {
       "path": "assets/UPSTREAM_LICENSE",
@@ -188,8 +188,13 @@
     },
     {
       "path": "assets/capability-matrix.json",
-      "bytes": 7865,
-      "sha256": "e2272645d932cb23e0af38d412ed7da9745446a09b148d03f977b27c71dc59d4"
+      "bytes": 8369,
+      "sha256": "86a06c10176505f29677d3e4cf0055e8d423ed3230ea678f8efc5289e6342848"
+    },
+    {
+      "path": "assets/contracts/art-direction.template.json",
+      "bytes": 236,
+      "sha256": "13f9a971ab3d8a8f45ac3596b6ee92879c5757181eadebf596dd67135574dd59"
     },
     {
       "path": "assets/contracts/design-script.template.json",
@@ -748,8 +753,8 @@
     },
     {
       "path": "assets/toolkit.json",
-      "bytes": 1179,
-      "sha256": "7cfa531a357e56b23cd79855c5b1fba34b438ab5071d0d1951df5ef2652cc2ea"
+      "bytes": 1215,
+      "sha256": "ff010266e508b3dc6b620ae45d785e8c6df63be01dda7ab50243985f61aa02b3"
     },
     {
       "path": "assets/v32-evidence/cjk-board.png",
@@ -812,9 +817,19 @@
       "sha256": "b61b39f78f652488144367e98011b5c2c79c03ce23c0ebfabc2ce00939863fab"
     },
     {
+      "path": "assets/verification-v361.json",
+      "bytes": 2906,
+      "sha256": "cd8fc40e0c9273b1c73528f0e81fc4daf36276428c9cf1e45bf224776b292848"
+    },
+    {
       "path": "references/agent-interop.md",
       "bytes": 6293,
       "sha256": "bb539b90f058ffea00f0a28cd837bbc4f219e1ecdb897df5bb4eafa06e77f963"
+    },
+    {
+      "path": "references/art-direction.md",
+      "bytes": 10808,
+      "sha256": "24399a9895f6592571d85ff168dba8929d6293773f4f75cc209f89e81002aacc"
     },
     {
       "path": "references/character-review.md",
@@ -863,8 +878,8 @@
     },
     {
       "path": "references/learning-and-validation.md",
-      "bytes": 3733,
-      "sha256": "66cc00f1ae8957034ee058f129baaba98a6c57ffb0ce9160c7f2a3d056d7b402"
+      "bytes": 4209,
+      "sha256": "b213c5a44517abbbf484e2159fe1aa741891cdb0dd27b4038c4d8132415fa94b"
     },
     {
       "path": "references/music-direction.md",
@@ -898,13 +913,13 @@
     },
     {
       "path": "references/production-contracts.md",
-      "bytes": 4498,
-      "sha256": "ee81e1b613532e0f08b557c0553a93a340a36d3547b074ef86e97d43ec2c9099"
+      "bytes": 5255,
+      "sha256": "4588b5936da443e1a2a03a24db81a9dc8c47819bc61b34be73e6cb4749cc43fa"
     },
     {
       "path": "references/reference-analysis.md",
-      "bytes": 3001,
-      "sha256": "355fb6618374f64d60cf43de477094d3bf040baa9ea78af7235d44c6ff3b27f1"
+      "bytes": 3365,
+      "sha256": "6fa390ebb625ea3c1bf183efe84ab1cd59ed1cb2b0c8888dd51e7388f48c8782"
     },
     {
       "path": "references/remotion-adapter.md",
@@ -918,8 +933,8 @@
     },
     {
       "path": "references/review-and-repair.md",
-      "bytes": 4475,
-      "sha256": "6a361a4ec0ef45de994f259fee7124a2f5912481a3a6bcb4a66f4d61c31f666d"
+      "bytes": 4932,
+      "sha256": "f7dd25812185beaecddcc051569068e28bbdb3b98412f9b3ed75f03e397c3da7"
     },
     {
       "path": "references/review-workspace.md",
@@ -958,8 +973,8 @@
     },
     {
       "path": "references/user-stage-review.md",
-      "bytes": 13465,
-      "sha256": "c2fbfb92ad6ada7e7de3c9554dbc6839544731aebdd1947bb6b8ab33bdbdbc8b"
+      "bytes": 13835,
+      "sha256": "2c2a241fa7f2a34feb690f67d1fd7b689cff5472fb2321bacea16144191d1a8d"
     },
     {
       "path": "references/visual-studies.md",
@@ -1198,8 +1213,8 @@
     },
     {
       "path": "tests/test_contracts.py",
-      "bytes": 15416,
-      "sha256": "75d5d9a53d1f4c8d3b1914a7c1eb743af76974f23345df971783cbe5dfa508e9"
+      "bytes": 16488,
+      "sha256": "61fc059994c15cd631f09f54cb7121257c3d01bfd8d8cf60310e201657e78a75"
     },
     {
       "path": "tests/test_director_v36.py",

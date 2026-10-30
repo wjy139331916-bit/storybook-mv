@@ -2,6 +2,8 @@
 
 Use actual supplied media or accessible source frames. Recover earlier analysis before repeating work. State unavailable evidence and separate observed mechanisms from interpretations. Study medium, staging and timing; preserve original subjects and story rather than copying reference scenes.
 
+Recover both positive examples and counterexamples, including the user's stated reasons; a source can be mixed. Use a few coherent references when available without imposing a quota. Follow art-direction.md for recording visible choices, reproducible design baselines and scoped taste notes. Do not infer a global style preference from a single rejected feature.
+
 ```bash
 python3 <skill>/scripts/media_audit.py reference <reference.mp4> --out <project>/private-references/ref-r1 --crop 0,100,1280,720
 python3 <skill>/scripts/media_audit.py compare <reference-frame.png> <rendered-frame.png> --out <project>/private-references/comparison-r1
