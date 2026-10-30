@@ -39,10 +39,10 @@ def main():
                 args.append('--audio=assets/original-score.wav')
             else:
                 args.append('--stills-only')
-            subprocess.run(args, check=True, capture_output=True, text=True)
-            report = json.loads((project / 'out/probe/render-report.json').read_text())
+            subprocess.run(args, check=True, capture_output=True, text=True, encoding='utf-8')
+            report = json.loads((project / 'out/probe/render-report.json').read_text(encoding='utf-8'))
             assert all(x['passed'] for x in report['determinism']), 'reverse-seek result changed'
-            audit = json.loads((project / 'out/probe/frame-audit.json').read_text())
+            audit = json.loads((project / 'out/probe/frame-audit.json').read_text(encoding='utf-8'))
             assert not any(f['category'] in ('contact_gap', 'unreachable_actor_target', 'text_outside_frame') for f in audit['findings']), audit['findings']
             item = {'style': style, 'reverse_seek': True, 'encoded_frames': report['frames'], 'declared_contact_and_bounds': 'no flagged defects in inspected frames'}
             if style == 'pixel':
@@ -53,13 +53,13 @@ def main():
             results.append(item)
         # Synthetic declared geometry exercises ranges, not human acting quality.
         project = base / 'hold-fixture'
-        subprocess.run([sys.executable, str(ROOT/'scripts/scaffold.py'), str(project), '--engine', 'canvas2d', '--duration', '5', '--width', '64', '--height', '64', '--fps', '12', '--tool-self-test'], check=True, capture_output=True, text=True)
-        (project/'src/scene.js').write_text("globalThis.drawFrame=(c,t)=>{c.fillStyle='#eeeeee';c.fillRect(0,0,64,64);c.fillStyle='#222222';c.fillRect(8,8,20,20);globalThis.MV_FRAME_CHECKS={actors:[{id:'synthetic-static-shape',pose_signature:[0,0],view:0}],boxes:[]};if(t>=4){c.font='8px sans-serif';c.fillText('TEST',62,12);MV_FRAME_CHECKS.boxes.push({id:'test-text',kind:'text',x:62,y:4,w:25,h:10});}};\n")
+        subprocess.run([sys.executable, str(ROOT/'scripts/scaffold.py'), str(project), '--engine', 'canvas2d', '--duration', '5', '--width', '64', '--height', '64', '--fps', '12', '--tool-self-test'], check=True, capture_output=True, text=True, encoding='utf-8')
+        (project/'src/scene.js').write_text("globalThis.drawFrame=(c,t)=>{c.fillStyle='#eeeeee';c.fillRect(0,0,64,64);c.fillStyle='#222222';c.fillRect(8,8,20,20);globalThis.MV_FRAME_CHECKS={actors:[{id:'synthetic-static-shape',pose_signature:[0,0],view:0}],boxes:[]};if(t>=4){c.font='8px sans-serif';c.fillText('TEST',62,12);MV_FRAME_CHECKS.boxes.push({id:'test-text',kind:'text',x:62,y:4,w:25,h:10});}};\n", encoding='utf-8')
         args=['node',str(ROOT/'scripts/render_canvas.mjs'),'--project='+str(project),'--out=out/probe']
         if a.canvas_module:
             args.append('--canvas-module='+a.canvas_module)
-        subprocess.run(args,check=True,capture_output=True,text=True)
-        audit=json.loads((project/'out/probe/frame-audit.json').read_text())
+        subprocess.run(args,check=True,capture_output=True,text=True, encoding='utf-8')
+        audit=json.loads((project/'out/probe/frame-audit.json').read_text(encoding='utf-8'))
         holds=[x for x in audit['findings'] if x['category']=='unchanged_local_pose']
         text=[x for x in audit['findings'] if x['category']=='text_outside_frame']
         assert len(holds)==1 and abs(holds[0]['range'][0]-3)<.09 and abs(holds[0]['range'][1]-5)<.09,holds

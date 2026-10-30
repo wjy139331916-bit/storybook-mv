@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "revision": null,
+  "shots": [
+    {"shot_id": null, "actor_id": null, "start": null, "end": null,
+     "intent": null, "gaze_target": null, "head_orientation": null,
+     "support_and_weight": null, "contact_and_release": null,
+     "breathing_or_intentional_hold": null,
+     "key_poses": [{"time": null, "description": null}]}
+  ],
+  "scope": "A project-specific acting plan, not observed performance or user acceptance. Pair it with playable evidence and timestamped review.json observations."
+}

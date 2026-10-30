@@ -14,7 +14,7 @@ def main():
     root = a.directory.expanduser().resolve()
     errors, seen = [], set()
     try:
-        manifest = json.loads((root/'PORTABLE_MANIFEST.json').read_text())
+        manifest = json.loads((root/'PORTABLE_MANIFEST.json').read_text(encoding='utf-8'))
         if not isinstance(manifest.get('files'), list) or not manifest['files']:
             raise ValueError('manifest has no files')
         for item in manifest['files']:
@@ -32,11 +32,11 @@ def main():
         for required in ('SKILL.md', 'assets/toolkit.json', 'scripts/runtime_smoke.py', 'references/production-contracts.md'):
             if required not in seen:
                 errors.append('required resource absent: '+required)
-        main = (root/'SKILL.md').read_text()
+        main = (root/'SKILL.md').read_text(encoding='utf-8')
         found = re.search(r'^name:\s*([a-z0-9-]+)\s*$', main, re.M)
         if not found or found[1] != manifest.get('name'):
             errors.append('manifest/skill name mismatch')
-        info = json.loads((root/'assets/toolkit.json').read_text())
+        info = json.loads((root/'assets/toolkit.json').read_text(encoding='utf-8'))
         if info['version'] != manifest.get('version'):
             errors.append('toolkit/manifest version mismatch')
         if not manifest.get('personal_project_profile') and ('references/tebie-de-ren.md' in seen or 'PERSONAL_PROJECT_PROFILE_START' in main):
@@ -48,4 +48,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     raise SystemExit(main())

@@ -226,7 +226,7 @@ def entry_errors(brief, project, purpose=None, duration=None, audio=None, resolu
             import subprocess
             path=Path(brief['music']['audio']);path=path if path.is_absolute() else Path(project)/path
             try:
-                measured=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(path)],stderr=subprocess.PIPE,text=True))
+                measured=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(path)],stderr=subprocess.PIPE,text=True, encoding='utf-8'))
                 if abs(measured-timeline_duration)>.125:errors.append('full timeline duration differs from the selected recording')
             except (OSError,ValueError,subprocess.SubprocessError):errors.append('selected recording cannot be measured')
     return list(dict.fromkeys(errors))
@@ -269,4 +269,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     raise SystemExit(main())

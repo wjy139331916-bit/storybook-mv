@@ -15,7 +15,7 @@ from check_brief import content_digest, production_gate, song_reading_errors
 
 
 def agreed_fixture():
-    b=json.loads((ROOT/'assets/brief.template.json').read_text())
+    b=json.loads((ROOT/'assets/brief.template.json').read_text(encoding='utf-8'))
     b.update(goal='synthetic original time study',emotion='curiosity',asset_policy='all-code',phase='prototype',request_mode='production')
     b['music'].update(source='none',kind='none',scope='six-second silent fixture')
     b['style'].update(direction='flat',medium='Canvas',motion='reusable strokes')
@@ -45,14 +45,14 @@ def bind_confirmation(brief,folder):
     from workflow_fixtures import design
     design(brief, Path(folder))
     record=Path(folder)/'synthetic-confirmation.json'
-    record.write_text(json.dumps({'origin':'user-message','message_id':'synthetic-fixture-message','user_reply':'Synthetic unit fixture accepts this exact concept','recap_id':'fixture-recap','accepted_content_sha256':content_digest(brief)}))
+    record.write_text(json.dumps({'origin':'user-message','message_id':'synthetic-fixture-message','user_reply':'Synthetic unit fixture accepts this exact concept','recap_id':'fixture-recap','accepted_content_sha256':content_digest(brief)}), encoding='utf-8')
     brief['content_confirmation']['record']={'path':str(record),'sha256':hashlib.sha256(record.read_bytes()).hexdigest()}
     return record
 
 
 class ContentGateTests(unittest.TestCase):
     def test_three_basic_answers_are_not_content_confirmation(self):
-        b=json.loads((ROOT/'assets/brief.template.json').read_text());b['music'].update(title='named song',scope='whole song');b['output']['aspect_ratio']='16:9';b['style']['direction']='warm'
+        b=json.loads((ROOT/'assets/brief.template.json').read_text(encoding='utf-8'));b['music'].update(title='named song',scope='whole song');b['output']['aspect_ratio']='16:9';b['style']['direction']='warm'
         errors=production_gate(b,'production',240)
         self.assertTrue(any('CONTENT_NOT_CONFIRMED' in e for e in errors))
         self.assertTrue(any('content.key_moments' in e for e in errors))
@@ -113,14 +113,14 @@ class ContentGateTests(unittest.TestCase):
 
     def test_scaffold_refuses_unconfirmed_content_without_creating_project(self):
         with tempfile.TemporaryDirectory() as folder:
-            p=Path(folder);b=agreed_fixture();b['content_confirmation']['status']='pending';(p/'brief.json').write_text(json.dumps(b));target=p/'project'
-            result=subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(target),'--engine','canvas2d','--brief',str(p/'brief.json')],capture_output=True,text=True)
+            p=Path(folder);b=agreed_fixture();b['content_confirmation']['status']='pending';(p/'brief.json').write_text(json.dumps(b), encoding='utf-8');target=p/'project'
+            result=subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(target),'--engine','canvas2d','--brief',str(p/'brief.json')],capture_output=True,text=True, encoding='utf-8')
             self.assertNotEqual(result.returncode,0);self.assertIn('CONTENT_NOT_CONFIRMED',result.stderr);self.assertFalse(target.exists())
 
     def test_native_renderer_blocks_before_loading_runtime_or_creating_output(self):
         with tempfile.TemporaryDirectory() as folder:
-            p=Path(folder);b=agreed_fixture();b['content_confirmation']['status']='pending';(p/'brief.json').write_text(json.dumps(b))
-            result=subprocess.run(['node',str(ROOT/'scripts/render_canvas.mjs'),'--project='+str(p),'--out=out/blocked'],capture_output=True,text=True)
+            p=Path(folder);b=agreed_fixture();b['content_confirmation']['status']='pending';(p/'brief.json').write_text(json.dumps(b), encoding='utf-8')
+            result=subprocess.run(['node',str(ROOT/'scripts/render_canvas.mjs'),'--project='+str(p),'--out=out/blocked'],capture_output=True,text=True, encoding='utf-8')
             self.assertNotEqual(result.returncode,0);self.assertIn('CONTENT_NOT_CONFIRMED',result.stderr);self.assertFalse((p/'out').exists())
 
     def test_python_and_js_gate_agree_on_content_meaning_and_scope(self):
@@ -128,7 +128,7 @@ class ContentGateTests(unittest.TestCase):
         for mutate in (lambda b:b['content_confirmation'].update(status='pending'),lambda b:b['content'].update(core_idea='changed'),lambda b:b['execution'].update(authorized_duration=2),lambda b:b['song_reading'].update(user_selection_evidence=None)):
             b=lyrical_fixture();mutate(b);cases.append(b)
         code="import {contentDigest,gateErrors} from "+json.dumps((ROOT/'scripts/production_gate.mjs').as_uri())+";let data='';for await(const part of process.stdin)data+=part;console.log(JSON.stringify(JSON.parse(data).map(b=>({digest:contentDigest(b),errors:gateErrors(b,{duration:6})}))));"
-        result=subprocess.run(['node','--input-type=module','-e',code],input=json.dumps(cases,ensure_ascii=False),capture_output=True,text=True,check=True)
+        result=subprocess.run(['node','--input-type=module','-e',code],input=json.dumps(cases,ensure_ascii=False),capture_output=True,text=True,check=True, encoding='utf-8')
         for b,j in zip(cases,json.loads(result.stdout)):
             self.assertEqual(content_digest(b),j['digest']);self.assertEqual(production_gate(b,'prototype',6),j['errors'])
 
@@ -136,7 +136,7 @@ class ContentGateTests(unittest.TestCase):
         original=(ROOT/'scripts/production_gate.mjs').read_bytes()
         for name in ('canvas-template','painted-template'):
             self.assertEqual(original,(ROOT/'assets'/name/'production_gate.mjs').read_bytes())
-            code=(ROOT/'assets'/name/'render.mjs').read_text()
+            code=(ROOT/'assets'/name/'render.mjs').read_text(encoding='utf-8')
             self.assertIn('assertProduction(process.cwd(),',code)
             self.assertIn('const stageAssert=options=>assertProduction(',code)
             self.assertGreaterEqual(code.count('stageAssert('),5)
@@ -144,13 +144,13 @@ class ContentGateTests(unittest.TestCase):
     @unittest.skipUnless(os.environ.get('MV_CANVAS_MODULE'),'optional native Canvas dependency not selected')
     def test_confirmed_bounded_user_prototype_reaches_a_real_encode(self):
         with tempfile.TemporaryDirectory() as folder:
-            p=Path(folder);brief=agreed_fixture();bind_confirmation(brief,p);(p/'brief.json').write_text(json.dumps(brief))
+            p=Path(folder);brief=agreed_fixture();bind_confirmation(brief,p);(p/'brief.json').write_text(json.dumps(brief), encoding='utf-8')
             project=p/'project'
-            subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(project),'--engine','canvas2d','--brief',str(p/'brief.json'),'--duration','2','--width','1280','--height','720','--fps','12'],check=True,capture_output=True,text=True)
+            subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(project),'--engine','canvas2d','--brief',str(p/'brief.json'),'--duration','2','--width','1280','--height','720','--fps','12'],check=True,capture_output=True,text=True, encoding='utf-8')
             (project/'src/scene.js').write_bytes((ROOT/'assets/style-packs/time-clock.js').read_bytes())
-            result=subprocess.run(['node',str(ROOT/'scripts/render_canvas.mjs'),'--project='+str(project),'--out=out/prototype','--canvas-module='+os.environ['MV_CANVAS_MODULE']],capture_output=True,text=True)
+            result=subprocess.run(['node',str(ROOT/'scripts/render_canvas.mjs'),'--project='+str(project),'--out=out/prototype','--canvas-module='+os.environ['MV_CANVAS_MODULE']],capture_output=True,text=True, encoding='utf-8')
             self.assertEqual(result.returncode,0,result.stderr)
-            report=json.loads((project/'out/prototype/render-report.json').read_text())
+            report=json.loads((project/'out/prototype/render-report.json').read_text(encoding='utf-8'))
             self.assertEqual(report['frames'],24);self.assertTrue(report['encoded']['full_decode'])
 
 

@@ -52,3 +52,7 @@ Do not import conflicting upstream defaults: mandatory literal illustration for 
 ## Verification scope
 
 Check metadata, discovery behavior, proposal/production separation, explicit scaffolds, portability checksums, syntax, LRC import, timeline and relevant rig invariants. Aesthetic quality and full-song sync require compatible runtime and actual project inputs. Record those separately; a validator pass is not finished-animation evidence.
+
+## Version 3.5 executable integration
+
+The offline pixel editor/exporter, original neutral character, bitmap atlas generator, narrative UI helpers and expanded environment/probe helpers are newly authored. The optional Remotion template/adapter is also original source written against official APIs, not a vendored copy of the upstream skill. Remotion/React/p5/Puppeteer remain external exact-version dependencies with their own terms. Keep their attribution and do not mislabel Remotion as permissively licensed or preinstalled.

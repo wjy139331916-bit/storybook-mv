@@ -72,6 +72,8 @@ When a material choice benefits from visual comparison, read [controlled visual 
 
 For an executable drawing example or a reusable new look, read [style packs](references/style-packs.md). The optional flat/cut-paper/pixel/ink packs include construction rules and original scenic demos; they do not restrict style discovery. Use the selected design's actual assets in design frames and animation, and prove the hard effect before expanding it.
 
+For a selected pixel-art project or a request to edit pixel characters, read [pixel character workbench](references/pixel-workbench.md). Use the bundled offline editor and Python exporter for editable layers, palettes, static poses and source-reproducible sprites. Start with static design only; enable motion previews/sprite sequences only through the shared stage gate after design/script acceptance. A saved model or exported sprite never supplies user approval. The neutral example is a construction aid, not an approved cast or a default style. No editor installation or network service is required; Pillow is the sole export dependency.
+
 ## Converge and present the proposal
 
 Track answers, assumptions and blocking questions with `assets/brief.template.json` or equivalent project files. Stop asking when the desired experience, visual direction, content progression, asset policy and output scope are specific enough to make a useful plan. Do not ask for trivial implementation details simply to fill fields.
@@ -97,11 +99,12 @@ Read [style and engine routing](references/style-routing.md). Treat its examples
 
 - `painted-p5`: bundled p5.js/p5.brush renderer for painterly/ink/paper animation when selected.
 - `canvas2d`: bundled minimal deterministic Canvas2D host for custom flat/vector/pixel/collage/typography work. It is a blank engine, not finished art.
-- Remotion, three.js, Blender or custom tooling: plan and implement from suitable official documentation if selected. These are guide-only routes here, not preinstalled engines.
+- `remotion`: optional bundled original composition/preview/export adapter; read [Remotion adapter](references/remotion-adapter.md), install its selected dependencies, and retain the shared stage gate.
+- three.js, Blender or custom tooling: plan and implement from suitable official documentation if selected. These remain guide-only routes here.
 
 Use one main host per project. Consult `assets/engines.json` for the distinction between bundled templates and guide-only options. Preserve applicable licenses. General style coverage does not mean every style is equally cheap or achievable by the same agent/runtime.
 
-For a selected Remotion route, consult the official Remotion skills/documentation for composition, captions, preview and rendering as needed; do not install or combine another host merely because it is mentioned upstream. Measure representative frame cost and output size before making a long-film estimate.
+For a selected Remotion route, use the bundled adapter and consult the official Remotion skills/documentation for composition, captions, preview and rendering as needed; do not install or combine another host merely because it is mentioned upstream. Measure representative frame cost and output size before making a long-film estimate.
 
 After direction acceptance, select the engine and create a design workspace with `scaffold.py --phase design`. Render only static frames. After the complete design/script package has been shown and accepted, continue the same workspace in `phase:prototype`; a new authorized prototype can also be scaffolded from that bound design package:
 
@@ -119,7 +122,7 @@ For Canvas2D, select `execution.runtime` as `browser` or the optional `node-canv
 
 ## Reuse the integrated production method
 
-Read [director method](references/directing.md), [timing](references/timing.md) and [rendering](references/rendering.md) at the relevant stages.
+Read [director method](references/directing.md), [timing](references/timing.md) and [rendering](references/rendering.md) at the relevant stages. For character-led scenes or story information cards read [project assets and performance mechanics](references/production-assets.md). Use the optional source-bound acting plan, generic UI cards and bitmap-font exporter where the selected project needs them; filled records never certify acting.
 
 1. Establish the style with the right evidence: character sheets for characters, type/layout boards for typography, material/space frames for 3D, or a behavior sample for abstract graphics.
 2. Prove the hardest relevant action or effect in a short representative clip. A human handoff needs contact evidence; a pixel loop or word transition needs a different test. Do not require a human rig in every style.

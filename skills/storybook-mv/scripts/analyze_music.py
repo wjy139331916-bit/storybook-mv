@@ -53,15 +53,19 @@ def main():
         changes = [{'time': w['start'], 'rms_delta': round(w['rms']-windows[i-1]['rms'], 6), 'status': 'candidate'} for i, w in enumerate(windows) if i and w['rms']-windows[i-1]['rms'] > .02]
         result = {'schema_version': 1, 'audio_sha256': digest.hexdigest(), 'duration': duration, 'sample_rate': streams[0].get('sample_rate'), 'channels': streams[0].get('channels'), 'analysis_rate': rate, 'window_seconds': a.window, 'windows': windows, 'energy_rise_candidates': changes, 'sections': [], 'sections_status': 'unreviewed', 'beats_status': 'not_measured', 'scope': 'Measured recording metadata and mono RMS energy only. Section boundaries, musical accents, meaning and beat timing require listening; RMS changes are not verified beats.'}
         a.out.parent.mkdir(parents=True, exist_ok=True)
-        a.out.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
+        a.out.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
         if a.plot:
             bars = ''.join(f'<rect x="{40+840*i/max(1,len(windows)):.2f}" y="{200-160*w["rms"]:.2f}" width="{max(.5,840/max(1,len(windows))):.2f}" height="{160*w["rms"]:.2f}" fill="#557d94"/>' for i,w in enumerate(windows))
             a.plot.parent.mkdir(parents=True, exist_ok=True)
-            a.plot.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="920" height="240"><rect width="920" height="240" fill="#f4f6f7"/><text x="40" y="30" font-family="sans-serif" font-size="16">Measured RMS energy - section/beat markers need review</text>'+bars+f'<text x="40" y="225" font-family="sans-serif">0 s</text><text x="815" y="225" font-family="sans-serif">{duration:.2f} s</text></svg>')
+            a.plot.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="920" height="240"><rect width="920" height="240" fill="#f4f6f7"/><text x="40" y="30" font-family="sans-serif" font-size="16">Measured RMS energy - section/beat markers need review</text>'+bars+f'<text x="40" y="225" font-family="sans-serif">0 s</text><text x="815" y="225" font-family="sans-serif">{duration:.2f} s</text></svg>', encoding='utf-8')
         print(json.dumps({'out': str(a.out), 'duration': duration, 'windows': len(windows), 'sections_verified': False}))
     except (OSError, ValueError, KeyError, subprocess.SubprocessError) as exc:
         p.error(str(exc))
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()

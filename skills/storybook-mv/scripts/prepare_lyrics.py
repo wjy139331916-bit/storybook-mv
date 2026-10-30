@@ -17,9 +17,14 @@ def main():
         lines=[x.strip() for x in raw.decode('utf-8-sig').splitlines() if x.strip()]
         if not lines:raise ValueError('supplied lyrics contain no nonempty lines')
         d={'schema_version':1,'text_status':'provided_unverified','source_sha256':hashlib.sha256(raw).hexdigest(),'lines':[{'id':f'line-{i+1:03d}','text':x} for i,x in enumerate(lines)]}
-        a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
+        a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
         print(json.dumps({'path':str(a.out),'sha256':hashlib.sha256(a.out.read_bytes()).hexdigest(),'lines':len(lines),'timing_invented':False}))
     except (OSError,ValueError) as exc:p.error(str(exc))
 
 
-if __name__=='__main__':main()
+if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
+    main()

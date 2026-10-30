@@ -61,12 +61,12 @@ class MediaTests(unittest.TestCase):
 
     def test_crop_is_validated_and_existing_evidence_preserved(self):
         out = A.output_dir(self.temp / 'review')
-        (out / 'evidence.txt').write_text('accepted')
+        (out / 'evidence.txt').write_text('accepted', encoding='utf-8')
         with self.assertRaises(ValueError):
             A.output_dir(out)
         with self.assertRaises(ValueError):
             A.crop_filter('300,0,100,100', {'width': 320, 'height': 180})
-        self.assertEqual((out / 'evidence.txt').read_text(), 'accepted')
+        self.assertEqual((out / 'evidence.txt').read_text(encoding='utf-8'), 'accepted')
 
     def test_comparison_fits_aspects_without_replacing_sources(self):
         r, v = self.temp / 'ref.png', self.temp / 'render.png'
@@ -83,6 +83,13 @@ class MediaTests(unittest.TestCase):
         self.assertGreaterEqual(len(informative), 2, result)
         self.assertTrue(all(abs(x - .13) <= .025 for x in informative), result)
         self.assertIsNotNone(result['lufs_difference'])
+
+    def test_nonzero_audio_excerpt_keeps_its_selected_timeline(self):
+        excerpt=self.temp/'excerpt.m4a'
+        A.command(['ffmpeg','-v','error','-i',str(self.audio),'-af','atrim=start=4:duration=3,asetpts=PTS-STARTPTS','-c:a','aac',str(excerpt)])
+        result=A.audio_audit(self.audio,excerpt,A.output_dir(self.temp/'excerpt-audit'),audio_start=4)
+        informative=[x['encoded_delay_seconds'] for x in result['anchors'] if x['encoded_delay_seconds'] is not None]
+        self.assertTrue(informative,result);self.assertTrue(all(abs(x)<=.025 for x in informative),result)
 
     def test_silence_does_not_produce_a_confident_grid(self):
         result = G.fit_grid(np.zeros(8000 * 3))
@@ -115,7 +122,7 @@ class MediaTests(unittest.TestCase):
         p.mkdir()
         shutil.copy2(self.video, p / 'video.mp4')
         review = {'target': {'path': 'video.mp4', 'sha256': A.sha(self.video)}, 'checks': [{'id': 'motion', 'status': 'fail'}], 'issues': [{'id': 'old', 'status': 'open'}]}
-        (p / 'review.json').write_text(json.dumps(review))
+        (p / 'review.json').write_text(json.dumps(review), encoding='utf-8')
         notes = {'schema_version': 1, 'target': {'sha256': A.sha(self.video)}, 'notes': [{'id': 'viewer-1', 'range': [1, 2], 'severity': 'major', 'observation': 'fixture note'}]}
         merged, count = N.merge(p, notes)
         self.assertEqual(count, 1)
@@ -128,7 +135,7 @@ class MediaTests(unittest.TestCase):
     def test_viewer_note_outside_video_is_rejected(self):
         p = self.temp
         shutil.copy2(self.video, p / 'video.mp4')
-        (p / 'review.json').write_text(json.dumps({'target': {'path': 'video.mp4', 'sha256': A.sha(self.video)}}))
+        (p / 'review.json').write_text(json.dumps({'target': {'path': 'video.mp4', 'sha256': A.sha(self.video)}}), encoding='utf-8')
         notes = {'schema_version': 1, 'target': {'sha256': A.sha(self.video)}, 'notes': [{'id': 'x', 'range': [8, 30], 'severity': 'major', 'observation': 'invalid'}]}
         with self.assertRaises(ValueError):
             N.merge(p, notes)

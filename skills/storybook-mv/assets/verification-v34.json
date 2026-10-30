@@ -4,8 +4,8 @@
   "date": "2026-10-29",
   "scope": "Artifact interval/applicability/temporal-evidence contracts, offline review and original mechanism probes. No authentication, semantic/taste certification or full real sung MV claim.",
   "regression": {
-    "tests": 135,
-    "passed": 135,
+    "tests": 139,
+    "passed": 139,
     "skipped": 0,
     "command": "python3 -m unittest discover -s tests -q",
     "runtime": "Linux; selected @napi-rs/canvas 0.1.100 and external Noto Sans SC Regular"
@@ -28,14 +28,19 @@
       "complete_decode": true,
       "reverse_seek_passed": true,
       "input_digest": "0fcb1df7253f9e8576d2b7dcea0bd9ba334e2352a599cb86f3bc64de0b20360d",
-      "report_sha256": "0fcc133f2664a51ab5e2ff0e077a87517c2b10f5b851b5df77246a2d6f311345",
+      "report_sha256": "495620fafd84969ff92d0a96c15b81efed4029002c6630acca824d1d1d006134",
       "original_clip_matches_final": true,
       "video": {
         "path": "assets/benchmarks/evidence/interaction.mp4",
         "sha256": "4306bf8d42213b9d519dfa72cef0507298c7d48362e8a8177df11e1f48d998d8"
       },
       "board": "assets/benchmarks/evidence/interaction-board.png",
-      "font_cmap_checked": true
+      "font_cmap_checked": true,
+      "post_windows_fixes_replay": {
+        "frames": 144,
+        "stills_match": true,
+        "complete_decode": true
+      }
     },
     {
       "case": "type",
@@ -49,14 +54,19 @@
       "complete_decode": true,
       "reverse_seek_passed": true,
       "input_digest": "6897b55579520ffb277f3aa1ea9344c276aae408c58e361cba65a84827eb23ef",
-      "report_sha256": "ca27351804044cbb6bfc2e995e63c22ef48c2385009e5e4ab7a9d0e3b6bb9499",
+      "report_sha256": "0534e7d371d1bd14fc2914fd3aae44776fb86b699932762df1d6be829dfe2001",
       "original_clip_matches_final": true,
       "video": {
         "path": "assets/benchmarks/evidence/type.mp4",
         "sha256": "bf5af24d86f12eafa39eb034321b74b3ff284addb490829d44dfc7d6bc86d9f2"
       },
       "board": "assets/benchmarks/evidence/type-board.png",
-      "font_cmap_checked": true
+      "font_cmap_checked": true,
+      "post_windows_fixes_replay": {
+        "frames": 144,
+        "stills_match": true,
+        "complete_decode": true
+      }
     },
     {
       "case": "abstract",
@@ -70,14 +80,19 @@
       "complete_decode": true,
       "reverse_seek_passed": true,
       "input_digest": "069006943c4980c61f301fa03802ffb8015565c6cd8c01658629bbc2687cfdb8",
-      "report_sha256": "94b423f6b0c3af44e8f545e4297a8085eb6647e80c0e5a2a0816ef2d90238cbb",
+      "report_sha256": "1baa266ea92c8728efa05dc5f98ddb8073d54ad7b7f14c28994af7694b7dfe5b",
       "original_clip_matches_final": true,
       "video": {
         "path": "assets/benchmarks/evidence/abstract.mp4",
         "sha256": "989fe457865374742be21046fc81b3f5435a990a658d17357ed9fd66add2eba8"
       },
       "board": "assets/benchmarks/evidence/abstract-board.png",
-      "font_cmap_checked": false
+      "font_cmap_checked": false,
+      "post_windows_fixes_replay": {
+        "frames": 144,
+        "stills_match": true,
+        "complete_decode": true
+      }
     }
   ],
   "visual_observations": {
@@ -109,16 +124,29 @@
     "user_approvals_empty": true,
     "no_video": true,
     "final_source_replay": {
+      "case": "forward-design",
       "stills": 8,
-      "all_hashes_match": true,
-      "no_video": true
+      "all_still_hashes_match": true,
+      "frames": 0,
+      "encoded": null,
+      "report_sha256": "f86fed804a5ace8d633790b17343a41375f980f558a7ef6e1ae305f86e90f9ff"
     },
     "board_sha256": "3e0202dabcef144ff554fef42e46fbcb488714b34a0ebb1a1204466b89ab9ce7",
     "scope": "Controlled synthetic forward-use task; not real end-user creative approval. Root inspected the actual board and replayed final helpers."
   },
   "windows_native_ci": {
-    "status": "probe_added_not_yet_observed",
-    "scope": "Separate Windows job installs selected dependencies and renders an original abstract mechanism; actual run evidence must be checked before claiming a pass."
+    "status": "initial_probe_failed_fixes_pending_rerun",
+    "initial_run": "https://github.com/wjy139331916-bit/storybook-mv/actions/runs/40894991696",
+    "initial_job": 123521543821,
+    "observed_platform": "Windows Server 2025; Python 3.12.10; Node 22.23.4; Canvas 0.1.100; FFmpeg 9.0.2",
+    "initial_result": "135 tests: 26 errors, 4 failures, 2 unavailable-font skips",
+    "fixes": [
+      "Canonicalize Windows temporary-root aliases before containment comparison.",
+      "Use explicit UTF-8 files, CLI streams and shared Node/Python pipes; regress legacy CP1252 parent settings.",
+      "Decode audio before timeline trimming; preserve leading gaps and AAC priming across FFmpeg builds.",
+      "Verify the actual Windows checkout, with stable text line endings and binary media unchanged."
+    ],
+    "scope": "Actual rerun results are required before claiming Windows success; CJK fonts remain destination-specific."
   },
   "unverified": [
     "Full real-song singing/phrase timing and complete artistic acceptance",
@@ -127,16 +155,21 @@
   ],
   "source_sha256": {
     "SKILL.md": "0274995eb84db55f9a555f02d4481750f1fd8dc3231a0127b4cc96133fd8966d",
-    "scripts/workflow_gate.py": "9bf6e1b4b93b1a2afdc62007bbdb7b811d9053b8707c795b3cc04ec5d1cbe203",
-    "scripts/project_contracts.py": "7e3da9a5a0d2aa31339c3454861ad8ddd65a62e8fe1d79981a34f7fc0517fd50",
-    "scripts/review_workspace.py": "81bbc9850d139b8af3d7ff7b3620cfc8a00c5e0e7d3be937997080e5f49fbaca",
-    "scripts/creative_probe.py": "7227da6fcf64e7a4ab513487ae39f063b0fec34295fa4c8c2f5f75b03aec8e21",
-    "scripts/scaffold.py": "f0ce8a916731520b729bfb8a49a849de4b62263e35d4df589a887b9a266df2cf",
-    "tests/test_review_v34.py": "fd73ed672508d788de338e878af613ea2773ba0b1b5d569826d4724690c690c1",
+    "scripts/workflow_gate.py": "8a0cbd281d16962c29491d3a1da20f86ce782c19259b2af123130e0dddecd528",
+    "scripts/project_contracts.py": "a0e2e3c5904f8ff36785472779a533d8449f4945d2ee5c2031e49b41a5e87324",
+    "scripts/review_workspace.py": "738912f95e6386d5c57c5c3aeb67e6b624ab482ccefb39e0f20ef890cdd73e77",
+    "scripts/creative_probe.py": "ab1a41fbe26a19c68bfddc48b015f2e370b3a06976b7846c052a470fed81fbfe",
+    "scripts/scaffold.py": "11389c7ddcc88ac3fa8de99fc83234f1ee0495c062f9bf7c1d229ae6eace9e84",
+    "tests/test_review_v34.py": "a94f6592995f4b1b7334a3a3a42dad611dce142fb69a76cd45ac31375f8e579f",
     "tests/browser_smoke.mjs": "9d26b9dc35a7db0c8d3bd5134e63147f16dc3012895ff19eb3b52d81ed44fef6",
     "assets/benchmarks/scene.js": "0db7849adcf5ab60f5759d3b3ed6559c8906810493ffb5a2d2d0d5fead80fd38",
     "references/review-workspace.md": "d703f40e819c0ba3fe82124c34bba8d93c46db2e3507c8f431b413669686ebdb",
-    "references/creative-validation.md": "150bb30b213e21b021770ffdc5d2727088578faf4ac254f984da75af54a2b90f"
+    "references/creative-validation.md": "150bb30b213e21b021770ffdc5d2727088578faf4ac254f984da75af54a2b90f",
+    "scripts/media_audit.py": "f1b8d372765fd2090108d122707b43ed18817b586c92b9d1ac6f9d82a1854873",
+    "scripts/production_gate.mjs": "203c19e8d1d144ba6cfddf3a39a3b2173bf09f66e668b40d39feda62d4421262",
+    "references/runtime-portability.md": "640a69c41ee197bfcfb7ee099749e5fa6bd5b633d2c1c91cd2ea0e944f87bfc3",
+    "tests/test_media.py": "3c045f94c4441739b4c87561b192ff362cda970db07958fbd33dc3a94f221519",
+    "scripts/verify_portable.py": "9cc704e405bf170c117f703f2b6d9e30576a8b0621def38b73f44f7068a6909c"
   },
   "source_hash_scope": "SKILL.md uses the public profile-free form; scripts/benchmarks are exact source files. Historical receipts retain their actual versions."
 }

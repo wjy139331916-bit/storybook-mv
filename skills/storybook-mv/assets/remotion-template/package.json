@@ -1,0 +1,7 @@
+{
+  "name": "mv-remotion-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {"design":"node render.mjs --stills=0", "video":"node render.mjs --clip", "estimate":"node render.mjs --estimate"},
+  "dependencies": {"remotion":"4.0.539", "@remotion/renderer":"4.0.539", "@remotion/bundler":"4.0.539", "@remotion/cli":"4.0.539", "react":"19.0.0", "react-dom":"19.0.0"}
+}

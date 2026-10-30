@@ -14,7 +14,7 @@ from input_contracts import sha
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('project', type=Path)
-    p.add_argument('--engine', choices=('painted-p5', 'canvas2d'))
+    p.add_argument('--engine', choices=('painted-p5', 'canvas2d', 'remotion'))
     p.add_argument('--brief', type=Path)
     p.add_argument('--duration', type=float, default=8)
     p.add_argument('--fps', type=int, default=30)
@@ -55,7 +55,7 @@ def main():
         p.error('select --engine after the style/route is decided; there is no default style or engine')
     if selected and a.engine and selected != a.engine:
         p.error('engine conflicts with the brief; update the agreed route first')
-    registry = json.loads((root / 'assets/engines.json').read_text())
+    registry = json.loads((root / 'assets/engines.json').read_text(encoding='utf-8'))
     if engine not in registry or registry[engine]['status'] != 'bundled':
         p.error('this route is guide-only here; set it up from appropriate documentation instead of silently using another engine')
     if not math.isfinite(a.duration) or a.duration <= 0 or not 1 <= a.fps <= 120:
@@ -88,6 +88,8 @@ def main():
         shutil.copy2(root / 'scripts/render_canvas.mjs', target / 'render_canvas.mjs')
     for name in ('assets', 'data', 'out/check', 'src/data'):
         (target / name).mkdir(parents=True, exist_ok=True)
+    if engine == 'remotion':
+        (target/'src/project.json').write_text(json.dumps({'duration':a.duration,'width':width,'height':height,'fps':a.fps,'fidelity':'design' if not a.tool_self_test else 'original-probe'}),encoding='utf-8')
     shutil.copytree(root/'assets/contracts',target/'assets/contracts',dirs_exist_ok=True)
     brief = copy.deepcopy(brief)
     brief.update(project=target.name, phase='prototype' if a.tool_self_test else selected_phase)
@@ -103,7 +105,7 @@ def main():
     (target / 'brief.json').write_text(json.dumps(brief, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     config = {'duration': a.duration, 'width': width, 'height': height, 'fps': a.fps, 'bpm': 120, 'offset': 0, 'boil': 0, 'prototype': True, 'bpmMeasured': False}
     (target / 'src/config.js').write_text('// Prototype dimensions/timing are not a verified song plan.\nconst PROJECT = ' + json.dumps(config) + ';\nglobalThis.STORY_LYRICS_MODE = ' + json.dumps((brief.get('lyrics') or {}).get('mode') or 'unset') + ';\n', encoding='utf-8')
-    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py','workflow_gate.py','review_workspace.py','media_audit.py'):
+    for name in ('production_gate.mjs','check_brief.py','input_contracts.py','pilot_gate.py','project_contracts.py','workflow_gate.py','review_workspace.py','media_audit.py','preflight.py','runtime_environment.py'):
         shutil.copy2(root/'scripts'/name,target/name)
     if not a.tool_self_test:
         from workflow_gate import relocate
@@ -124,7 +126,7 @@ def main():
             rel=dest.relative_to(target).as_posix()
             if record.get('_audio'):brief['music']['audio']=rel
             else:record['path']=rel
-        (target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n')
+        (target/'brief.json').write_text(json.dumps(brief,ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
     renderer = target / 'render.mjs'
     renderer.write_text(renderer.read_text(encoding='utf-8').replace('args.fps || 30', 'args.fps || ' + str(a.fps)), encoding='utf-8')
     html = target / 'studio.html'
@@ -143,4 +145,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()

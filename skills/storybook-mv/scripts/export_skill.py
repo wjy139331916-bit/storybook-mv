@@ -47,7 +47,7 @@ def main():
             payload = public.encode('utf-8')
         entries.append((rel, payload))
     target.mkdir(parents=True)
-    info = json.loads((source / 'assets/toolkit.json').read_text()) if (source / 'assets/toolkit.json').is_file() else {}
+    info = json.loads((source / 'assets/toolkit.json').read_text(encoding='utf-8')) if (source / 'assets/toolkit.json').is_file() else {}
     manifest = {'name': match[1], 'version': info.get('version', 'unversioned'), 'entry': 'SKILL.md', 'personal_project_profile': a.include_project_profile, 'host_metadata': a.include_host_metadata, 'runtime_dependencies_bundled': False, 'files': []}
     for rel, payload in entries:
         output = target / rel
@@ -59,4 +59,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()

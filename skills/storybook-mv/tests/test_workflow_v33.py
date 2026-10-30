@@ -36,7 +36,7 @@ class WorkflowTests(unittest.TestCase):
     def tearDown(self):shutil.rmtree(self.temp)
 
     def edit(self, record, change):
-        p=self.temp/record['path'];d=json.loads(p.read_text());change(d);p.write_text(json.dumps(d));record['sha256']=sha(p)
+        p=self.temp/record['path'];d=json.loads(p.read_text(encoding='utf-8'));change(d);p.write_text(json.dumps(d), encoding='utf-8');record['sha256']=sha(p)
 
     def stage(self, stage, accept=True):
         out=self.temp/'out';out.mkdir(exist_ok=True)
@@ -67,8 +67,8 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(entry_errors(self.brief,self.temp,operation='stills',still_count=2),[])
 
     def test_source_code_is_not_a_design_frame(self):
-        pkg=self.brief['workflow']['packages']['design'];data=json.loads((self.temp/pkg['path']).read_text())
-        (self.temp/'plan/design.png').write_text('source code masquerading as art')
+        pkg=self.brief['workflow']['packages']['design'];data=json.loads((self.temp/pkg['path']).read_text(encoding='utf-8'))
+        (self.temp/'plan/design.png').write_text('source code masquerading as art', encoding='utf-8')
         self.edit(pkg,lambda d:next(x for x in d['artifacts'] if x['role']=='design_frame').update(sha256=sha(self.temp/'plan/design.png')))
         approval(self.brief,self.temp,'design')
         self.assertTrue(workflow_errors(self.brief,self.temp,'prototype'))
@@ -81,7 +81,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_script_must_cover_complete_scope(self):
         pkg=self.brief['workflow']['packages']['design'];p=self.temp/'plan/script.json'
-        d=json.loads(p.read_text());d['duration']=1;d['sections'][0]['end']=1;d['shots'][0]['end']=1;p.write_text(json.dumps(d))
+        d=json.loads(p.read_text(encoding='utf-8'));d['duration']=1;d['sections'][0]['end']=1;d['shots'][0]['end']=1;p.write_text(json.dumps(d), encoding='utf-8')
         self.edit(pkg,lambda d:next(x for x in d['artifacts'] if x['role']=='script').update(sha256=sha(p)))
         approval(self.brief,self.temp,'design')
         self.assertTrue(any('entire' in x for x in workflow_errors(self.brief,self.temp,'prototype')))
@@ -162,7 +162,7 @@ class WorkflowTests(unittest.TestCase):
         import project_contracts as C
         t=ToolkitTests();t.setUp()
         try:
-            p=t.fixture();b=C.load(p/'brief.json');b['workflow']['approvals'].clear();b['phase']='design';(p/'brief.json').write_text(json.dumps(b))
+            p=t.fixture();b=C.load(p/'brief.json');b['workflow']['approvals'].clear();b['phase']='design';(p/'brief.json').write_text(json.dumps(b), encoding='utf-8')
             result=C.inspect(p,'design');self.assertTrue(result['ok'],result)
         finally:t.tearDown()
 
@@ -201,15 +201,15 @@ class NativeDesignTests(unittest.TestCase):
     def test_design_stills_render_but_video_does_not_start(self):
         with tempfile.TemporaryDirectory(prefix='mv-design-native-') as folder:
             p=Path(folder);b=agreed_fixture();bind_confirmation(b,p);b['workflow']['packages'].clear();b['workflow']['approvals'].clear();b['phase']='design'
-            (p/'brief.json').write_text(json.dumps(b));target=p/'project'
-            scaffold=subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(target),'--brief',str(p/'brief.json'),'--duration','2','--width','1280','--height','720'],capture_output=True,text=True)
+            (p/'brief.json').write_text(json.dumps(b), encoding='utf-8');target=p/'project'
+            scaffold=subprocess.run([sys.executable,str(ROOT/'scripts/scaffold.py'),str(target),'--brief',str(p/'brief.json'),'--duration','2','--width','1280','--height','720'],capture_output=True,text=True, encoding='utf-8')
             self.assertEqual(scaffold.returncode,0,scaffold.stderr)
             cmd=['node',str(target/'render_canvas.mjs'),'--project='+str(target),'--canvas-module='+os.environ['MV_CANVAS_MODULE']]
-            video=subprocess.run(cmd+['--out=out/blocked'],capture_output=True,text=True)
+            video=subprocess.run(cmd+['--out=out/blocked'],capture_output=True,text=True, encoding='utf-8')
             self.assertNotEqual(video.returncode,0);self.assertIn('DESIGN_STILLS_ONLY',video.stderr);self.assertFalse((target/'out/blocked').exists())
-            stills=subprocess.run(cmd+['--out=out/design','--stills-only','--times=0,1'],capture_output=True,text=True)
+            stills=subprocess.run(cmd+['--out=out/design','--stills-only','--times=0,1'],capture_output=True,text=True, encoding='utf-8')
             self.assertEqual(stills.returncode,0,stills.stderr);self.assertTrue((target/'out/design/sheet.png').is_file());self.assertFalse((target/'out/design/clip.mp4').exists())
-            local=subprocess.run([sys.executable,str(target/'project_contracts.py'),'init','--project',str(target)],capture_output=True,text=True)
+            local=subprocess.run([sys.executable,str(target/'project_contracts.py'),'init','--project',str(target)],capture_output=True,text=True, encoding='utf-8')
             self.assertEqual(local.returncode,0,local.stderr);self.assertTrue((target/'visual-spec.json').is_file())
 
 
@@ -227,8 +227,8 @@ class BrowserAdapterEncodeTests(unittest.TestCase):
         from input_contracts import content_digest
         self.brief['content_confirmation']['content_sha256']=content_digest(self.brief)
         bind_confirmation(self.brief,self.temp)
-        pkg=self.brief['workflow']['packages']['design'];p=self.temp/pkg['path'];d=json.loads(p.read_text());d['pilot'].update(start=2,end=4);p.write_text(json.dumps(d));pkg['sha256']=sha(p);approval(self.brief,self.temp,'design')
-        (self.temp/'brief.json').write_text(json.dumps(self.brief));(self.temp/'out/frames').mkdir(parents=True)
+        pkg=self.brief['workflow']['packages']['design'];p=self.temp/pkg['path'];d=json.loads(p.read_text(encoding='utf-8'));d['pilot'].update(start=2,end=4);p.write_text(json.dumps(d), encoding='utf-8');pkg['sha256']=sha(p);approval(self.brief,self.temp,'design')
+        (self.temp/'brief.json').write_text(json.dumps(self.brief), encoding='utf-8');(self.temp/'out/frames').mkdir(parents=True)
 
     def tearDown(self):shutil.rmtree(self.temp)
 
@@ -236,7 +236,7 @@ class BrowserAdapterEncodeTests(unittest.TestCase):
         subprocess.run(['ffmpeg','-y','-v','error','-f','lavfi','-i','color=c=navy:s=320x180:r=12','-frames:v','24','-start_number',str(first),str(self.temp/'out/frames/f%05d.jpg')],check=True)
 
     def encode(self,folder,out):
-        return subprocess.run(['node',str(ROOT/'assets'/folder/'render.mjs'),'--encode','--fps=12','--out='+out],cwd=self.temp,capture_output=True,text=True)
+        return subprocess.run(['node',str(ROOT/'assets'/folder/'render.mjs'),'--encode','--fps=12','--out='+out],cwd=self.temp,capture_output=True,text=True, encoding='utf-8')
 
     def test_nonzero_approved_frames_encode_with_matching_audio_seek(self):
         import array

@@ -16,7 +16,7 @@ import project_contracts as C
 
 
 def run(script, *args, code=0):
-    result = subprocess.run([sys.executable, str(ROOT/'scripts'/script), *map(str,args)], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, str(ROOT/'scripts'/script), *map(str,args)], capture_output=True, text=True, encoding='utf-8')
     if result.returncode != code:
         raise AssertionError((result.returncode, result.stdout, result.stderr))
     return result
@@ -36,7 +36,7 @@ class ToolkitTests(unittest.TestCase):
     def fixture(self):
         p = self.temp/'project'
         p.mkdir()
-        brief = json.loads((ROOT/'assets/brief.template.json').read_text())
+        brief = json.loads((ROOT/'assets/brief.template.json').read_text(encoding='utf-8'))
         brief.update(goal='original abstract test',emotion='curiosity',asset_policy='all-code',phase='prototype',request_mode='production')
         brief['style'].update(direction='geometric',medium='Canvas',motion='time-based')
         brief['structure'].update(mode='abstract',outline=['circle translates'])
@@ -54,7 +54,7 @@ class ToolkitTests(unittest.TestCase):
         brief['content_confirmation']={'status':'confirmed','summary':'Synthetic fixture: circle appears, moves and settles','user_evidence':'synthetic test-user message inside this unit fixture','content_sha256':content_digest(brief)}
         from test_content_gate import bind_confirmation
         bind_confirmation(brief,p)
-        (p/'brief.json').write_text(json.dumps(brief))
+        (p/'brief.json').write_text(json.dumps(brief), encoding='utf-8')
         C.initialize(p,ROOT)
         spec=C.load(p/'visual-spec.json')
         spec.update(revision='test-1',status='locked')
@@ -62,16 +62,16 @@ class ToolkitTests(unittest.TestCase):
         (p/'out').mkdir();(p/'src').mkdir()
         shutil.copy2(BASE/'style-board.png',p/'out/reference.png')
         shutil.copy2(BASE/'runtime.mp4',p/'out/prototype.mp4')
-        (p/'src/scene.js').write_text('// synthetic structural-validator fixture, not a claimed art acceptance\n')
+        (p/'src/scene.js').write_text('// synthetic structural-validator fixture, not a claimed art acceptance\n', encoding='utf-8')
         spec['evidence']=[{'path':'out/reference.png','sha256':C.digest(p/'out/reference.png')}]
-        (p/'visual-spec.json').write_text(json.dumps(spec))
+        (p/'visual-spec.json').write_text(json.dumps(spec), encoding='utf-8')
         mapping={'schema_version':1,'duration':2,'duration_status':'prototype','audio_sha256':None,'sections':[{'id':'a','start':0,'end':2}], 'shots':[{'id':'s01','start':0,'end':2,'section_id':'a','objective':'observe change','visible_change':'circle moves','assets':['circle']} ]}
-        (p/'shot-map.json').write_text(json.dumps(mapping))
+        (p/'shot-map.json').write_text(json.dumps(mapping), encoding='utf-8')
         # Deliberately synthetic review records exercise record validation, not visual truth.
         review={'schema_version':1,'scope':'prototype','reviewer':'synthetic validator fixture','target':{'path':'out/prototype.mp4','sha256':C.digest(p/'out/prototype.mp4'),'input_digest':C.fingerprint(p)},'checks':[{'id':k,'status':'not_applicable' if k=='music' else 'pass','notes':'fixture only; no aesthetic claim','range':[0,2],'evidence':[] if k=='music' else ['out/prototype.mp4'] if k in ('motion','continuity') else ['out/reference.png']} for k in spec['required_checks']],'issues':[]}
-        (p/'review.json').write_text(json.dumps(review))
+        (p/'review.json').write_text(json.dumps(review), encoding='utf-8')
         runtime={'status':'passed','engine':'canvas2d','runtime_backend':'node-canvas','encoded':{'full_decode':True},'artifact':{'path':'out/prototype.mp4','sha256':C.digest(p/'out/prototype.mp4')}}
-        (p/'runtime-report.json').write_text(json.dumps(runtime))
+        (p/'runtime-report.json').write_text(json.dumps(runtime), encoding='utf-8')
         return p
 
     def check(self,p):
@@ -79,7 +79,7 @@ class ToolkitTests(unittest.TestCase):
         return result
 
     def edit(self,p,name,fn):
-        f=p/name;data=json.loads(f.read_text());fn(data);f.write_text(json.dumps(data))
+        f=p/name;data=json.loads(f.read_text(encoding='utf-8'));fn(data);f.write_text(json.dumps(data), encoding='utf-8')
 
     def test_neutral_and_preserving_init(self):
         p=self.fixture();original=(p/'visual-spec.json').read_bytes();result=C.initialize(p,ROOT)
@@ -90,7 +90,7 @@ class ToolkitTests(unittest.TestCase):
         r=self.check(self.fixture());self.assertTrue(r['ok'],r)
 
     def test_source_change_invalidates_record(self):
-        p=self.fixture();(p/'src/scene.js').write_text('changed')
+        p=self.fixture();(p/'src/scene.js').write_text('changed', encoding='utf-8')
         self.assertTrue(any('source/design changed' in x for x in self.check(p)['errors']))
 
     def test_clip_change_invalidates_record(self):
@@ -115,17 +115,17 @@ class ToolkitTests(unittest.TestCase):
 
     def test_diagnostic_is_bound_to_current_encoded_target(self):
         p=self.fixture();report={'target':{'sha256':C.digest(p/'out/prototype.mp4')}}
-        (p/'out/diagnostic.json').write_text(json.dumps(report))
+        (p/'out/diagnostic.json').write_text(json.dumps(report), encoding='utf-8')
         self.edit(p,'review.json',lambda x:x.update(diagnostics=[{'path':'out/diagnostic.json','sha256':C.digest(p/'out/diagnostic.json')}]))
         self.assertTrue(self.check(p)['ok'])
-        report['target']['sha256']='another-video';(p/'out/diagnostic.json').write_text(json.dumps(report))
+        report['target']['sha256']='another-video';(p/'out/diagnostic.json').write_text(json.dumps(report), encoding='utf-8')
         self.edit(p,'review.json',lambda x:x['diagnostics'][0].update(sha256=C.digest(p/'out/diagnostic.json')))
         self.assertTrue(any('another encoded target' in x for x in self.check(p)['errors']))
 
     def test_changed_diagnostic_cannot_be_reused(self):
-        p=self.fixture();(p/'out/diagnostic.json').write_text(json.dumps({'target':{'sha256':C.digest(p/'out/prototype.mp4')}}))
+        p=self.fixture();(p/'out/diagnostic.json').write_text(json.dumps({'target':{'sha256':C.digest(p/'out/prototype.mp4')}}), encoding='utf-8')
         self.edit(p,'review.json',lambda x:x.update(diagnostics=[{'path':'out/diagnostic.json','sha256':C.digest(p/'out/diagnostic.json')}]))
-        (p/'out/diagnostic.json').write_text('{}')
+        (p/'out/diagnostic.json').write_text('{}', encoding='utf-8')
         self.assertTrue(any('diagnostic report missing or changed' in x for x in self.check(p)['errors']))
 
     def test_locked_choice_change_rejected(self):
@@ -139,7 +139,7 @@ class ToolkitTests(unittest.TestCase):
         from check_brief import content_digest
         self.edit(p,'brief.json',lambda x:(x.update(phase='full'),x['content_confirmation'].update(content_sha256=content_digest(x))))
         from test_content_gate import bind_confirmation
-        b=C.load(p/'brief.json');bind_confirmation(b,p);(p/'brief.json').write_text(json.dumps(b))
+        b=C.load(p/'brief.json');bind_confirmation(b,p);(p/'brief.json').write_text(json.dumps(b), encoding='utf-8')
         self.edit(p,'shot-map.json',lambda x:x.update(duration_status='recording_measured',audio_sha256=C.digest(p/'assets.wav')))
         self.edit(p,'review.json',lambda x:(x.update(scope='full'),next(c for c in x['checks'] if c['id']=='music').update(status='pass',evidence=['out/prototype.mp4'])))
         # Synthetic fixture now explicitly includes artifact-specific user stage
@@ -152,14 +152,14 @@ class ToolkitTests(unittest.TestCase):
             report='out/'+stage+'-report.json'
             record(p,report,{'production_stage':stage,'encoded':{'full_decode':True},'artifacts':[{'path':clip,'sha256':C.digest(p/clip)}]})
             video_stage(b,p,stage,clip,report)
-        (p/'brief.json').write_text(json.dumps(b))
+        (p/'brief.json').write_text(json.dumps(b), encoding='utf-8')
         result=C.inspect(p,'full');self.assertTrue(result['ok'],result)
         self.edit(p,'shot-map.json',lambda x:x.update(audio_sha256='wrong'))
         self.assertFalse(C.inspect(p,'full')['ok'])
 
     def test_shared_asset_repair_and_join_margin(self):
         p=self.fixture();mapping=C.load(p/'shot-map.json');mapping.update(duration=6,sections=[{'id':'a','start':0,'end':6}]);mapping['shots']=[{'id':'s0'+str(i+1),'start':i*2,'end':(i+1)*2,'section_id':'a','objective':'observe','visible_change':'move','assets':['shared'] if i!=1 else ['other']} for i in range(3)]
-        (p/'shot-map.json').write_text(json.dumps(mapping))
+        (p/'shot-map.json').write_text(json.dumps(mapping), encoding='utf-8')
         self.edit(p,'review.json',lambda x:x['issues'].append({'id':'i1','status':'open','severity':'major','shared_assets':['shared']}))
         result=C.repair(p,.25)
         self.assertEqual(result['affected_shots'],['s01','s03']);self.assertEqual(result['preserve_shots'],['s02']);self.assertEqual(result['render_ranges'],[[0,2.25],[3.75,6]])
@@ -172,7 +172,7 @@ class ToolkitTests(unittest.TestCase):
         dest=self.temp/'export';run('export_skill.py','--dest',dest)
         folder=dest/'storybook-mv';run('verify_portable.py',folder)
         self.assertFalse((folder/'references/tebie-de-ren.md').exists());self.assertFalse((folder/'agents').exists())
-        (folder/'assets/modules/motion.js').write_text('changed')
+        (folder/'assets/modules/motion.js').write_text('changed', encoding='utf-8')
         run('verify_portable.py',folder,code=2)
 
     def test_unsafe_manifest_rejected(self):
@@ -183,7 +183,7 @@ class ToolkitTests(unittest.TestCase):
     def test_portable_copy_can_be_exported_again(self):
         first=self.temp/'first';run('export_skill.py','--dest',first)
         source=first/'storybook-mv';second=self.temp/'second'
-        result=subprocess.run([sys.executable,str(source/'scripts/export_skill.py'),'--dest',str(second)],capture_output=True,text=True)
+        result=subprocess.run([sys.executable,str(source/'scripts/export_skill.py'),'--dest',str(second)],capture_output=True,text=True, encoding='utf-8')
         self.assertEqual(result.returncode,0,result.stderr)
         folder=second/'storybook-mv';run('verify_portable.py',folder)
         self.assertEqual((source/'PORTABLE_MANIFEST.json').read_bytes(),(folder/'PORTABLE_MANIFEST.json').read_bytes())
@@ -192,7 +192,7 @@ class ToolkitTests(unittest.TestCase):
 
     def test_music_metadata_keeps_candidates_unverified(self):
         f=self.temp/'audio.json';run('analyze_music.py',self.temp/'runtime-tones.wav','--out',f,'--window','0.1')
-        data=json.loads(f.read_text());self.assertAlmostEqual(data['duration'],2);self.assertEqual(len(data['windows']),20);self.assertEqual(data['beats_status'],'not_measured');self.assertEqual(data['sections_status'],'unreviewed')
+        data=json.loads(f.read_text(encoding='utf-8'));self.assertAlmostEqual(data['duration'],2);self.assertEqual(len(data['windows']),20);self.assertEqual(data['beats_status'],'not_measured');self.assertEqual(data['sections_status'],'unreviewed')
 
     def test_study_no_subject_and_no_overwrite(self):
         run('build_study.py',self.temp/'missing','--kind','style','--style','flat',code=2)

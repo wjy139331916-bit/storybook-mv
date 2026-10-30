@@ -7,9 +7,9 @@ const checker=path.join(path.dirname(fileURLToPath(import.meta.url)),'check_brie
 function contract(action,brief,options={}){
   const candidates=process.env.MV_PYTHON?[process.env.MV_PYTHON]:['python3','python'];
   for(const python of candidates){
-    const r=spawnSync(python,[checker,'--bridge',action],{input:JSON.stringify({brief,options}),encoding:'utf8',maxBuffer:8*1024*1024});
+    const r=spawnSync(python,['-X','utf8',checker,'--bridge',action],{input:JSON.stringify({brief,options}),encoding:'utf8',maxBuffer:8*1024*1024});
     if(r.error?.code==='ENOENT')continue;
-    if(r.error||r.status!==0)throw Error('Brief contract failed: '+(r.stderr||r.error?.message||'unknown error'));
+    if(r.error||r.status!==0)throw Error('Brief contract failed using Python '+python+': '+(r.stderr||r.error?.message||'unknown error')+'\nRun preflight.py --project <project> --media-tools --json with the intended interpreter; set MV_PYTHON to that executable when multiple Pythons are installed.');
     return JSON.parse(r.stdout);
   }
   throw Error('Python 3 is required for the shared MV contract; select MV_PYTHON if needed.');

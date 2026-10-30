@@ -43,14 +43,14 @@ class MediaBoundaryTests(unittest.TestCase):
         video_stage(self.b,self.p,'prototype','out/pilot.mp4','out/report.json')
 
     def pilot(self,start,end):
-        pkg=self.b['workflow']['packages']['design'];f=self.p/pkg['path'];d=json.loads(f.read_text());d['pilot'].update(start=start,end=end)
-        f.write_text(json.dumps(d));pkg['sha256']=sha(f);approval(self.b,self.p,'design')
+        pkg=self.b['workflow']['packages']['design'];f=self.p/pkg['path'];d=json.loads(f.read_text(encoding='utf-8'));d['pilot'].update(start=start,end=end)
+        f.write_text(json.dumps(d), encoding='utf-8');pkg['sha256']=sha(f);approval(self.b,self.p,'design')
 
     def edit_report(self,fn):
-        p=self.p/'out/report.json';d=json.loads(p.read_text());fn(d);p.write_text(json.dumps(d))
-        pkg=self.b['workflow']['packages']['prototype'];f=self.p/pkg['path'];d=json.loads(f.read_text())
+        p=self.p/'out/report.json';d=json.loads(p.read_text(encoding='utf-8'));fn(d);p.write_text(json.dumps(d), encoding='utf-8')
+        pkg=self.b['workflow']['packages']['prototype'];f=self.p/pkg['path'];d=json.loads(f.read_text(encoding='utf-8'))
         next(x for x in d['artifacts'] if x['role']=='render_report')['sha256']=sha(p)
-        f.write_text(json.dumps(d));pkg['sha256']=sha(f);approval(self.b,self.p,'prototype')
+        f.write_text(json.dumps(d), encoding='utf-8');pkg['sha256']=sha(f);approval(self.b,self.p,'prototype')
 
     def test_two_second_video_cannot_accept_six_second_pilot(self):
         self.sample();errors=workflow_errors(self.b,self.p,'animatic')
@@ -102,8 +102,13 @@ class TemporalReviewTests(unittest.TestCase):
     def setUp(self):self.tool=fixtures.ToolkitTests();self.tool.setUp();self.p=self.tool.fixture()
     def tearDown(self):self.tool.tearDown()
     def edit(self,name,fn):
-        p=self.p/name;v=json.loads(p.read_text());fn(v);p.write_text(json.dumps(v))
+        p=self.p/name;v=json.loads(p.read_text(encoding='utf-8'));fn(v);p.write_text(json.dumps(v), encoding='utf-8')
     def refresh(self):self.edit('review.json',lambda d:d['target'].update(input_digest=contracts.fingerprint(self.p)))
+
+    def test_project_alias_is_canonicalized_without_weakening_boundary(self):
+        alias=self.p/'..'/self.p.name
+        self.assertEqual(contracts.contained(alias,'out/reference.png'),(self.p/'out/reference.png').resolve())
+        with self.assertRaises(ValueError):contracts.contained(alias,'../outside.png')
 
     def test_explicit_contact_check_cannot_be_not_applicable(self):
         self.edit('visual-spec.json',lambda d:d['required_checks'].append('contact'))
@@ -146,14 +151,14 @@ class ReviewWorkspaceTests(unittest.TestCase):
     def tearDown(self):self.folder.cleanup()
     def save(self):workspace.write_json(self.p/'brief.json',self.b)
     def present(self):
-        result=workspace.present(self.p,self.b,self.args);self.b=json.loads((self.p/'brief.json').read_text());return result
+        result=workspace.present(self.p,self.b,self.args);self.b=json.loads((self.p/'brief.json').read_text(encoding='utf-8'));return result
     def acceptance(self,**updates):
-        (self.p/'reply.txt').write_text('Synthetic test reply accepts this complete shown revision; not real consent.')
+        (self.p/'reply.txt').write_text('Synthetic test reply accepts this complete shown revision; not real consent.', encoding='utf-8')
         v=dict(stage='design',reply_file=str(self.p/'reply.txt'),message_id='synthetic-new-design-reply',presented_message_id='synthetic-presentation',decision='approved',waiver_review=None,advance=True);v.update(updates)
         return argparse.Namespace(**v)
 
     def test_present_builds_self_contained_page_and_does_not_approve(self):
-        r=self.present();page=(self.p/r['page']).read_text();b=json.loads((self.p/'brief.json').read_text())
+        r=self.present();page=(self.p/r['page']).read_text(encoding='utf-8');b=json.loads((self.p/'brief.json').read_text(encoding='utf-8'))
         self.assertIn('data:image/png;base64,',page);self.assertIn('完整分镜脚本',page)
         self.assertEqual(b['phase'],'design');self.assertEqual(b['workflow']['approvals'],{})
         self.assertNotIn('https://',page);self.assertTrue((self.p/'plan/STATUS.md').is_file())
@@ -164,8 +169,8 @@ class ReviewWorkspaceTests(unittest.TestCase):
         self.assertEqual(before,(self.p/'brief.json').read_bytes())
 
     def test_text_is_escaped_in_review_page(self):
-        (self.p/'plan/proposal.md').write_text('<script>BAD()</script>')
-        r=self.present();page=(self.p/r['page']).read_text();self.assertIn('&lt;script&gt;BAD()',page);self.assertNotIn('<script>BAD()',page)
+        (self.p/'plan/proposal.md').write_text('<script>BAD()</script>', encoding='utf-8')
+        r=self.present();page=(self.p/r['page']).read_text(encoding='utf-8');self.assertIn('&lt;script&gt;BAD()',page);self.assertNotIn('<script>BAD()',page)
 
     def test_status_derives_the_next_allowed_stage(self):
         self.present();s=workspace.status(self.p);self.assertEqual(s['user_authorized_stage'],'design')
@@ -173,7 +178,7 @@ class ReviewWorkspaceTests(unittest.TestCase):
         self.assertEqual(s['phase'],'prototype');self.assertFalse(s['stages'][1]['accepted']);self.assertFalse(s['stages'][2]['accepted'])
 
     def test_an_empty_user_reply_does_not_change_the_brief(self):
-        self.present();a=self.acceptance();(self.p/'reply.txt').write_text('');before=(self.p/'brief.json').read_bytes()
+        self.present();a=self.acceptance();(self.p/'reply.txt').write_text('', encoding='utf-8');before=(self.p/'brief.json').read_bytes()
         with self.assertRaises(ValueError):workspace.accept(self.p,self.b,a)
         self.assertEqual(before,(self.p/'brief.json').read_bytes())
 
@@ -184,7 +189,7 @@ class ReviewWorkspaceTests(unittest.TestCase):
 
     def test_handoff_keeps_limits_and_is_not_acceptance(self):
         self.present();s=workspace.save_status(self.p)
-        self.assertIn(self.args.limit[0],(self.p/'plan/STATUS.md').read_text());self.assertFalse(s['stages'][0]['accepted'])
+        self.assertIn(self.args.limit[0],(self.p/'plan/STATUS.md').read_text(encoding='utf-8'));self.assertFalse(s['stages'][0]['accepted'])
 
     def test_changed_presented_frame_invalidates_old_acceptance(self):
         self.present();workspace.accept(self.p,self.b,self.acceptance())
@@ -195,6 +200,21 @@ class ReviewWorkspaceTests(unittest.TestCase):
         self.args.max_embed_mb=0;before=(self.p/'brief.json').read_bytes()
         with self.assertRaisesRegex(ValueError,'byte budget'):workspace.present(self.p,self.b,self.args)
         self.assertEqual(before,(self.p/'brief.json').read_bytes());self.assertFalse((self.p/'plan/reviews/design/design-r1').exists())
+
+    def test_status_cli_handles_legacy_pipe_encoding(self):
+        import os
+        self.present();env={**os.environ,'PYTHONIOENCODING':'cp1252','PYTHONUTF8':'0'}
+        result=subprocess.run([sys.executable,'-X','utf8=0',str(ROOT/'scripts/review_workspace.py'),'--project',str(self.p),'status'],capture_output=True,encoding='utf-8',env=env)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(json.loads(result.stdout)['stages'][0]['label'],'设计与完整脚本')
+
+    def test_javascript_bridge_preserves_unicode_under_legacy_encoding(self):
+        import os
+        from input_contracts import content_digest
+        self.b['content']['subject']='原创圆环 Ω 与中文'
+        code="const fs=require('fs');const{pathToFileURL}=require('url');(async()=>{const m=await import(pathToFileURL(process.argv[1]).href);console.log(JSON.stringify(m.contentDigest(JSON.parse(fs.readFileSync(0,'utf8')))));})();"
+        result=subprocess.run(['node','-e',code,str(ROOT/'scripts/production_gate.mjs')],input=json.dumps(self.b,ensure_ascii=False),capture_output=True,encoding='utf-8',env={**os.environ,'PYTHONIOENCODING':'cp1252','PYTHONUTF8':'0'})
+        self.assertEqual(result.returncode,0,result.stderr);self.assertEqual(json.loads(result.stdout),content_digest(self.b))
 
 
 if __name__=='__main__':unittest.main()

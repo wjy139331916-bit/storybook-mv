@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.4.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.5.0**。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -44,6 +44,23 @@
 每次展示后应结束当前轮次并等待回复。“继续”只适用于当前已展示的稿件和下一阶段；先前的完整 MV 目标不能接受尚未出现的稿件。每阶段记录绑定实际文件、版本和真实回复。仅在使用者明确指定时允许有限地跳过某个验收，仍须完成和检查对应工作。
 
 制作入口增加独立设计阶段（只允许静态图）、获准样片区间检查、全曲粗剪范围与低成本规格检查，以及旧项目/跨 agent 的阶段恢复。正常修错无需重问创意方向；实质改动回到受影响的验收点。详细规则见 [逐阶段验收](skills/storybook-mv/references/user-stage-review.md)。
+
+## 3.5：像素角色工作台与所选制作路线
+
+- 可离线编辑像素角色部件、调色板、姿势与脚底/持物基准；导出可编辑数据及静态设计图，设计验收后才开放动作播放与精灵图。
+- 自测先诊断所选依赖；支持按需安装、工具自有目录重试和新修订，保留已有项目。
+- 记录所选 Python、关键包、平台、架构、浏览器和编码器版本；六秒中文探针核对真实字形与导出视频中的描色变化。
+- 增加真实 p5.brush 软件渲染探针、浏览器采样估算、原创叙事信息卡、中文位图字图集导出及绑定实际镜头的表演计划。
+- Remotion 从指导路线升级为可选可执行模板，所有制作入口继续服从现有分阶段验收。已在标准 Ubuntu 宿主完成实际 MP4 导出、完整解码、非零 [2,4] 片段与合成音轨检查；具体版本和证据见验证记录。本地沙箱仍可能限制其网卡信息/回环访问。
+- 当前本地 175 项回归测试通过，零跳过。真实 Linux 浏览器编辑、中文和原生/软件渲染的范围见 [3.5 验证记录](skills/storybook-mv/assets/verification-v35.json)，不代表 Android 或复杂人物表演已验收。
+
+像素工具无需单独安装桌面绘图软件：
+
+```bash
+python3 skills/storybook-mv/scripts/pixel_workbench.py init --project <项目目录> --out assets/pixel/actor-r1
+```
+
+打开生成的工作台，保存修改后的数据；先展示实际角色设计和完整脚本，验收通过后才制作动作。默认造型只是可修改的原创构造示例。详见 [工作台](skills/storybook-mv/references/pixel-workbench.md)、[Remotion 适配](skills/storybook-mv/references/remotion-adapter.md)、[表演与叙事组件](skills/storybook-mv/references/production-assets.md)。
 
 ## 3.4：补漏检，统一审片与交接
 
@@ -103,7 +120,7 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 - `canvas2d`：内置空白 Canvas2D 项目，可选择浏览器或可选的 Node Canvas 运行方式。
 - `painted-p5`：内置 p5.js / p5.brush 模板，需要对应包、Chrome、FFmpeg 等依赖。
-- Remotion、three.js、Blender 和自定义路线：提供选型指导，需要另行实现与验证适配器。
+- `remotion`：新增可选原生项目模板及阶段受控的静态图、限定片段、估算和视频导出适配；依赖另行安装。\n- three.js、Blender 和自定义路线：提供选型指导，需要另行实现与验证适配器。
 
 中文项目需要可用的本地中文字体，并检查真实字形。运行方式、版本、自检与验证范围见 [运行参考](skills/storybook-mv/references/runtime-portability.md)。技能不会自行开通付费服务、替换音乐或发布作品。
 
