@@ -92,6 +92,10 @@ class ProjectTests(unittest.TestCase):
     def test_motion_range_is_accepted_global_pilot(self):
         project,model,caps,workspace=self.workspace()
         self.assertEqual(caps['range'],[2,4]);self.assertTrue(caps['motion'])
+    def test_project_root_alias_is_normalized_without_weakening_containment(self):
+        project,model=make_project(self.p/'fixture');alias=project/'src/..'
+        self.assertEqual(D.project_file(alias,'brief.json'),(project/'brief.json').resolve())
+        with self.assertRaisesRegex(ValueError,'existing project file'):D.project_file(alias,'../brief.json')
     def test_changed_asset_design_is_blocked_even_with_old_acceptance(self):
         project,model=make_project(self.p/'fixture')
         model['assets'][0]['colors']['shirt']='#ff0000'
@@ -135,7 +139,7 @@ class ProjectTests(unittest.TestCase):
         targets=[project/'studio.html',project/'src/render-entry.json',project/'check_brief.py']
         before={p:p.read_bytes() if p.exists() else None for p in targets};write=Path.write_bytes;failed=[]
         def interrupt(path,data):
-            if path==project/'studio.html' and not failed:
+            if path.resolve()==(project/'studio.html').resolve() and not failed:
                 failed.append(True);write(path,b'partial write');raise OSError('synthetic interrupted write')
             return write(path,data)
         with patch.object(Path,'write_bytes',interrupt),self.assertRaisesRegex(OSError,'interrupted write'):D.activate(project,project/'plan/director-r1')

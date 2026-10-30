@@ -238,8 +238,8 @@
     },
     {
       "path": "assets/director-workbench/editor.js",
-      "bytes": 41152,
-      "sha256": "9b31c051bb826859816709485ba6e56ffb239da0ca0396955632aa18dee280b4"
+      "bytes": 41364,
+      "sha256": "d22c0a9b94bd132faa697990af099d045c3908f72b399eb71973ab7833901092"
     },
     {
       "path": "assets/engines.json",
@@ -808,8 +808,8 @@
     },
     {
       "path": "assets/verification-v36.json",
-      "bytes": 5911,
-      "sha256": "2aaca41a39ad2dfa6f81ccd502760cd8613fff702d9470079a883f9754c56e22"
+      "bytes": 6400,
+      "sha256": "5379aaa6e588bdbaeb079adf8490a5004bc6e77a5224aa080ea27d6524e775f0"
     },
     {
       "path": "references/agent-interop.md",
@@ -843,8 +843,8 @@
     },
     {
       "path": "references/director-workbench.md",
-      "bytes": 11751,
-      "sha256": "ceafc2e58d6109e19ab4fd69a1799e526bebeae8f19f9db4f6a043b12e04f48f"
+      "bytes": 11869,
+      "sha256": "bb2537941c7f314a620eaa808eb55ec349329f518d87fbb15251801ca259f8cc"
     },
     {
       "path": "references/discovery.md",
@@ -1008,8 +1008,8 @@
     },
     {
       "path": "scripts/director_adapters.py",
-      "bytes": 7852,
-      "sha256": "83fd7712d2ca454b23518fd5b04852a8d7486b2e0958b81225b34fd80c2a504c"
+      "bytes": 7924,
+      "sha256": "50466e8718ae480439af74e26badaf122709fc4069f62f669ad92737457def2e"
     },
     {
       "path": "scripts/director_contract.py",
@@ -1018,8 +1018,8 @@
     },
     {
       "path": "scripts/director_workbench.py",
-      "bytes": 25148,
-      "sha256": "2429cfabf8095a5356301784fb56353b5534dc1e66e0c8f8ef0d571491b764c8"
+      "bytes": 25701,
+      "sha256": "e32695027bdc0536fb3946a4cd78f9535b24b96955a5f919d3268cf94bd1f883"
     },
     {
       "path": "scripts/export_skill.py",
@@ -1153,8 +1153,8 @@
     },
     {
       "path": "tests/director_browser.mjs",
-      "bytes": 12661,
-      "sha256": "f8b7befaeb42f7ee134c343d86a384727de5d1a4ede1ecddd3472891df647c0a"
+      "bytes": 12976,
+      "sha256": "7d1102ed819878b56892eb2c095307eea561f486ffa2f04638d4de6e105f1dcf"
     },
     {
       "path": "tests/director_fixtures.py",
@@ -1203,8 +1203,8 @@
     },
     {
       "path": "tests/test_director_v36.py",
-      "bytes": 14458,
-      "sha256": "954b4a55470b21093052364b2ba52a087d2fb9f440060d1adade66cab0c9bf7f"
+      "bytes": 14843,
+      "sha256": "44a071f3f3c6a7054ca55bb872776103fa4af7c527323984dbbeb589e663f9a8"
     },
     {
       "path": "tests/test_execution_v32.py",

@@ -69,12 +69,14 @@ def seed(duration=6,width=960,height=540,fps=30,example=False):
 
 
 def project_file(project,name):
+    project=Path(project).resolve()
     p=(project/name).resolve()
     if not p.is_relative_to(project) or not p.is_file():raise ValueError('input must be an existing project file: '+str(name))
     return p
 
 
 def context(project,motion=False,self_test=False):
+    project=Path(project).resolve() if project else None
     if self_test:
         if project:raise ValueError('isolated tool self-tests cannot select a user project')
         return {'project':None,'self_test':True,'phase':'tool-test','motion':motion,'range':[0,6],'sources':[]},None
@@ -99,6 +101,7 @@ def context(project,motion=False,self_test=False):
 
 
 def from_project(project,brief):
+    project=Path(project).resolve()
     from workflow_gate import target_duration
     duration=target_duration(brief,project)
     res=brief.get('output',{}).get('resolution') or [1280,720]
@@ -133,6 +136,7 @@ def from_project(project,brief):
 
 
 def output_path(project,out,new_revision=False):
+    project=Path(project).resolve() if project else None
     p=Path(out).expanduser();p=(project/p if project and not p.is_absolute() else p).resolve()
     if p==ROOT or ROOT in p.parents:raise ValueError('project exports must stay outside the installed skill')
     if project and not p.is_relative_to(project):raise ValueError('workbench exports must belong to the selected project')
@@ -173,6 +177,8 @@ def waveform(path):
 
 
 def build_editor(target,model,caps,brief,project,source=None,audio=None,video=None,video_range=None,max_mb=64,webm_preview=False):
+    project=Path(project).resolve() if project else None
+    audio=Path(audio).resolve() if audio else None;video=Path(video).resolve() if video else None
     validate(model)
     if not 1<=max_mb<=512:raise ValueError('embedding budget must be 1..512 MiB')
     if project:
@@ -222,6 +228,7 @@ def build_editor(target,model,caps,brief,project,source=None,audio=None,video=No
 
 
 def check_workspace(project,workspace):
+    project=Path(project).resolve();workspace=Path(workspace).resolve()
     report=load(workspace/'workbench-report.json')
     if report.get('tool')!='storybook-mv.director' or report['caps'].get('project')!=str(project):raise ValueError('workspace belongs to a different project')
     if digest(workspace/'director.json')!=report.get('model_sha256'):raise ValueError('workspace baseline changed; save edits separately and rebuild a new revision')
@@ -231,6 +238,7 @@ def check_workspace(project,workspace):
 
 
 def export_package(target,model,project,caps,workspace):
+    project=Path(project).resolve();workspace=Path(workspace).resolve()
     validate(model)
     from director_contract import signature
     from check_brief import entry_errors
@@ -265,6 +273,7 @@ def export_package(target,model,project,caps,workspace):
 
 
 def activate(project,package):
+    project=Path(project).resolve();package=Path(package).resolve()
     from check_brief import entry_errors
     from director_contract import approved_model
     brief=load(project/'brief.json');errors=entry_errors(brief,project,operation='check')

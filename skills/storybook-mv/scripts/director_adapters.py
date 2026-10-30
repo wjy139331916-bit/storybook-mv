@@ -8,6 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def install(project,package,model,config,brief):
+    project=Path(project).resolve();package=Path(package).resolve()
     from director_workbench import safe_json
     from workflow_gate import pilot_plan
     from director_contract import sha
@@ -71,6 +72,7 @@ registerRoot(()=> <Composition id="MV" component={Scene} durationInFrames={Math.
     try:
         for path,content in files.items():
             path.parent.mkdir(parents=True,exist_ok=True);written.append(path);path.write_bytes(content)
+        (backup/'activation.json').write_text(json.dumps({'engine':engine,'changed_files':[rel(p) for p in files],'previous_files':[rel(p) for p,v in originals.items() if v is not None],'status':'installed'},indent=2)+'\n',encoding='utf-8')
     except OSError as exc:
         for path in reversed(written):
             previous=originals[path]
@@ -81,6 +83,5 @@ registerRoot(()=> <Composition id="MV" component={Scene} durationInFrames={Math.
             (backup/'activation.json').write_text(json.dumps({'engine':engine,'status':'rolled_back','error':str(exc)},indent=2)+'\n',encoding='utf-8')
         except OSError:pass
         raise
-    (backup/'activation.json').write_text(json.dumps({'engine':engine,'changed_files':[rel(p) for p in files],'previous_files':[rel(p) for p,v in originals.items() if v is not None],'status':'installed'},indent=2)+'\n',encoding='utf-8')
     return {'activated':rel(dest),'engine':engine,'backup':rel(backup),'range':bounds,'render_entry':'src/render-entry.json' if engine=='canvas2d' else 'src/index.jsx','user_approvals_changed':False}
 

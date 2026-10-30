@@ -2,7 +2,7 @@
   "toolkit_version": "3.6.0",
   "checked_at": "2026-10-30",
   "regressions": {
-    "passed": 205,
+    "passed": 206,
     "skipped": 0,
     "scope": "Actual selected native Canvas and CJK font; original fixtures only. No aesthetic or user approval."
   },
@@ -21,7 +21,7 @@
       "review"
     ],
     "master_bound_codec_preview": true,
-    "model_sha256": "501cc3afb1834e54edb3fa1bbcb38a3dbbee49bc28538416b381fa89667894e8",
+    "model_sha256": "ccf3e3cae180b55c2ef084e37831eda4493d8cc7c767916cbab61aca6f8aa274",
     "checks": [
       "acting key/curve controls",
       "scene pointer drag and camera key",
@@ -36,7 +36,10 @@
       "JSON cannot elevate design stage",
       "bounded action playback changes pixels",
       "seven-module portrait layout",
-      "zero external requests"
+      "zero external requests",
+      "stacked lyric import labels",
+      "project-bound source start is fixed",
+      "original-master feedback preserves clip-relative time"
     ],
     "scope": "Original isolated editor and actual local video feedback; no user approval, natural acting or Android destination certification."
   },
@@ -141,7 +144,7 @@
     ]
   },
   "forward_issue_resolution": {
-    "file_input_label_layout": "Changed file input fields to stacked labels; original observation and source retained, final browser regression tracked separately."
+    "file_input_label_layout": "Stacked labels passed actual final Chromium regression; the original independent observation is retained."
   },
   "director_remotion": {
     "status": "pending_actual_selected_host_ci",
@@ -154,5 +157,10 @@
     "Linux browser portrait simulation is not Android execution.",
     "Canvas2D and Remotion adapters preserve the selected host; arbitrary p5/3D/custom artwork needs an explicit adapter.",
     "All workbench exports are drafts; actual project approvals remain separate."
-  ]
+  ],
+  "compatibility_fix": {
+    "observed": "First Windows CI found unresolved temporary-directory short aliases treated as outside the project.",
+    "change": "Resolve project roots and selected paths before containment checks; retain explicit rejection of outside files.",
+    "local_followup": "206 regressions passed; actual Windows rerun is tracked separately."
+  }
 }

@@ -87,7 +87,7 @@ Before activation, adopt a checked cue revision through the ordinary canonical l
 
 For an exact project clip, build with --video <project-relative-file> and --video-range START:END. Its measured length must match the declared range. Whole-scope clips can infer [0, duration] only when their length matches. This is a source mapping, not independent sung-word/audio certification.
 
-The review tab binds the actual video bytes, supports a second local comparison file and exports the existing review-notes schema. Notes are in global source time in the workbench; exported viewer notes subtract the clip start to match review_notes.py. Browser seeks are approximate with compressed video. Add --webm-preview when the browser cannot decode the MP4. The existing review helper creates/decodes a same-timeline WebM alternative, records its source hash, and embeds it while keeping feedback bound to the original master bytes.
+A project-bound video retains its declared global range in the editor; changing versions needs a new bound workspace. The review tab binds the actual video bytes, supports a second local comparison file and exports the existing review-notes schema. Notes are in global source time in the workbench; exported viewer notes subtract the clip start to match review_notes.py. Browser seeks are approximate with compressed video. Add --webm-preview when the browser cannot decode the MP4. The existing review helper creates/decodes a same-timeline WebM alternative, records its source hash, and embeds it while keeping feedback bound to the original master bytes.
 
     python3 <skill>/scripts/review_notes.py <viewer-notes.json> --project <project> --out review-with-director-notes.json
 
