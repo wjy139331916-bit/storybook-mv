@@ -80,4 +80,3 @@ try{
  fs.writeFileSync(path.join(out,'director-browser-receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt));
 }finally{await browser.close();}
 function expectedModules(){return ['acting','scene','lyrics','storyboard','transition','assets','review'];}
-

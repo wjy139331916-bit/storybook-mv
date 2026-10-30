@@ -42,4 +42,3 @@ def make_project(folder,engine='canvas2d',phase='prototype',accepted=True,audio=
     if r.returncode:raise ValueError(r.stderr)
     write(project/'director-current.json',model)
     return project,model
-

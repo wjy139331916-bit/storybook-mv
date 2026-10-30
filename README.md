@@ -114,6 +114,8 @@ python3 skills/storybook-mv/scripts/director_workbench.py init --project <项目
 
 工作台导出的是草稿；设计源文件、真实视频哈希和阶段验收继续沿用原有流程。内置构造角色只用于搭建动作，复杂人物表演仍为 partial；逐词时间需要实际听辨，不能按字数当作演唱同步。其他绘画/3D/自定义引擎需要各自适配器。手机窄屏已在桌面浏览器模拟，尚未证明 Android 真机兼容。
 
+已在原生 Canvas 与标准 Chrome/Remotion 中实际导出第 2–4 秒视频，完整解码并核对原创合成音轨的时间位置；这不代表真实歌曲的演唱同步已验收。
+
 命令和实际边界见 [导演工作台说明](skills/storybook-mv/references/director-workbench.md) 与 [3.6 验证记录](skills/storybook-mv/assets/verification-v36.json)。
 
 ## 完整性检查

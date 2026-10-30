@@ -84,4 +84,3 @@ registerRoot(()=> <Composition id="MV" component={Scene} durationInFrames={Math.
         except OSError:pass
         raise
     return {'activated':rel(dest),'engine':engine,'backup':rel(backup),'range':bounds,'render_entry':'src/render-entry.json' if engine=='canvas2d' else 'src/index.jsx','user_approvals_changed':False}
-

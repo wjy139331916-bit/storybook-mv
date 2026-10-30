@@ -188,8 +188,8 @@
     },
     {
       "path": "assets/capability-matrix.json",
-      "bytes": 7888,
-      "sha256": "13ca4355742e1cdd85248bbf40901364555a67c6bd6950192d1043abd54735ef"
+      "bytes": 7865,
+      "sha256": "e2272645d932cb23e0af38d412ed7da9745446a09b148d03f977b27c71dc59d4"
     },
     {
       "path": "assets/contracts/design-script.template.json",
@@ -233,13 +233,13 @@
     },
     {
       "path": "assets/director-workbench/editor.html",
-      "bytes": 6803,
-      "sha256": "27e0efe7610fa4aaac91a601f0211f265375419429cf549313ab5c16e04ede52"
+      "bytes": 6802,
+      "sha256": "6642bd6aafaad892cf81c597b903aa022ff1ae062ac170a398e1c6e6bb581c78"
     },
     {
       "path": "assets/director-workbench/editor.js",
-      "bytes": 41364,
-      "sha256": "d22c0a9b94bd132faa697990af099d045c3908f72b399eb71973ab7833901092"
+      "bytes": 41363,
+      "sha256": "d60ece52997fb9dcc932d98357c586c6aa87d56bd8aba0bfff8c4f8e42aa1952"
     },
     {
       "path": "assets/engines.json",
@@ -808,8 +808,8 @@
     },
     {
       "path": "assets/verification-v36.json",
-      "bytes": 6400,
-      "sha256": "5379aaa6e588bdbaeb079adf8490a5004bc6e77a5224aa080ea27d6524e775f0"
+      "bytes": 11306,
+      "sha256": "b61b39f78f652488144367e98011b5c2c79c03ce23c0ebfabc2ce00939863fab"
     },
     {
       "path": "references/agent-interop.md",
@@ -843,8 +843,8 @@
     },
     {
       "path": "references/director-workbench.md",
-      "bytes": 11869,
-      "sha256": "bb2537941c7f314a620eaa808eb55ec349329f518d87fbb15251801ca259f8cc"
+      "bytes": 11868,
+      "sha256": "bcd361817ce4f9ffb2f45f8937fc250368bc58d7084c5634833fa72af4d55df8"
     },
     {
       "path": "references/discovery.md",
@@ -1008,8 +1008,8 @@
     },
     {
       "path": "scripts/director_adapters.py",
-      "bytes": 7924,
-      "sha256": "50466e8718ae480439af74e26badaf122709fc4069f62f669ad92737457def2e"
+      "bytes": 7923,
+      "sha256": "4d73d1931b03f5c1b4f73b59c4759b61278e06bb473f52de1a35eb57b06acfb0"
     },
     {
       "path": "scripts/director_contract.py",
@@ -1018,8 +1018,8 @@
     },
     {
       "path": "scripts/director_workbench.py",
-      "bytes": 25701,
-      "sha256": "e32695027bdc0536fb3946a4cd78f9535b24b96955a5f919d3268cf94bd1f883"
+      "bytes": 25700,
+      "sha256": "41ec3a6317d3060e37266c696927b4cff60a325bb77e4762702f4c749bcf929e"
     },
     {
       "path": "scripts/export_skill.py",
@@ -1153,18 +1153,18 @@
     },
     {
       "path": "tests/director_browser.mjs",
-      "bytes": 12976,
-      "sha256": "7d1102ed819878b56892eb2c095307eea561f486ffa2f04638d4de6e105f1dcf"
+      "bytes": 12975,
+      "sha256": "d242a168aaddfee753e000773669aec7384e69874451e813431e1b009222cb28"
     },
     {
       "path": "tests/director_fixtures.py",
-      "bytes": 2832,
-      "sha256": "3475c81038036077a1cdd3d4892631770d41d9cc5dc502a62fc6cb3674bee833"
+      "bytes": 2831,
+      "sha256": "e0819d31f6baac8998d59fd5c4bda3eb1f17e69d76afc31ecaa615c8b46d93b7"
     },
     {
       "path": "tests/director_render.py",
-      "bytes": 3753,
-      "sha256": "1eda4346c79f79ccd9b1137291df0288b7adda2c94ff850875234277ed27f14a"
+      "bytes": 3752,
+      "sha256": "c00755b0777f13723ff7b91e1b872da1bf2153ba56252dea9c465b73fbb58fb0"
     },
     {
       "path": "tests/fixtures/original-lyrics.json",
@@ -1203,8 +1203,8 @@
     },
     {
       "path": "tests/test_director_v36.py",
-      "bytes": 14843,
-      "sha256": "44a071f3f3c6a7054ca55bb872776103fa4af7c527323984dbbeb589e663f9a8"
+      "bytes": 14842,
+      "sha256": "13c569fcdd5f51725a4be79224314f35a055dacd929df0e8d286d759774604a3"
     },
     {
       "path": "tests/test_execution_v32.py",

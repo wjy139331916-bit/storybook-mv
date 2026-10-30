@@ -98,4 +98,3 @@ Import only notes for the exact current review target, preserve other findings, 
 Use the full exported skill and its manifest. Do not copy only this HTML template, omit the shared core/gate, or require the current chat's private paths. Production data live in each project. The reusable skill contains only original tool code, fixtures, contracts and named verification scope.
 
 Run tests/test_director_v36.py for data/source/stage regressions, tests/director_browser.mjs for actual editor actions/save/import/playback/portrait layout, and tests/director_render.py for actual selected-host MP4/nonzero-source/audio verification. Browser and native passes are separate; Remotion needs its own real host exercise. A successful original fixture does not verify Android, arbitrary custom art, natural acting or an entire real sung MV.
-

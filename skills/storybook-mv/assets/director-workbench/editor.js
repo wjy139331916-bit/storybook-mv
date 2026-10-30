@@ -104,4 +104,3 @@ let drag=null;stage.addEventListener('pointerdown',e=>{if(tab!=='scene'||!layer(
 window.directorWorkbench={getModel:()=>C.clone(model),getCaps:()=>({...caps,range:[...caps.range]}),setTime:t=>{setTime(t);refresh();},getMetrics:()=>C.clone(metrics),getImpact:()=>C.impact(baseline,model)};
 (async()=>{if(boot.media.font){const font=new FontFace(boot.font_family,'url('+boot.media.font+')');await font.load();document.fonts.add(font);}refresh();status('七个模块已载入。编辑结果需要保存 JSON 才能带回项目。');})().catch(e=>status(e.message,true));
 })();
-
