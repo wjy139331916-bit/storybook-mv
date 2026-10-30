@@ -1,0 +1,55 @@
+name: Selected adapters
+on:
+  push:
+    paths: ['skills/storybook-mv/**', '.github/workflows/adapters-linux.yml']
+  pull_request:
+    paths: ['skills/storybook-mv/**', '.github/workflows/adapters-linux.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-adapters-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-cjk
+      - run: python -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
+      - name: Select exact tested adapters
+        run: npm install --prefix "$RUNNER_TEMP/mv-adapters" --save-exact remotion@4.0.539 @remotion/renderer@4.0.539 @remotion/bundler@4.0.539 @remotion/cli@4.0.539 react@19.0.0 react-dom@19.0.0 p5@2.3.3 p5.brush@2.2.3 puppeteer-core@25.11.0 playwright@1.51.1 --no-audit --no-fund
+      - name: Select existing normal-host Chrome
+        run: |
+          echo "CHROME_PATH=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+          test -n "$(command -v google-chrome || command -v chromium)"
+      - name: Render actual Remotion clip and inspect encoded audio/video
+        run: python skills/storybook-mv/scripts/runtime_smoke.py "$RUNNER_TEMP/adapters-remotion" --engine remotion --runtime browser --chrome "$CHROME_PATH" --deps-from "$RUNNER_TEMP/mv-adapters/node_modules" --soft-gl
+      - name: Verify actual nonzero Remotion source interval and soundtrack pulses
+        run: python skills/storybook-mv/tests/remotion_smoke.py "$RUNNER_TEMP/adapters-nonzero" --chrome "$CHROME_PATH" --deps-from "$RUNNER_TEMP/mv-adapters/node_modules"
+      - name: Measure actual Remotion sample cost
+        working-directory: ${{ runner.temp }}/adapters-remotion
+        run: node render.mjs --estimate --times=0.2,1,1.8 --chrome="$CHROME_PATH"
+      - name: Exercise Chinese browser font, cues and encoded highlighting
+        run: python skills/storybook-mv/scripts/runtime_smoke.py "$RUNNER_TEMP/adapters-chinese" --runtime browser --chrome "$CHROME_PATH" --deps-from "$RUNNER_TEMP/mv-adapters/node_modules" --cjk --font /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+      - name: Exercise actual software p5 brush frames and renderer identity
+        run: python skills/storybook-mv/scripts/runtime_smoke.py "$RUNNER_TEMP/adapters-p5" --engine painted-p5 --runtime browser --chrome "$CHROME_PATH" --deps-from "$RUNNER_TEMP/mv-adapters/node_modules" --soft-gl
+      - name: Interact with the offline pixel editor and roundtrip exports
+        run: MV_PLAYWRIGHT_MODULE="$RUNNER_TEMP/mv-adapters/node_modules/playwright" node skills/storybook-mv/tests/pixel_browser.mjs "$RUNNER_TEMP/pixel-proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selected-adapters-proof
+          path: |
+            ${{ runner.temp }}/adapters-remotion/runtime-report.json
+            ${{ runner.temp }}/adapters-remotion/out/runtime/
+            ${{ runner.temp }}/adapters-nonzero/nonzero-remotion-receipt.json
+            ${{ runner.temp }}/adapters-nonzero/project/out/nonzero/
+            ${{ runner.temp }}/adapters-chinese/runtime-report.json
+            ${{ runner.temp }}/adapters-p5/runtime-report.json
+            ${{ runner.temp }}/pixel-proof/browser-receipt.json
+            ${{ runner.temp }}/pixel-proof/editor-*.png

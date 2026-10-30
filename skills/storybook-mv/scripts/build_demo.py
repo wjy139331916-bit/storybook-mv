@@ -59,8 +59,8 @@ def build(target, root, kind, subject, style, width=960, height=540, fps=24, dur
     duration = (30 if duration is None else duration) if kind == 'film' else 8
     if not isinstance(duration,(int,float)) or not math.isfinite(duration) or duration < (12 if kind == 'film' else 1):
         raise ValueError('film example duration must be at least 12 seconds')
-    manifest = json.loads((root / 'assets/style-packs' / (style + '.json')).read_text())
-    subprocess.run([sys.executable, str(root / 'scripts/scaffold.py'), str(target), '--engine', 'canvas2d', '--duration', str(duration), '--width', str(width), '--height', str(height), '--fps', str(fps), '--tool-self-test'], capture_output=True, text=True, check=True)
+    manifest = json.loads((root / 'assets/style-packs' / (style + '.json')).read_text(encoding='utf-8'))
+    subprocess.run([sys.executable, str(root / 'scripts/scaffold.py'), str(target), '--engine', 'canvas2d', '--duration', str(duration), '--width', str(width), '--height', str(height), '--fps', str(fps), '--tool-self-test'], capture_output=True, text=True, check=True, encoding='utf-8')
     for name in ('motion.js', 'acting.js'):
         shutil.copy2(root / 'assets/modules' / name, target / 'src' / name)
     shutil.copy2(root / 'assets/style-packs/kit.js', target / 'src/style-kit.js')
@@ -69,11 +69,11 @@ def build(target, root, kind, subject, style, width=960, height=540, fps=24, dur
     demo = {'kind': kind, 'subject': subject, 'manifest': manifest, 'original_demo': True, 'not_a_project_default': True}
     (target / 'src/demo.js').write_text('globalThis.DEMO=' + json.dumps(demo) + ';\nif(!globalThis.makeStudyCanvas)globalThis.makeStudyCanvas=(w,h)=>{const c=document.createElement("canvas");c.width=w;c.height=h;return c;};\n', encoding='utf-8')
     scripts = ['src/config.js', 'src/motion.js', 'src/acting.js', 'src/style-kit.js', 'src/demo.js', 'src/scene.js', 'src/data/lyrics.js', 'src/lyrics-overlay.js']
-    (target / 'src/render-entry.json').write_text(json.dumps({'scripts': scripts}, indent=2) + '\n')
-    html = (target / 'studio.html').read_text()
+    (target / 'src/render-entry.json').write_text(json.dumps({'scripts': scripts}, indent=2) + '\n', encoding='utf-8')
+    html = (target / 'studio.html').read_text(encoding='utf-8')
     extra = ''.join('<script src="' + x + '"></script>' for x in scripts[1:5])
-    (target / 'studio.html').write_text(html.replace('<script src="src/scene.js">', extra + '<script src="src/scene.js">'))
-    brief = json.loads((target / 'brief.json').read_text())
+    (target / 'studio.html').write_text(html.replace('<script src="src/scene.js">', extra + '<script src="src/scene.js">'), encoding='utf-8')
+    brief = json.loads((target / 'brief.json').read_text(encoding='utf-8'))
     brief.update(goal='Original demonstration of scenic progression and selected code drawing method', emotion='curiosity through difficulty to renewed possibility', asset_policy='all-code', request_mode='production', phase='prototype')
     brief['style'].update(direction=style, medium='Canvas2D original demonstration', palette=manifest['palette'], proportions='example stylized large-head figures' if subject == 'figures' else None, motion='articulated time-based poses' if subject == 'figures' else 'time-based graphic development')
     brief['structure'].update(mode='narrative' if subject == 'figures' else subject, outline=['a light is found', 'it travels', 'rain creates difficulty', 'small lights renew hope', 'a message is noticed', 'the light is shared'], ending='an open path remains')
@@ -82,18 +82,18 @@ def build(target, root, kind, subject, style, width=960, height=540, fps=24, dur
     brief['output']['aspect_ratio'] = '16:9' if width * 9 == height * 16 else f'{width}:{height}'
     brief['execution'].update(runtime='node-canvas', production_authorized=False)
     score = original_score(target / 'assets/original-score.wav', duration)
-    (target / 'data/score.json').write_text(json.dumps(score, indent=2) + '\n')
+    (target / 'data/score.json').write_text(json.dumps(score, indent=2) + '\n', encoding='utf-8')
     brief['music'].update(title='The Light We Carry - original procedural study', source='original-code', audio='assets/original-score.wav', duration=duration, scope=f'complete original {duration}-second instrumental demonstration' if kind == 'film' else 'eight-second controlled demonstration')
     brief['confirmed_fields'] = ['style.direction', 'asset_policy', 'characters.required', 'output.resolution']
-    (target / 'brief.json').write_text(json.dumps(brief, indent=2) + '\n')
+    (target / 'brief.json').write_text(json.dumps(brief, indent=2) + '\n', encoding='utf-8')
     mapping = {'schema_version': 1, 'duration': duration, 'duration_status': 'recording_measured', 'sections': [], 'shots': [], 'audio_sha256': __import__('hashlib').sha256((target / 'assets/original-score.wav').read_bytes()).hexdigest()}
     events = ['discover the light', 'carry it through the station', 'protect it in rain', 'notice other lights', 'notice a waiting message', 'share the light and leave an open path'] if kind == 'film' else ['approach, reach, contact, transfer and release']
     for i, event in enumerate(events):
         start, end = (i * duration / 6, (i + 1) * duration / 6) if kind == 'film' else (0, 8)
         mapping['sections'].append({'id': f'part-{i + 1}', 'start': start, 'end': end, 'music_read': 'known synthesized 96 BPM score', 'emotion': event})
         mapping['shots'].append({'id': f's{i + 1:02d}', 'start': start, 'end': end, 'section_id': f'part-{i + 1}', 'objective': event, 'visible_change': event if subject == 'figures' else 'graphic arrangement develops through the selected subject', 'assets': ['light', 'courier-a', 'courier-b'] if subject == 'figures' else ['light'], 'transition': {'type': 'foreground star cover' if kind == 'film' else 'none', 'window': [.8, .8] if kind == 'film' else None}})
-    (target / 'shot-map.json').write_text(json.dumps(mapping, indent=2) + '\n')
-    (target / 'DEMO.json').write_text(json.dumps(demo, indent=2) + '\n')
+    (target / 'shot-map.json').write_text(json.dumps(mapping, indent=2) + '\n', encoding='utf-8')
+    (target / 'DEMO.json').write_text(json.dumps(demo, indent=2) + '\n', encoding='utf-8')
     return {'project': str(target), 'kind': kind, 'style': style, 'subject': subject, 'duration': duration, 'audio': 'assets/original-score.wav', 'scope': 'Original optional example; no claim that this design satisfies a different project or matches a reference.'}
 
 
@@ -120,4 +120,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()

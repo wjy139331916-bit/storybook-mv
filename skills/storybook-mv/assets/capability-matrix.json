@@ -1,8 +1,32 @@
 {
   "schema_version": 1,
-  "toolkit_version": "3.4.0",
+  "toolkit_version": "3.5.0",
   "meaning": "Status describes named evidence and its limits, not universal compatibility or aesthetic acceptance.",
   "capabilities": [
+    {
+      "id": "offline-pixel-workbench",
+      "status": "verified_scoped",
+      "evidence": "scripts/pixel_workbench.py; tests/test_pixel_workbench.py; tests/pixel_browser.mjs",
+      "limits": "Original neutral character and actual Linux browser editing/roundtrip/playback. Not an approved cast, natural acting, or Android execution."
+    },
+    {
+      "id": "selected-destination-recovery-cjk-p5",
+      "status": "verified_scoped",
+      "evidence": "scripts/runtime_probe.py; tests/test_runtime_v35.py; verification-v35.json",
+      "limits": "Original encoded Linux native/browser Chinese and software p5 probes. Other destinations still need their own test."
+    },
+    {
+      "id": "remotion-original-executable-adapter",
+      "status": "implemented_destination_test_pending",
+      "evidence": "assets/remotion-template; references/remotion-adapter.md; tests/test_runtime_v35.py",
+      "limits": "Stage blocking and template setup tested; local sandbox denies network-interface inspection. Standard-host render receipt required before claiming executable verification."
+    },
+    {
+      "id": "story-ui-and-source-bound-acting-plan",
+      "status": "implemented",
+      "evidence": "assets/modules/narrative-ui.js; assets/contracts/performance-plan.template.json; project_contracts.py",
+      "limits": "Actual basic UI raster tested and plan structure checked. Does not certify a performance or story."
+    },
     {
       "id": "review-workspace-and-derived-handoff",
       "status": "implemented",
@@ -95,9 +119,9 @@
     },
     {
       "id": "browser-player-p5-WebGL",
-      "status": "not_verified_in_this_environment",
+      "status": "partial",
       "evidence": "tests/player_browser.mjs; references/runtime-portability.md",
-      "limits": "The new Canvas2D review page is separately verified. Existing optional player/p5/WebGL routes still need their own actual selected-runtime checks."
+      "limits": "Original Linux p5.brush/SwiftShader export is separately verified in v3.5. The legacy player and arbitrary WebGL scenes still need their own actual selected-runtime interaction checks."
     },
     {
       "id": "Windows-and-other-agent-hosts",
@@ -106,5 +130,5 @@
       "limits": "Complete-directory portability is tested; actual destination Python, renderer, fonts and tools must be exercised."
     }
   ],
-  "current_receipt": "verification-v34.json"
+  "current_receipt": "verification-v35.json"
 }

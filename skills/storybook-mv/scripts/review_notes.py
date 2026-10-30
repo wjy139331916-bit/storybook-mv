@@ -17,7 +17,7 @@ def merge(project, notes):
     actual = digest(target)
     if actual != review['target'].get('sha256') or actual != notes.get('target', {}).get('sha256'):
         raise ValueError('viewer notes do not match the exact current reviewed video')
-    duration = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(target)], text=True))
+    duration = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(target)], text=True, encoding='utf-8'))
     seen = {i.get('id') for i in review.get('issues', [])}
     added = 0
     for note in notes.get('notes', []):
@@ -48,4 +48,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     main()

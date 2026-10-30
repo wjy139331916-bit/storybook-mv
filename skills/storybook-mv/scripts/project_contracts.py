@@ -62,6 +62,9 @@ def finite(n):
 
 
 def contained(project, rel):
+    # Windows temporary roots may use an 8.3 alias; compare canonical paths
+    # on both sides without weakening the project boundary.
+    project = Path(project).resolve()
     if not isinstance(rel, str) or not rel.strip():
         raise ValueError('missing artifact path')
     p = (project/rel).resolve()
@@ -184,6 +187,29 @@ def review_evidence(project, check, review, target_sha, errors, duration=None):
         errors.append('temporal review needs the inspected output-time range: '+str(key))
 
 
+def performance_plan(project, spec, shots, errors):
+    record=spec.get('performance_plan')
+    if record is None:return
+    if not isinstance(record,dict):errors.append('performance_plan must bind its source file');return
+    try:
+        path=contained(project,record.get('path'))
+        if not path.is_file() or digest(path)!=record.get('sha256'):raise ValueError('performance plan missing or changed')
+        data=load(path);entries=data.get('shots')
+        if data.get('schema_version')!=1 or not data.get('revision') or not isinstance(entries,list) or not entries:raise ValueError('performance plan needs a revision and shot entries')
+        actors={c.get('id') for c in spec.get('cast',[]) if isinstance(c,dict)}
+        for entry in entries:
+            if not isinstance(entry,dict):raise ValueError('performance shot must be an object')
+            shot=shots.get(entry.get('shot_id'))
+            if not shot or entry.get('actor_id') not in actors:raise ValueError('performance plan refers to an unknown shot or actor')
+            a,b=entry.get('start'),entry.get('end')
+            if not finite(a) or not finite(b) or not shot['start']<=a<b<=shot['end']:raise ValueError('performance interval must lie in its actual shot')
+            for key in ('intent','gaze_target','head_orientation','support_and_weight','contact_and_release','breathing_or_intentional_hold'):
+                if not isinstance(entry.get(key),str) or not entry[key].strip():raise ValueError('performance plan missing '+key)
+            poses=entry.get('key_poses')
+            if not isinstance(poses,list) or not poses or any(not isinstance(p,dict) or not finite(p.get('time')) or not a<=p['time']<=b or not isinstance(p.get('description'),str) or not p['description'].strip() for p in poses):raise ValueError('performance needs concrete in-range key poses')
+    except (OSError,ValueError,TypeError,KeyError) as exc:errors.append(str(exc))
+
+
 def inspect(project, stage):
     errors, warnings = [], []
     brief = load(project/'brief.json')
@@ -227,6 +253,7 @@ def inspect(project, stage):
         return {'ok': not errors, 'errors': errors, 'warnings': warnings, 'scope': 'Recorded design completeness only; no taste or motion certification.'}
     mapping = load(project/'shot-map.json')
     shots = timeline(mapping, errors, stage == 'full' and field(brief,'music.source') != 'none')
+    performance_plan(project, spec, shots, errors)
     if stage == 'full' and field(brief,'music.source') == 'none' and mapping.get('duration_status') != 'agreed_scope':
         errors.append('silent full output needs an agreed_scope duration')
     if stage == 'full' and field(brief, 'music.source') != 'none':
@@ -237,7 +264,7 @@ def inspect(project, stage):
             errors.append('shot-map must identify the actual final audio by SHA-256')
         else:
             import subprocess
-            measured = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(audio)], text=True))
+            measured = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(audio)], text=True, encoding='utf-8'))
             if not finite(mapping.get('duration')) or abs(mapping['duration']-measured)>.12:
                 errors.append('full shot-map duration differs from the final recording')
     review = load(project/'review.json')
@@ -422,4 +449,8 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
     sys.exit(main())

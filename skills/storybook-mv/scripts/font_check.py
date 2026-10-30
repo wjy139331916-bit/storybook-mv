@@ -22,9 +22,14 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--font',type=Path,required=True);p.add_argument('--lyrics',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
     if a.out.exists():p.error('output exists; previous glyph evidence preserved')
     try:
-        result=inspect_font(a.font,a.lyrics);a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False));return 0 if result['ok'] else 2
+        result=inspect_font(a.font,a.lyrics);a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n', encoding='utf-8');print(json.dumps(result,ensure_ascii=False));return 0 if result['ok'] else 2
     except ImportError:p.error('fontTools is required for the selected glyph check; see requirements-media.txt')
     except (OSError,ValueError,KeyError) as exc:p.error(str(exc))
 
 
-if __name__=='__main__':raise SystemExit(main())
+if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
+    raise SystemExit(main())

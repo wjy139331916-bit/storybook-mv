@@ -5,6 +5,7 @@ import puppeteer from 'puppeteer-core';
 const chrome = process.argv[2];
 const base = ['--no-sandbox', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'];
 const candidates = {
+  'swiftshader': ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
   'angle-vulkan': ['--use-angle=vulkan', '--enable-features=Vulkan'],
   'gl-egl': ['--use-gl=egl'],
   'angle-gl-egl': ['--use-angle=gl-egl'],

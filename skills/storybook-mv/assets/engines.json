@@ -10,8 +10,8 @@
     "use": "custom flat/vector/pixel/type/collage"
   },
   "remotion": {
-    "template": null,
-    "status": "guide-only"
+    "template": "remotion-template",
+    "status": "bundled"
   },
   "threejs": {
     "template": null,

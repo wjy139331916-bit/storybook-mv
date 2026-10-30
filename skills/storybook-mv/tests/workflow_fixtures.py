@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def save(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+'\n')
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     return {'path': path.name, 'sha256': sha(path)}
 
 
@@ -25,7 +25,7 @@ def record(project, path, value=None, role=None):
 
 def approval(brief, project, stage):
     package = brief['workflow']['packages'][stage]
-    data = json.loads((project/package['path']).read_text())
+    data = json.loads((project/package['path']).read_text(encoding='utf-8'))
     value = {'origin':'user-message', 'message_id':'synthetic-'+stage+'-reply',
              'user_reply':'Synthetic fixture accepts the displayed '+stage+' package; not real consent',
              'presented_message_id':'synthetic-'+stage+'-presentation', 'stage':stage,
@@ -39,7 +39,7 @@ def design(brief, project):
     project=Path(project);(project/'plan').mkdir(parents=True,exist_ok=True)
     brief['workflow'] = default_workflow()
     duration = target_duration(brief, project)
-    proposal = project/'plan/proposal.md';proposal.write_text('Synthetic complete proposal: source shape, change, return. No real artistic acceptance.\n')
+    proposal = project/'plan/proposal.md';proposal.write_text('Synthetic complete proposal: source shape, change, return. No real artistic acceptance.\n', encoding='utf-8')
     image = project/'plan/design.png';shutil.copy2(ROOT/'assets/studies/evidence/style-board.png',image)
     script={'duration':duration,'duration_status':'agreed_scope','sections':[{'id':'a','start':0,'end':duration}],
             'shots':[{'id':'s01','start':0,'end':duration,'section_id':'a','objective':'synthetic source and return',
@@ -58,8 +58,8 @@ def design(brief, project):
 def video_stage(brief, project, stage, clip, report):
     # Compatibility fixture metadata is explicit; production reports must be
     # written from the actual renderer/inspection, never inferred this way.
-    report_data=json.loads((project/report).read_text())
-    plan=json.loads((project/brief['workflow']['packages']['design']['path']).read_text())['pilot']
+    report_data=json.loads((project/report).read_text(encoding='utf-8'))
+    plan=json.loads((project/brief['workflow']['packages']['design']['path']).read_text(encoding='utf-8'))['pilot']
     report_data.setdefault('range',[plan['start'],plan['end']] if stage=='prototype' else [0,target_duration(brief,project)])
     if brief.get('music',{}).get('audio'):
         report_data.setdefault('audio',{'sha256':brief['music']['audio_sha256']})

@@ -15,6 +15,6 @@ A style is a visual grammar, not a software name. Keep style, assets and engine 
 
 Do not force a painterly host for pixels or a human body model for abstract graphics. Head count, palette, lyric mode, shot density and texture motion come from the approved design.
 
-Bundled executable scaffolds: painted-p5 and canvas2d. Remotion/three.js/Blender/custom are guide-only here; do not claim their packages, models or renderers are installed. Consult current official documentation when actually implementing those routes.
+Bundled executable scaffolds: painted-p5, canvas2d and the optional original Remotion adapter. three.js/Blender/custom remain guide-only; do not claim their packages/models/renderers are installed. Remotion dependencies are installed only for the selected route. Consult current official documentation when actually implementing those routes.
 
 Select one primary host, keep the timebase and project decisions shared, and implement only the needed adapter. Keep externally generated footage's time handling distinct from deterministic procedural layers.

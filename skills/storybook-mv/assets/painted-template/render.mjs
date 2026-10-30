@@ -17,17 +17,20 @@
 //   --chrome=<path to Chrome/Chromium>.
 import {assertProduction} from './production_gate.mjs';
 import fs from 'node:fs';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import os from 'node:os';
+import {createHash} from 'node:crypto';
 import { mkdirSync, writeFileSync, existsSync, statSync, renameSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const operation=(args.sheet||args.stills)&&!(args.strip||args.clip||args.png||args.frames||args.encode)?'stills':'video';
+const operation=args.probe?'check':args.estimate?'estimate':(args.sheet||args.stills)&&!(args.strip||args.clip||args.png||args.frames||args.encode)?'stills':'video';
 const stillCount=operation==='stills'?String(args.sheet||args.stills).split(',').length:undefined;
 const stageAssert=options=>assertProduction(process.cwd(),{operation,still_count:stillCount,...options});
 const acceptedBrief=stageAssert({audio:args.audio||undefined,fps:args.fps?Number(args.fps):undefined});
+for(const k of ['max-seconds','max-cache-bytes'])if(args[k]&&(!Number.isFinite(Number(args[k]))||Number(args[k])<=0))throw Error(k+' must be positive');
 args.audio=args.audio||acceptedBrief.music?.audio||undefined;
 const CHROMES = [args.chrome, process.env.CHROME_PATH, 'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser',
@@ -37,7 +40,7 @@ function playwrightChromes() {
   const dir = `${homedir()}/.cache/ms-playwright`;
   if (!existsSync(dir)) return [];
   return readdirSync(dir).filter(n => /^chromium-\d+$/.test(n)).sort((a, b) => b.split('-')[1] - a.split('-')[1])
-    .map(n => `${dir}/${n}/chrome-linux64/chrome`);
+    .flatMap(n => [`${dir}/${n}/chrome-linux64/chrome`,`${dir}/${n}/chrome-linux/chrome`,`${dir}/${n}/chrome-win/chrome.exe`]);
 }
 const CHROME = CHROMES.find(p => p && existsSync(p));
 const fps = +(args.fps || 30), FRAMES_DIR = 'out/frames';
@@ -75,7 +78,9 @@ const gpu = args['soft-gl'] ? ['--use-angle=swiftshader', '--enable-unsafe-swift
 // Ubuntu 23.10+ blocks Chrome's user-namespace sandbox; headless rendering of local files doesn't need it.
 const sandbox = process.platform === 'linux' ? ['--no-sandbox'] : [];
 if (!CHROME) { console.error('Chrome not found: pass --chrome=<path> or set CHROME_PATH'); process.exit(1); }
-const {default:puppeteer}=await import('puppeteer-core');
+let puppeteer;
+try {({default:puppeteer}=await import('puppeteer-core'));}
+catch(e){throw Error('Selected browser runtime dependency is missing. Run npm ci (if package-lock.json exists), or npm install, in this project; then rerun preflight.py --project <project> --strict --json. '+e.message);}
 const browser = await puppeteer.launch({
   executablePath: CHROME, headless: true, protocolTimeout: 0,
   args: [...sandbox, '--allow-file-access-from-files', '--ignore-gpu-blocklist', ...gpu, '--enable-gpu-rasterization', '--window-size=1920,1080', '--disable-renderer-backgrounding', '--disable-background-timer-throttling']
@@ -107,6 +112,33 @@ const frameOf = async (page, t, type, q) => {
 };
 // the length of whatever is being rendered: a loop's .len, or the video's duration
 const lengthOf = page => page.evaluate(() => window.LOOP ? window.LOOP.len : DUR);
+
+const began=Date.now();
+const hash=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+async function runtimeFacts(){
+  let p=null;try{p=JSON.parse(fs.readFileSync('node_modules/puppeteer-core/package.json','utf8')).version;}catch{}
+  return {node:process.version,platform:os.platform(),arch:os.arch(),browser:await browser.version(),puppeteer:p,ffmpeg:spawnSync('ffmpeg',['-version'],{encoding:'utf8'}).stdout?.split('\n')[0]||null};
+}
+async function reportClip(out,range,audio){
+  const probe=spawnSync('ffprobe',['-v','error','-show_streams','-show_format','-of','json',out],{encoding:'utf8'});
+  if(probe.status!==0)throw Error('Encoded output probe failed: '+probe.stderr);
+  const media=JSON.parse(probe.stdout),decode=spawnSync('ffmpeg',['-v','error','-i',out,'-f','null','-'],{encoding:'utf8'});
+  if(decode.status!==0)throw Error('Encoded output decode failed: '+decode.stderr);
+  const data={schema_version:2,status:'passed',engine:acceptedBrief.execution.engine,renderer:'browser',runtime:await runtimeFacts(),production_stage:acceptedBrief.phase,range,duration:range[1]-range[0],fps,artifacts:[{path:out,sha256:hash(out)}],audio:audio?{path:audio,sha256:hash(audio)}:null,encoded:{video:media.streams.some(s=>s.codec_type==='video'),audio:media.streams.some(s=>s.codec_type==='audio'),full_decode:true},elapsed_seconds:(Date.now()-began)/1000,project_acceptance:'not_assessed',scope:'Selected browser output decode only; not user acceptance or natural acting.'};
+  fs.writeFileSync(resolve(dirname(out),'render-report.json'),JSON.stringify(data,null,2)+'\n');
+}
+if(args.probe||args.estimate||args['max-seconds']||args['max-cache-bytes']){
+  const page=await openPage(),len=await lengthOf(page),[a,b]=args.range?span(args.range):[0,len];
+  stageAssert({duration:b-a,timeline_duration:len,timeline_range:[a,b],fps});
+  const ts=args.times?times(args.times):[a+(b-a)*.15,a+(b-a)*.5,a+(b-a)*.85];
+  if(!ts.length||ts.length>12||ts.some(t=>!Number.isFinite(t)||t<a||t>=b))throw Error('sample 1..12 times inside the selected interval');
+  const samples=[];for(const t of ts){const start=Date.now(),buf=await frameOf(page,t,'image/jpeg',.93);samples.push({time:t,milliseconds:Date.now()-start,jpeg_bytes:buf.length});}
+  const ms=samples.map(x=>x.milliseconds).sort((x,y)=>x-y),n=Math.round((b-a)*fps),seconds=n*ms[Math.floor(ms.length/2)]/1000,bytes=n*Math.max(...samples.map(x=>x.jpeg_bytes));
+  const result={mode:args.probe?'probe':'estimate',engine:acceptedBrief.execution.engine,runtime:await runtimeFacts(),gpu:await page.evaluate(()=>typeof window.gpuInfo==='function'?window.gpuInfo():null),range:[a,b],frames:n,samples,estimated_render_seconds:seconds,estimated_frame_cache_bytes:bytes,storage_scope:'Sampled JPEG cache estimate for --frames; --clip pipes images without retaining that cache. Encoding/review/repair add time and storage.'};
+  if(args['max-seconds']&&seconds>Number(args['max-seconds'])||args['max-cache-bytes']&&bytes>Number(args['max-cache-bytes']))throw Error('sample exceeds the declared time/cache budget');
+  console.log(JSON.stringify(result));await page.close();
+  if(args.probe||args.estimate){await browser.close();process.exit(0);}
+}
 
 if (args.sheet || args.strip) {
   const page = await openPage(), out = args.out || 'out/sheet.jpg'; mkdirSync(dirname(out), { recursive: true });
@@ -176,7 +208,8 @@ if (args.sheet || args.strip) {
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
     if (i % 24 === 0 || i === n - 1) console.log(`frame ${i + 1}/${n}  ${((Date.now() - start) / (i + 1)).toFixed(0)} ms/frame`);
   }
-  ff.stdin.end(); await new Promise(r => ff.on('close', r));
+  ff.stdin.end(); await new Promise((ok,bad) => {ff.on('error',bad);ff.on('close',code=>code?bad(Error('FFmpeg exited '+code)):ok());});
+  await reportClip(out,[a,b],audio);
   console.log(`wrote ${out}`);
 } else {
   console.log('nothing to do: see the usage notes at the top of render.mjs');

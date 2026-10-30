@@ -180,7 +180,7 @@ def review_html(project, package, package_record, limits, max_bytes):
             review=read_json(path)
             parts.append('<section><h2>实际检查与已知不足</h2><pre>'+esc(review.get('observations') or review.get('issues') or '请结合下面的已知不足审片。')+'</pre></section>')
     next_label=LABELS[NEXT[stage]]
-    clip_duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(project/clip['path'])],stderr=subprocess.PIPE,text=True)) if clip else None
+    clip_duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(project/clip['path'])],stderr=subprocess.PIPE,text=True, encoding='utf-8')) if clip else None
     feedback={'schema_version':1,'kind':'timestamp-feedback','package_sha256':package_record['sha256'],
               'revision':package['revision'],'target_sha256':clip['sha256'] if clip else None,
               'target':{'path':clip['path'],'sha256':clip['sha256'],'duration':clip_duration} if clip else None,'notes':[],'is_user_approval':False}
@@ -294,4 +294,9 @@ def main():
         parser.error(str(exc))
 
 
-if __name__=='__main__':raise SystemExit(main())
+if __name__ == '__main__':
+    import sys
+    for _stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_stream, 'reconfigure'):
+            _stream.reconfigure(encoding='utf-8')
+    raise SystemExit(main())
