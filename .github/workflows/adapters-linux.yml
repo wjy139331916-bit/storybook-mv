@@ -22,7 +22,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-cjk
       - run: python -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
       - name: Select exact tested adapters
-        run: npm install --prefix "$RUNNER_TEMP/mv-adapters" --save-exact remotion@4.0.539 @remotion/renderer@4.0.539 @remotion/bundler@4.0.539 @remotion/cli@4.0.539 react@19.0.0 react-dom@19.0.0 p5@2.3.3 p5.brush@2.2.3 puppeteer-core@25.11.0 playwright@1.51.1 --no-audit --no-fund
+        run: npm install --prefix "$RUNNER_TEMP/mv-adapters" --save-exact remotion@4.0.539 @remotion/renderer@4.0.539 @remotion/bundler@4.0.539 @remotion/cli@4.0.539 react@19.0.0 react-dom@19.0.0 p5@2.3.3 p5.brush@2.2.3 puppeteer-core@25.11.0 playwright@1.51.1 @napi-rs/canvas@0.1.100 --no-audit --no-fund
       - name: Select existing normal-host Chrome
         run: |
           echo "CHROME_PATH=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
@@ -40,6 +40,12 @@ jobs:
         run: python skills/storybook-mv/scripts/runtime_smoke.py "$RUNNER_TEMP/adapters-p5" --engine painted-p5 --runtime browser --chrome "$CHROME_PATH" --deps-from "$RUNNER_TEMP/mv-adapters/node_modules" --soft-gl
       - name: Interact with the offline pixel editor and roundtrip exports
         run: MV_PLAYWRIGHT_MODULE="$RUNNER_TEMP/mv-adapters/node_modules/playwright" node skills/storybook-mv/tests/pixel_browser.mjs "$RUNNER_TEMP/pixel-proof"
+      - name: Render the adopted director data through actual native Canvas
+        run: python skills/storybook-mv/tests/director_render.py "$RUNNER_TEMP/director-native" --canvas-module "$RUNNER_TEMP/mv-adapters/node_modules/@napi-rs/canvas/index.js"
+      - name: Render the same director model through actual Remotion
+        run: python skills/storybook-mv/tests/director_render.py "$RUNNER_TEMP/director-remotion" --engine remotion --chrome "$CHROME_PATH" --deps-from "$RUNNER_TEMP/mv-adapters/node_modules"
+      - name: Edit all seven modules, save/reopen and bind feedback to the master
+        run: MV_PLAYWRIGHT_MODULE="$RUNNER_TEMP/mv-adapters/node_modules/playwright" node skills/storybook-mv/tests/director_browser.mjs "$RUNNER_TEMP/director-browser" "$RUNNER_TEMP/director-native/fixture/project/out/director/clip.mp4"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -53,3 +59,12 @@ jobs:
             ${{ runner.temp }}/adapters-p5/runtime-report.json
             ${{ runner.temp }}/pixel-proof/browser-receipt.json
             ${{ runner.temp }}/pixel-proof/editor-*.png
+            ${{ runner.temp }}/director-native/director-render-receipt.json
+            ${{ runner.temp }}/director-native/decoded-*.png
+            ${{ runner.temp }}/director-native/fixture/project/out/director/clip.mp4
+            ${{ runner.temp }}/director-remotion/director-render-receipt.json
+            ${{ runner.temp }}/director-remotion/decoded-*.png
+            ${{ runner.temp }}/director-remotion/fixture/project/out/director/clip.mp4
+            ${{ runner.temp }}/director-browser/director-browser-receipt.json
+            ${{ runner.temp }}/director-browser/director-desktop.png
+            ${{ runner.temp }}/director-browser/director-phone.png

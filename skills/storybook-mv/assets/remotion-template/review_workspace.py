@@ -211,6 +211,9 @@ def present(project, brief, args):
     if folder.exists():raise ValueError('review revision already exists; preserve it and choose a new revision')
     pairs=[('proposal',args.proposal),('script',args.script),('visual_spec',args.visual_spec)] if stage=='design' else [('video',args.video),('render_report',args.render_report),('review',args.review)]
     pairs += [('design_frame',f) for f in args.frame]
+    sources=getattr(args,'source',[]) or []
+    if sources and stage!='design':raise ValueError('design sources belong to the design presentation')
+    pairs += [('design_source',f) for f in sources]
     if any(v is None for _,v in pairs):raise ValueError('provide all actual artifacts for the selected stage')
     data={'stage':stage,'revision':args.revision,'content_sha256':content_digest(brief),'design_sha256':design_digest(brief),
           'target_duration':target_duration(brief,project),'artifacts':[binding(project,v,k) for k,v in pairs],
@@ -275,7 +278,7 @@ def main():
     p=commands.add_parser('inspect-video');p.add_argument('--video',required=True);p.add_argument('--stage',choices=('prototype','animatic','full'),required=True);p.add_argument('--range',required=True);p.add_argument('--out',required=True)
     p=commands.add_parser('present');p.add_argument('--stage',choices=NEXT,required=True);p.add_argument('--revision',required=True)
     for name in ('proposal','script','visual-spec','video','render-report','review','pilot-range','objective'):p.add_argument('--'+name)
-    p.add_argument('--frame',action='append',default=[]);p.add_argument('--limit',action='append',required=True);p.add_argument('--max-embed-mb',type=int,default=64);p.add_argument('--webm-preview',action='store_true')
+    p.add_argument('--frame',action='append',default=[]);p.add_argument('--source',action='append',default=[]);p.add_argument('--limit',action='append',required=True);p.add_argument('--max-embed-mb',type=int,default=64);p.add_argument('--webm-preview',action='store_true')
     p=commands.add_parser('accept');p.add_argument('--stage',choices=NEXT,required=True);p.add_argument('--reply-file',required=True);p.add_argument('--message-id',required=True);p.add_argument('--presented-message-id');p.add_argument('--decision',choices=('approved','waived'),default='approved');p.add_argument('--waiver-review');p.add_argument('--advance',action='store_true')
     args=parser.parse_args();project=args.project.expanduser().resolve()
     try:

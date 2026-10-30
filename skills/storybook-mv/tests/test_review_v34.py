@@ -168,6 +168,13 @@ class ReviewWorkspaceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'already exists'):workspace.present(self.p,self.b,self.args)
         self.assertEqual(before,(self.p/'brief.json').read_bytes())
 
+    def test_present_binds_exact_editable_design_source_without_approval(self):
+        source=self.p/'plan/director.json';source.write_text('{"kind":"mv-director","revision":"original-draft"}',encoding='utf-8');self.args.source=['plan/director.json']
+        result=self.present();package=workspace.read_json(self.p/result['package']['path'])
+        bound=next(x for x in package['artifacts'] if x['role']=='design_source')
+        self.assertEqual(bound['path'],'plan/director.json');self.assertEqual(bound['sha256'],sha(source))
+        self.assertEqual(self.b['workflow']['approvals'],{})
+
     def test_text_is_escaped_in_review_page(self):
         (self.p/'plan/proposal.md').write_text('<script>BAD()</script>', encoding='utf-8')
         r=self.present();page=(self.p/r['page']).read_text(encoding='utf-8');self.assertIn('&lt;script&gt;BAD()',page);self.assertNotIn('<script>BAD()',page)

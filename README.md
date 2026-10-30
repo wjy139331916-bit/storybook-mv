@@ -1,6 +1,6 @@
 # MV 创作导演 · storybook-mv
 
-通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.5.0**。
+通过分轮提问确认需求，再形成方案、制作样片并检查成片的 Agent Skill。当前版本：**3.6.0**。
 
 不预设画风、人物比例、配色、画面比例或渲染引擎。支持叙事、人物动画、文字、抽象图形和其他适合项目的方向；素材政策由项目确定。
 
@@ -104,6 +104,18 @@ python3 skills/storybook-mv/scripts/pixel_workbench.py init --project <项目目
 - 时间点问题记录、样片检查、共享素材修复范围和定点返工。
 - 完整目录导出、文件校验和可播放的 Canvas2D 运行自检。
 
+## 七模块导演工作台
+
+3.6 把动作与接触、场景与摄影机、歌词时间轴、分镜编排、转场、素材与风格、审片返工整合到一个离线工作台。共享同一份 JSON，支持保存后重新载入；修改后可接回选定的 Canvas2D 或 Remotion 项目。
+
+```bash
+python3 skills/storybook-mv/scripts/director_workbench.py init --project <项目> --out plan/director-design-r1
+```
+
+工作台导出的是草稿；设计源文件、真实视频哈希和阶段验收继续沿用原有流程。内置构造角色只用于搭建动作，复杂人物表演仍为 partial；逐词时间需要实际听辨，不能按字数当作演唱同步。其他绘画/3D/自定义引擎需要各自适配器。手机窄屏已在桌面浏览器模拟，尚未证明 Android 真机兼容。
+
+命令和实际边界见 [导演工作台说明](skills/storybook-mv/references/director-workbench.md) 与 [3.6 验证记录](skills/storybook-mv/assets/verification-v36.json)。
+
 ## 完整性检查
 
 下载后在仓库目录运行：
@@ -120,7 +132,8 @@ python3 skills/storybook-mv/scripts/verify_portable.py skills/storybook-mv
 
 - `canvas2d`：内置空白 Canvas2D 项目，可选择浏览器或可选的 Node Canvas 运行方式。
 - `painted-p5`：内置 p5.js / p5.brush 模板，需要对应包、Chrome、FFmpeg 等依赖。
-- `remotion`：新增可选原生项目模板及阶段受控的静态图、限定片段、估算和视频导出适配；依赖另行安装。\n- three.js、Blender 和自定义路线：提供选型指导，需要另行实现与验证适配器。
+- `remotion`：新增可选原生项目模板及阶段受控的静态图、限定片段、估算和视频导出适配；依赖另行安装。
+- three.js、Blender 和自定义路线：提供选型指导，需要另行实现与验证适配器。
 
 中文项目需要可用的本地中文字体，并检查真实字形。运行方式、版本、自检与验证范围见 [运行参考](skills/storybook-mv/references/runtime-portability.md)。技能不会自行开通付费服务、替换音乐或发布作品。
 
@@ -143,7 +156,7 @@ python3 -m pip install -r skills/storybook-mv/scripts/requirements-media.txt
 python3 -m unittest discover -s skills/storybook-mv/tests -v
 ```
 
-媒体测试还需要 FFmpeg / FFprobe。开发环境已通过 139 项回归测试，零跳过（包含所选原生适配器和中文字体）；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。
+媒体测试还需要 FFmpeg / FFprobe。完整回归数与所选原生适配器、中文字体及浏览器证据以版本验证记录为准；缺少可选运行环境时相应测试会明确跳过。原生渲染检查可选择精确版本的 `@napi-rs/canvas@0.1.100`，再运行 `tests/render_smoke.py --canvas-module <模块路径> --encode`。
 
 仓库新增独立的 Ubuntu Chromium 审片和 Windows 原生 Canvas 任务，实际是否通过以 Actions 的具体运行结果为准。Windows 检查实际发现了临时目录别名、默认编码和 AAC 起点处理问题，已加入修复与回归，并校验真实检出目录的完整性。Windows 字体可用性单独检查；不能从 Linux 的结果推断 Windows 的中文字体或任意宿主均兼容。
 

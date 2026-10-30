@@ -1,7 +1,7 @@
 {
   "name": "storybook-mv",
   "display_name": "MV创作导演",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "brief_schema": 5,
   "production_contract_schema": 1,
   "optional_cpu_canvas_version": "0.1.100",
@@ -26,5 +26,6 @@
   "review_workspace_schema": 1,
   "creative_probe_schema": 1,
   "pixel_workbench_schema": 1,
-  "destination_probe_schema": 2
+  "destination_probe_schema": 2,
+  "director_workbench_schema": 1
 }
