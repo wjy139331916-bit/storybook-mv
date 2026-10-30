@@ -437,14 +437,453 @@
     }
   },
   "remotion": {
-    "status": "standard_host_render_pending",
+    "status": "verified_scoped",
+    "tested_revision": "1a5c2a51b8818c504b49847bf661c1791796f257",
     "local_template_and_stage_tests": "passed",
-    "local_restriction": "os.networkInterfaces() blocked by sandbox; no runtime internals or host policy bypassed."
+    "local_restriction": "os.networkInterfaces() blocked by local sandbox; no runtime internals or host policy bypassed. Normal GitHub-hosted Ubuntu runner used for actual encode.",
+    "original_zero_range_export": {
+      "status": "passed",
+      "engine": "remotion",
+      "runtime_backend": "browser",
+      "runtime": {
+        "node": "v22.23.4",
+        "platform": "linux",
+        "arch": "x64",
+        "browser": "Chrome/156.0.8078.47",
+        "browser_revision": "@1d17a2e2ee147bb7d6ae2ab6abdb3a2510c17775",
+        "browser_protocol": "1.3",
+        "browserExecutable": "/usr/bin/google-chrome",
+        "versions": {
+          "remotion": "4.0.539",
+          "@remotion/renderer": "4.0.539",
+          "@remotion/bundler": "4.0.539",
+          "@remotion/cli": "4.0.539",
+          "react": "19.0.0",
+          "react-dom": "19.0.0"
+        },
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "destination": {
+        "system": "Linux",
+        "platform": "linux",
+        "arch": "x86_64",
+        "release": "7.0.0-1017-azure",
+        "python": {
+          "interpreter": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+          "version": "3.12.15",
+          "major": 3,
+          "packages": {
+            "numpy": {
+              "available": true,
+              "version": "2.5.4"
+            },
+            "PIL": {
+              "available": true,
+              "version": "12.3.0"
+            },
+            "fontTools": {
+              "available": true,
+              "version": "4.68.0"
+            }
+          },
+          "missing": []
+        },
+        "node": "v22.23.4",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "ffprobe": "ffprobe version 6.1.1-3ubuntu5 Copyright (c) 2007-2023 the FFmpeg developers"
+      },
+      "range": [
+        0,
+        2
+      ],
+      "duration": 2.005,
+      "fps": 30,
+      "encoded": {
+        "full_decode": true,
+        "video": true,
+        "audio": true,
+        "frames": 60
+      },
+      "sync_test": {
+        "scope": "original synthetic pulses only",
+        "expected": [
+          0.5,
+          1.5
+        ],
+        "observed": [
+          0.5,
+          1.5
+        ],
+        "tolerance_seconds": 0.06
+      },
+      "artifact": {
+        "path": "out/runtime/clip.mp4",
+        "sha256": "7f3775b8d1a34ab4bfd43cb17d93be4659ed5d27a550d3208cb4b20219a6fca5"
+      },
+      "elapsed_seconds": 11.353,
+      "scope": "Selected destination engine/backend exercise only; no natural acting, real singing, project aesthetics or other-platform certification."
+    },
+    "original_nonzero_source_audio": {
+      "status": "passed",
+      "source_range": [
+        2,
+        4
+      ],
+      "encoded_pulse_offsets": [
+        0.5,
+        1.5
+      ],
+      "runtime": {
+        "node": "v22.23.4",
+        "platform": "linux",
+        "arch": "x64",
+        "browser": "Chrome/156.0.8078.47",
+        "browser_revision": "@1d17a2e2ee147bb7d6ae2ab6abdb3a2510c17775",
+        "browser_protocol": "1.3",
+        "browserExecutable": "/opt/google/chrome/google-chrome",
+        "versions": {
+          "remotion": "4.0.539",
+          "@remotion/renderer": "4.0.539",
+          "@remotion/bundler": "4.0.539",
+          "@remotion/cli": "4.0.539",
+          "react": "19.0.0",
+          "react-dom": "19.0.0"
+        },
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "scope": "Original actual normal-host Remotion nonzero source/audio exercise, with synthetic fixture approvals only. No real user acceptance or art claim.",
+      "artifact_sha256": "3850eccb5eef8362102e404b50f8fa935778c7cef12a02999a8519df57ed4c1f",
+      "source_audio_sha256": "b3c95a879f9464467006198eda6f679eb392d724db8b22fa07f26b063941a16d",
+      "encoded": {
+        "full_decode": true,
+        "video": true,
+        "audio": true
+      }
+    },
+    "measured_sample_estimate": {
+      "mode": "estimate",
+      "engine": "remotion",
+      "samples": [
+        {
+          "time": 0.2,
+          "milliseconds": 238,
+          "png_bytes": 10293
+        },
+        {
+          "time": 1,
+          "milliseconds": 236,
+          "png_bytes": 10138
+        },
+        {
+          "time": 1.8,
+          "milliseconds": 233,
+          "png_bytes": 10177
+        }
+      ],
+      "range": [
+        0,
+        2
+      ],
+      "frames": 60,
+      "estimated_render_seconds": 14.16,
+      "estimated_frame_cache_bytes": 617580,
+      "scope": "Still-sample extrapolation includes sample setup; not a speed guarantee. Allow encoding/review/repair overhead."
+    },
+    "downloaded_mp4_full_decode_and_hash_match": true,
+    "scope": "Original Linux destination clips only, including global [2,4] interval and synthetic pulses. No Android, real sung-word, natural acting or user aesthetic acceptance claim."
   },
   "limits": [
     "No Android destination execution was observed here.",
     "No complete real sung MV, natural character acting or user aesthetic acceptance is certified.",
     "Generic construction examples and filled performance plans do not replace inspected acting."
   ],
-  "public_receipt_paths_normalized": true
+  "public_receipt_paths_normalized": true,
+  "normal_host_ci": {
+    "status": "passed",
+    "tested_revision": "1a5c2a51b8818c504b49847bf661c1791796f257",
+    "skill_checks_url": "https://github.com/wjy139331916-bit/storybook-mv/actions/runs/40981821234",
+    "selected_adapters_url": "https://github.com/wjy139331916-bit/storybook-mv/actions/runs/40981821236",
+    "downloaded_artifact_run_url": "https://github.com/wjy139331916-bit/storybook-mv/actions/runs/40981815503",
+    "artifact_id": 12945730517,
+    "artifact_sha256": "2842a2a9720035d20723c0932780112c99226ae7c6b585286c14bb4406eab59f",
+    "downloaded_artifact_hash_verified": true,
+    "checks": {
+      "integrity-and-media": "passed",
+      "native-render": "passed",
+      "chromium-review": "passed",
+      "windows-native": {
+        "status": "passed",
+        "tests_ran": 175,
+        "skipped": 3,
+        "scope": "Actual Windows native destination and contract regressions; does not certify Windows CJK fonts or browser backends."
+      },
+      "selected-adapters-linux": "passed"
+    },
+    "browser_chinese": {
+      "status": "passed",
+      "engine": "canvas2d",
+      "runtime_backend": "browser",
+      "runtime": {
+        "node": "v22.23.4",
+        "platform": "linux",
+        "arch": "x64",
+        "browser": "Chrome/156.0.8078.47",
+        "puppeteer": "25.11.0",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "destination": {
+        "system": "Linux",
+        "platform": "linux",
+        "arch": "x86_64",
+        "release": "7.0.0-1017-azure",
+        "python": {
+          "interpreter": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+          "version": "3.12.15",
+          "major": 3,
+          "packages": {
+            "numpy": {
+              "available": true,
+              "version": "2.5.4"
+            },
+            "PIL": {
+              "available": true,
+              "version": "12.3.0"
+            },
+            "fontTools": {
+              "available": true,
+              "version": "4.68.0"
+            }
+          },
+          "missing": []
+        },
+        "node": "v22.23.4",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "ffprobe": "ffprobe version 6.1.1-3ubuntu5 Copyright (c) 2007-2023 the FFmpeg developers"
+      },
+      "range": [
+        0,
+        6
+      ],
+      "duration": 6,
+      "fps": 30,
+      "encoded": {
+        "full_decode": true,
+        "video": true,
+        "audio": true,
+        "frames": 180
+      },
+      "sync_test": {
+        "scope": "original synthetic pulses only",
+        "expected": [
+          0.5,
+          1.5
+        ],
+        "observed": [
+          0.5,
+          1.5
+        ],
+        "tolerance_seconds": 0.06
+      },
+      "cjk": {
+        "glyphs": {
+          "schema_version": 1,
+          "font_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+          "text_document_sha256": "8b7fef02e21d2b65a99b88b69048322cdbe5f5150bd91b97ede815dfc00ee5aa",
+          "family": "Noto Sans CJK JP",
+          "checked_characters": 17,
+          "missing": [],
+          "ok": true,
+          "scope": "Actual font cmap coverage only; inspect rendered glyph shapes, size, contrast and reading time separately."
+        },
+        "encoded_samples": [
+          {
+            "time": 0.75,
+            "caption_region_sha256": "1585b4ceb5cb55fa3681c28221783fe289da4e37985b57da80f303bf13ade149",
+            "highlight_pixels": 434
+          },
+          {
+            "time": 1.75,
+            "caption_region_sha256": "0516df4199b837d51b8f8e69520583be831ac9aa8f4ea6944ef39c7cc37f54db",
+            "highlight_pixels": 813
+          }
+        ],
+        "timing": "original authored synthetic timings, never inferred real singing"
+      },
+      "mechanism_probe": {
+        "mode": "probe",
+        "engine": "canvas2d",
+        "runtime": {
+          "node": "v22.23.4",
+          "platform": "linux",
+          "arch": "x64",
+          "browser": "Chrome/156.0.8078.47",
+          "puppeteer": "25.11.0",
+          "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+        },
+        "gpu": "Canvas2D adapter; GPU acceleration not asserted",
+        "range": [
+          0,
+          6
+        ],
+        "frames": 180,
+        "samples": [
+          {
+            "time": 0.5,
+            "milliseconds": 8,
+            "jpeg_bytes": 12371
+          },
+          {
+            "time": 1,
+            "milliseconds": 2,
+            "jpeg_bytes": 12336
+          },
+          {
+            "time": 1.5,
+            "milliseconds": 2,
+            "jpeg_bytes": 12480
+          }
+        ],
+        "estimated_render_seconds": 0.36,
+        "estimated_frame_cache_bytes": 2246400,
+        "storage_scope": "Sampled JPEG cache estimate for --frames; --clip pipes images without retaining that cache. Encoding/review/repair add time and storage."
+      },
+      "artifact": {
+        "path": "out/runtime/clip.mp4",
+        "sha256": "452c62461577969ee10d36c583891792ed533508f97e30c3331a69246c5c877c"
+      },
+      "elapsed_seconds": 2.024,
+      "scope": "Selected destination engine/backend exercise only; no natural acting, real singing, project aesthetics or other-platform certification."
+    },
+    "software_p5": {
+      "status": "passed",
+      "engine": "painted-p5",
+      "runtime_backend": "browser",
+      "runtime": {
+        "node": "v22.23.4",
+        "platform": "linux",
+        "arch": "x64",
+        "browser": "Chrome/156.0.8078.47",
+        "puppeteer": "25.11.0",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      "destination": {
+        "system": "Linux",
+        "platform": "linux",
+        "arch": "x86_64",
+        "release": "7.0.0-1017-azure",
+        "python": {
+          "interpreter": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+          "version": "3.12.15",
+          "major": 3,
+          "packages": {
+            "numpy": {
+              "available": true,
+              "version": "2.5.4"
+            },
+            "PIL": {
+              "available": true,
+              "version": "12.3.0"
+            },
+            "fontTools": {
+              "available": true,
+              "version": "4.68.0"
+            }
+          },
+          "missing": []
+        },
+        "node": "v22.23.4",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "ffprobe": "ffprobe version 6.1.1-3ubuntu5 Copyright (c) 2007-2023 the FFmpeg developers"
+      },
+      "range": [
+        0,
+        6
+      ],
+      "duration": 6,
+      "fps": 30,
+      "encoded": {
+        "full_decode": true,
+        "video": true,
+        "audio": true,
+        "frames": 180
+      },
+      "sync_test": {
+        "scope": "original synthetic pulses only",
+        "expected": [
+          0.5,
+          1.5
+        ],
+        "observed": [
+          0.5,
+          1.5
+        ],
+        "tolerance_seconds": 0.06
+      },
+      "mechanism_probe": {
+        "mode": "probe",
+        "engine": "painted-p5",
+        "runtime": {
+          "node": "v22.23.4",
+          "platform": "linux",
+          "arch": "x64",
+          "browser": "Chrome/156.0.8078.47",
+          "puppeteer": "25.11.0",
+          "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+        },
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "range": [
+          0,
+          6
+        ],
+        "frames": 180,
+        "samples": [
+          {
+            "time": 0.5,
+            "milliseconds": 556,
+            "jpeg_bytes": 77378
+          },
+          {
+            "time": 1,
+            "milliseconds": 516,
+            "jpeg_bytes": 77413
+          },
+          {
+            "time": 1.5,
+            "milliseconds": 516,
+            "jpeg_bytes": 77387
+          }
+        ],
+        "estimated_render_seconds": 92.88,
+        "estimated_frame_cache_bytes": 13934340,
+        "storage_scope": "Sampled JPEG cache estimate for --frames; --clip pipes images without retaining that cache. Encoding/review/repair add time and storage."
+      },
+      "artifact": {
+        "path": "out/runtime/clip.mp4",
+        "sha256": "0a8f4383f99d77f8a8162952125c46a809abe9802a1195ab0e9098f84ed0ac79"
+      },
+      "elapsed_seconds": 98.154,
+      "scope": "Selected destination engine/backend exercise only; no natural acting, real singing, project aesthetics or other-platform certification."
+    },
+    "pixel_editor": {
+      "status": "passed",
+      "runtime": "Chromium 156.0.8078.47",
+      "platform": "linux",
+      "arch": "x64",
+      "checks": [
+        "pointer pixel editing",
+        "per-pose isolation",
+        "offset and anchor export",
+        "browser/Python RGBA equality after edits",
+        "JSON roundtrip",
+        "design motion controls unavailable",
+        "import cannot promote stage",
+        "actual bounded action playback",
+        "sprite PNG download",
+        "desktop and portrait layout",
+        "zero external requests"
+      ],
+      "model_sha256": "08d5851a59080e2ee9f827ef8097b0b78444be83802a555d22e6229bdee88885",
+      "scope": "Original isolated tool example; no user project approval, natural acting or Android destination validation."
+    }
+  }
 }

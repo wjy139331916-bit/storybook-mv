@@ -17,9 +17,9 @@
     },
     {
       "id": "remotion-original-executable-adapter",
-      "status": "implemented_destination_test_pending",
-      "evidence": "assets/remotion-template; references/remotion-adapter.md; tests/test_runtime_v35.py",
-      "limits": "Stage blocking and template setup tested; local sandbox denies network-interface inspection. Standard-host render receipt required before claiming executable verification."
+      "status": "verified_scoped",
+      "evidence": "assets/remotion-template; references/remotion-adapter.md; tests/test_runtime_v35.py; assets/verification-v35.json",
+      "limits": "Original Linux MP4 and nonzero [2,4] source/audio interval verified with full decode and synthetic pulses. Other destinations/scenes, natural acting and real sung words require their own evidence."
     },
     {
       "id": "story-ui-and-source-bound-acting-plan",

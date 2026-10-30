@@ -183,8 +183,8 @@
     },
     {
       "path": "assets/capability-matrix.json",
-      "bytes": 7282,
-      "sha256": "c0394e2327d6b18d3b542d73d1a6e9e6042339ad148ced4e1de2b0c871149c20"
+      "bytes": 7316,
+      "sha256": "e0378bea8bf85525add349b69d22d666f9a7f545001766f74d2974582a1a5395"
     },
     {
       "path": "assets/contracts/design-script.template.json",
@@ -773,8 +773,8 @@
     },
     {
       "path": "assets/verification-v35.json",
-      "bytes": 14357,
-      "sha256": "7439ec2034344c43a77c11828892c1d6489d24a8d3c9d7df3625ecaff9c862bd"
+      "bytes": 28678,
+      "sha256": "941c7e2d505aa8e723abd98c79d15d79b103f057f40f0f88c0bcbdacd4e31b50"
     },
     {
       "path": "references/agent-interop.md",
@@ -868,8 +868,8 @@
     },
     {
       "path": "references/remotion-adapter.md",
-      "bytes": 4674,
-      "sha256": "61257af14eff72403eb1e6fd84d7898d43cd2d79d3a0027c0418c5eaff48b29e"
+      "bytes": 4965,
+      "sha256": "3281395988bdf3c52dbd979b99421199baf14881c9264548ca5c6ac1fa6815b1"
     },
     {
       "path": "references/rendering.md",
